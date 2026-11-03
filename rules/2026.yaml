@@ -98,10 +98,11 @@ rules:
     topic: small_items
     plain_words: "Items costing $2,500 or less each can be written off right away, like supplies. The business has to choose this every year and have an expensing policy in place from Jan 1."
     per_item_limit_cents: 250000    # $2,500 (no audited financial statements)
+    per_item_limit_audited_cents: 500000  # $5,000 with audited financial statements
     requires_annual_election: true
     california_follows: true
     source:
-      cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D); California follows federal regulations under CA R&TC 17024.5(d)"
+      cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D) ($2,500) and (f)(1)(i)(D) ($5,000 with audited statements); California follows federal regulations under CA R&TC 17024.5(d)"
       url: "https://www.ecfr.gov/current/title-26/section-1.263(a)-1"
     check_status: checked
     approved_by: null
