@@ -106,7 +106,11 @@ rules:
     check_status: checked
     approved_by: null
     approved_on: null
-    note: "$2,501 doesn't qualify at all. It's a line, not a deduction of the first $2,500."
+    note: >
+      $2,501 doesn't qualify at all. It's a line, not a deduction of the first $2,500.
+      Delivery and installation on the same invoice count toward the item's cost
+      (Treas. Reg. 1.263(a)-1(f)(3)(i)), and practitioners generally count sales tax too.
+      So the engine compares the all-in cost per item, not the list price.
 
   # ---------------------------------------------------------------
   # Meals
@@ -138,13 +142,14 @@ rules:
     approved_by: null
     approved_on: null
     note: >
-      Sources agree California doesn't follow 274(o). They disagree on the percentage:
-      some say 100%, at least one says California generally allows 50% for these meals.
-      Under the pre-2017 rules California still uses, an occasional team meal treated
-      as a de minimis fringe was exempt from the 50% limit (100%), while other
-      convenience-of-employer meals could be 50%. The FTB SB 711 analysis lists TCJA
-      sec. 13304 on page 11, but we couldn't read its decision column from the text
-      version. Open the PDF and confirm before approving.
+      Checked Nov 2. Sources agree California doesn't follow 274(o) and still uses the
+      pre-2017 version of IRC 274. Under that version the answer depends on the facts:
+      100% if the meal counts as a de minimis fringe (occasional, or served on premises
+      to more than half the staff for the company's convenience), otherwise 50%.
+      Firms split on which applies to ordinary office meals (one says 100%, one says 50%).
+      The FTB SB 711 analysis lists TCJA sec. 13304 on page 11, but its decision column
+      can't be read from the text version. Keep 100% for the demo only if the Sweetgreen
+      facts fit the de minimis case, and say "depends on the facts" on screen.
 
   - id: fed_client_meals
     jurisdiction: federal
@@ -188,12 +193,12 @@ rules:
     plain_words: "California still allows 50% for client entertainment."
     percent: 50
     source:
-      cite: "Pre-TCJA IRC 274(a) and 274(n) as followed by California (nonconformity to TCJA sec. 13304)"
-      url: "https://www.ftb.ca.gov/tax-pros/law/legislation/2025-2026/SB711-FINAL.pdf"
-    check_status: needs_check
+      cite: "FTB Publication 984, Federal/State Comparison Chart: entertainment limited to 50% in California, generally not allowed federally"
+      url: "https://www.ftb.ca.gov/forms/misc/984.html"
+    check_status: checked
     approved_by: null
     approved_on: null
-    note: "Same open question as ca_team_meals_office: confirm the 13304 row on the FTB SB 711 chart."
+    note: "Pub 984 predates SB 711, but post-SB 711 summaries agree California still allows 50%."
 
   - id: fed_snacks_coffee
     jurisdiction: federal
@@ -206,7 +211,7 @@ rules:
     check_status: needs_check
     approved_by: null
     approved_on: null
-    note: "Practitioner sources split on this. Not used in any locked demo number."
+    note: "Practitioner sources split: some say snacks fall outside 274(o), at least one says office snacks and coffee are 0% from 2026. Not used in any locked demo number."
 
   - id: ca_snacks_coffee
     jurisdiction: california
@@ -263,7 +268,7 @@ rules:
     check_status: needs_check
     approved_by: null
     approved_on: null
-    note: "Recorded from the design-lock doc. Link the FTB page before approving."
+    note: "Checked Nov 2: filing services say California uses $2,000 for 2026, but no FTB page was found to link. Link one before approving."
 
   - id: ca_de542_report
     jurisdiction: california
@@ -322,12 +327,12 @@ rules:
     plain_words: "California never adopted the 2017 spread-out rule, so both US and offshore research are deducted now."
     treatment: deduct_now
     source:
-      cite: "California nonconformity to TCJA sec. 13206; FTB SB 711 analysis, page 10"
-      url: "https://www.ftb.ca.gov/tax-pros/law/legislation/2025-2026/SB711-FINAL.pdf"
-    check_status: needs_check
+      cite: "FTB Tax News, 'Deduction of Section 174 Research Expenses – Nonconformity with IRC'; SB 711 keeps IRC 174 as of before TCJA sec. 13206 and does not adopt IRC 174A"
+      url: "https://www.bakertilly.com/insights/californias-2025-irc-conformity-update"
+    check_status: checked
     approved_by: null
     approved_on: null
-    note: "The FTB analysis lists 13206(a) on page 10; confirm the decision column in the PDF, same as the meals row."
+    note: "Checked Nov 2. FTB guidance and several post-SB 711 summaries agree: US and offshore research are both deductible now in California. Replace the url with the FTB Tax News page when found."
 
   # ---------------------------------------------------------------
   # Deadlines

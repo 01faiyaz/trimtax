@@ -74,6 +74,24 @@ Six moments:
 The synthetic data must reproduce every locked number exactly. A test in `/data`
 fails if any one is off. Don't change a locked number without Fy and Sean agreeing.
 
+### It's a working app, not a recording
+
+Nothing on screen is hard-coded. The Tidewell data is only the starting point;
+every number is computed live by the engine from whatever data is loaded.
+
+- **Each visitor gets their own copy** of the Tidewell workspace (keyed by a cookie),
+  so two judges trying it at once don't overwrite each other. "Reset demo" restores it.
+- **Judges can try it:** upload a receipt photo, type in a purchase for the
+  "Check a purchase" tab, answer a question, switch rule years. The AI reads and
+  sorts, the engine recalculates, and the screens update.
+- **Your own company:** "Start fresh" opens an empty workspace. You enter a short
+  profile (entity type, California or not, expected net income, small-item election
+  yes/no) and upload receipts or a transactions CSV. Same engine, same rules.
+- **Limits, shown on screen:** federal + California only, the categories in the
+  rules file, no total tax bill, no filing. No bank or Ramp connection; data comes
+  from uploads and CSV.
+- **Cost guards:** image/PDF uploads only, size limit, a per-visitor cap on AI calls.
+
 If time runs short, cut animations before cutting any demo moment or the evals.
 
 ## Code style
@@ -128,3 +146,5 @@ Marks: T (traced to receipts), Σ (added up), Δ (waiting on an answer).
 - [ ] Replace the placeholder trimtax.app with the real deployed link
 - [ ] Every rule in `rules/2026.yaml` has a real `approved_by` name and `approved_on` date
 - [ ] Rules with `check_status: needs_check` are resolved or shown as open on screen
+- [ ] Laptop prices on screen say "tax and shipping included"
+- [ ] Repo is public (or judges are added) and the README says how to run it
