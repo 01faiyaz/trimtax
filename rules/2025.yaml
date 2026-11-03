@@ -1,0 +1,329 @@
+# TrimTax ruleset for tax year 2025 (federal + California)
+#
+# Used for the "rules changed" view: the same spending, sorted under last
+# year's rules, so you can see what 2026 changed. Same rule ids as 2026.yaml.
+#
+# - Money is in whole cents. Percentages are whole numbers.
+# - A value of null means "not decided". The engine returns cant_determine for it.
+# - approved_by / approved_on stay empty until Fy or Sean approves the rule.
+
+ruleset_version: "2025.1"
+tax_year: 2025
+tax_year_start: 2025-01-01
+tax_year_end: 2025-12-31
+based_on_docs: "TrimTax — Design lock and demo numbers (Nov 1, 2026)"
+
+rules:
+
+  # ---------------------------------------------------------------
+  # Equipment
+  # ---------------------------------------------------------------
+
+  - id: fed_bonus_depreciation
+    jurisdiction: federal
+    topic: equipment
+    plain_words: "Equipment bought after Jan 19, 2025 can be written off 100% in its first year. Equipment bought earlier in 2025 gets 40%."
+    percent: 100
+    acquired_after: 2025-01-19
+    percent_if_acquired_earlier: 40
+    source:
+      cite: "IRC 168(k), as amended by OBBBA (Pub. L. 119-21) sec. 70301"
+      url: "https://www.law.cornell.edu/uscode/text/26/168"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_section_179
+    jurisdiction: federal
+    topic: equipment
+    plain_words: "Optional write-off of equipment in year one, up to $2,500,000. Shrinks once total equipment bought passes $4,000,000."
+    limit_cents: 250000000          # $2,500,000
+    phaseout_start_cents: 400000000 # $4,000,000
+    limited_to_business_income: true
+    source:
+      cite: "IRC 179(b), as amended by OBBBA (Pub. L. 119-21) sec. 70306 (property placed in service in tax years beginning after Dec 31, 2024)"
+      url: "https://www.law.cornell.edu/uscode/text/26/179"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_bonus_depreciation
+    jurisdiction: california
+    topic: equipment
+    plain_words: "California does not allow bonus depreciation at all."
+    percent: 0
+    source:
+      cite: "CA R&TC 17250 (California does not adopt IRC 168(k))"
+      url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17250"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_section_179
+    jurisdiction: california
+    topic: equipment
+    plain_words: "California caps the year-one equipment write-off at $25,000. It shrinks once purchases pass $200,000 and can't be more than business income."
+    limit_cents: 2500000            # $25,000
+    phaseout_start_cents: 20000000  # $200,000
+    limited_to_business_income: true
+    source:
+      cite: "CA R&TC 17255"
+      url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17255"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: placed_in_service_deadline
+    jurisdiction: both
+    topic: equipment
+    plain_words: "Equipment has to be in use by Dec 31 to count for 2025."
+    deadline: 2025-12-31
+    source:
+      cite: "IRC 168(k)(2)(A)(iii) and IRC 179(a) (placed in service during the year)"
+      url: "https://www.law.cornell.edu/uscode/text/26/179"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  # ---------------------------------------------------------------
+  # Small-item rule (unchanged from 2025 to 2026)
+  # ---------------------------------------------------------------
+
+  - id: de_minimis_safe_harbor
+    jurisdiction: both
+    topic: small_items
+    plain_words: "Items costing $2,500 or less each can be written off right away. The business chooses this every year."
+    per_item_limit_cents: 250000
+    requires_annual_election: true
+    california_follows: true
+    source:
+      cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D); California follows federal regulations under CA R&TC 17024.5(d)"
+      url: "https://www.ecfr.gov/current/title-26/section-1.263(a)-1"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  # ---------------------------------------------------------------
+  # Meals
+  # ---------------------------------------------------------------
+
+  - id: fed_team_meals_office
+    jurisdiction: federal
+    topic: meals
+    plain_words: "In 2025, meals a company gives its team at the office for the company's convenience are 50% deductible."
+    percent: 50
+    source:
+      cite: "IRC 274(n)(1) as amended by TCJA sec. 13304(b) (50% limit through Dec 31, 2025; IRC 274(o) starts in 2026)"
+      url: "https://www.law.cornell.edu/uscode/text/26/274"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_team_meals_office
+    jurisdiction: california
+    topic: meals
+    plain_words: "California never adopted the 2017 federal meals changes."
+    percent: 100
+    source:
+      cite: "California nonconformity to TCJA sec. 13304 (see 2026.yaml note)"
+      url: "https://www.ftb.ca.gov/tax-pros/law/legislation/2025-2026/SB711-FINAL.pdf"
+    check_status: needs_check
+    approved_by: null
+    approved_on: null
+    note: "Same open question as in 2026.yaml: 100% if a de minimis fringe, otherwise 50%."
+
+  - id: fed_client_meals
+    jurisdiction: federal
+    topic: meals
+    plain_words: "Meals with clients are 50% deductible."
+    percent: 50
+    source:
+      cite: "IRC 274(n)(1)"
+      url: "https://www.law.cornell.edu/uscode/text/26/274"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_client_meals
+    jurisdiction: california
+    topic: meals
+    plain_words: "Meals with clients are 50% deductible in California too."
+    percent: 50
+    source:
+      cite: "IRC 274(n)(1) as of California's specified date (CA R&TC 17201)"
+      url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17201"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_client_entertainment
+    jurisdiction: federal
+    topic: meals
+    plain_words: "Client entertainment isn't deductible federally."
+    percent: 0
+    source:
+      cite: "IRC 274(a)(1) as amended by TCJA sec. 13304(a)"
+      url: "https://www.law.cornell.edu/uscode/text/26/274"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_client_entertainment
+    jurisdiction: california
+    topic: meals
+    plain_words: "California still allows 50% for client entertainment."
+    percent: 50
+    source:
+      cite: "FTB Publication 984, Federal/State Comparison Chart"
+      url: "https://www.ftb.ca.gov/forms/misc/984.html"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_snacks_coffee
+    jurisdiction: federal
+    topic: meals
+    plain_words: "Office snacks and coffee are 50% deductible."
+    percent: 50
+    source:
+      cite: "IRC 274(n)(1)"
+      url: "https://www.law.cornell.edu/uscode/text/26/274"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_snacks_coffee
+    jurisdiction: california
+    topic: meals
+    plain_words: "Not decided yet."
+    percent: null
+    source:
+      cite: "No decision recorded"
+      url: null
+    check_status: needs_check
+    approved_by: null
+    approved_on: null
+
+  # ---------------------------------------------------------------
+  # Contractors
+  # ---------------------------------------------------------------
+
+  - id: fed_1099_nec_threshold
+    jurisdiction: federal
+    topic: contractors
+    plain_words: "A 1099-NEC is needed once one contractor is paid $600 or more in 2025."
+    threshold_cents: 60000          # $600
+    source:
+      cite: "IRC 6041(a) (before OBBBA sec. 70433 took effect for 2026 payments)"
+      url: "https://www.law.cornell.edu/uscode/text/26/6041"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_backup_withholding
+    jurisdiction: federal
+    topic: contractors
+    plain_words: "Without a W-9, the business must hold back 24% of payments to that contractor."
+    percent: 24
+    source:
+      cite: "IRC 3406(a)(1)"
+      url: "https://www.law.cornell.edu/uscode/text/26/3406"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_ftb_1099_threshold
+    jurisdiction: california
+    topic: contractors
+    plain_words: "California used the same $600 line in 2025."
+    threshold_cents: 60000
+    source:
+      cite: "FTB 1099 information reporting guidance (2025)"
+      url: null
+    check_status: needs_check
+    approved_by: null
+    approved_on: null
+
+  - id: ca_de542_report
+    jurisdiction: california
+    topic: contractors
+    plain_words: "California's EDD wants a DE 542 report within 20 days of paying an individual contractor $600 or more."
+    threshold_cents: 60000
+    due_within_days: 20
+    applies_to: [individual, sole_proprietor, single_member_llc]
+    unclear_band_cents: null        # no gap in 2025: the federal line was also $600
+    source:
+      cite: "CA Unemployment Insurance Code 1088.8; EDD Form DE 542 instructions"
+      url: "https://edd.ca.gov/en/payroll_taxes/Independent_Contractor_Reporting"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  # ---------------------------------------------------------------
+  # Research spending
+  # ---------------------------------------------------------------
+
+  - id: fed_research_us
+    jurisdiction: federal
+    topic: research
+    plain_words: "US research is deducted this year (the 2025 law applied it from 2025 on)."
+    treatment: deduct_now
+    source:
+      cite: "IRC 174A, added by OBBBA (Pub. L. 119-21) sec. 70302 (tax years beginning after Dec 31, 2024)"
+      url: "https://www.law.cornell.edu/uscode/text/26/174A"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_research_foreign
+    jurisdiction: federal
+    topic: research
+    plain_words: "Research done outside the US is spread over 15 years."
+    treatment: amortize
+    years: 15
+    source:
+      cite: "IRC 174(a)(2)(B), as amended by TCJA sec. 13206"
+      url: "https://www.law.cornell.edu/uscode/text/26/174"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: ca_research_all
+    jurisdiction: california
+    topic: research
+    plain_words: "California deducts both US and offshore research now."
+    treatment: deduct_now
+    source:
+      cite: "FTB Tax News, 'Deduction of Section 174 Research Expenses – Nonconformity with IRC'"
+      url: "https://www.bakertilly.com/insights/californias-2025-irc-conformity-update"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  # ---------------------------------------------------------------
+  # Deadlines for the 2025 tax year
+  # ---------------------------------------------------------------
+
+  - id: owners_q4_estimate
+    jurisdiction: federal
+    topic: deadlines
+    plain_words: "S corporation owners paid their last 2025 estimated tax by Jan 15, 2026."
+    deadline: 2026-01-15
+    source:
+      cite: "IRC 6654(c)(2)"
+      url: "https://www.law.cornell.edu/uscode/text/26/6654"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+
+  - id: fed_1099_nec_due
+    jurisdiction: federal
+    topic: deadlines
+    plain_words: "1099-NEC forms for 2025 were due Feb 2, 2026, because Jan 31 was a Saturday."
+    deadline: 2026-02-02
+    source:
+      cite: "IRC 6071(c); IRC 7503 (weekend rule)"
+      url: "https://www.law.cornell.edu/uscode/text/26/6071"
+    check_status: checked
+    approved_by: null
+    approved_on: null

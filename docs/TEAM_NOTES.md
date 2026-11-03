@@ -30,6 +30,14 @@ TrimTax never files anything and never gives tax advice.
 Database: Postgres on Neon. AI: Claude API with structured outputs.
 Tests: pytest + hypothesis (engine), Playwright (the six demo moments).
 
+Run the tests from the repo root:
+
+```
+pip install -r api/requirements.txt
+python data/generate.py      # only after changing the generator
+python -m pytest
+```
+
 ## How the pieces fit
 
 1. Transactions CSV + receipt images come in through an adapter (mock now).
