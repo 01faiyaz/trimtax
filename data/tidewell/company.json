@@ -1,0 +1,13 @@
+{
+  "name": "Tidewell Labs",
+  "label": "Synthetic demo data",
+  "entity_type": "s_corporation",
+  "state": "CA",
+  "employees": 8,
+  "industry": "software",
+  "tax_year": 2026,
+  "expected_net_income_cents": 12000000,
+  "small_item_election": true,
+  "has_audited_financials": false,
+  "demo_date": "2026-11-19"
+}

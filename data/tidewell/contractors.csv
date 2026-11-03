@@ -1,0 +1,21 @@
+id,name,entity_type,w9_on_file,country
+ctr_01,Maya Lindqvist,individual,True,US
+ctr_02,Tomas Ferreira,sole_proprietor,True,US
+ctr_03,Priya Raman,individual,True,US
+ctr_04,Leo Okafor,single_member_llc,True,US
+ctr_05,Dana Reyes,individual,False,US
+ctr_06,Arjun Patel,individual,True,US
+ctr_07,Hana Kobayashi,individual,True,US
+ctr_08,Sam Whitfield,sole_proprietor,True,US
+ctr_09,Elena Marsh,individual,True,US
+ctr_10,Jonah Brandt,individual,True,US
+ctr_11,Ruth Adeyemi,individual,True,US
+ctr_12,Felix Moreau,single_member_llc,True,US
+ctr_13,Ivy Chen,individual,True,US
+ctr_14,Marco Bellini,individual,True,US
+ctr_15,Nora Quinn,individual,True,US
+ctr_16,Oscar Delgado,individual,True,US
+ctr_17,Wren Albright,individual,True,US
+ctr_18,Theo Lang,individual,True,US
+ctr_19,Brightline Dev Studio Inc.,corporation,True,US
+ctr_20,Vistula Code Sp. z o.o.,corporation,True,PL
