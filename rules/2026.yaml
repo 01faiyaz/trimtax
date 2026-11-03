@@ -102,7 +102,7 @@ rules:
     requires_annual_election: true
     california_follows: true
     source:
-      cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D) ($2,500) and (f)(1)(i)(D) ($5,000 with audited statements); California follows federal regulations under CA R&TC 17024.5(d)"
+      cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D), raised from $500 to $2,500 by IRS Notice 2015-82, and (f)(1)(i)(D) ($5,000 with audited statements); California follows federal regulations under CA R&TC 17024.5(d)"
       url: "https://www.ecfr.gov/current/title-26/section-1.263(a)-1"
     check_status: checked
     approved_by: null
