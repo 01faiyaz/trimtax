@@ -1,0 +1,29 @@
+{
+  "rcp_140": {
+    "date": "2026-11-13",
+    "time": "12:18",
+    "merchant": "Sweetgreen",
+    "order_number": "4471",
+    "deliver_to": "Tidewell Labs office 3F",
+    "lines": [
+      [
+        "Harvest Bowl",
+        22,
+        1450
+      ],
+      [
+        "Delivery",
+        1,
+        1495
+      ],
+      [
+        "Service fee",
+        1,
+        3975
+      ]
+    ],
+    "subtotal_cents": 37370,
+    "tax_cents": 3830,
+    "total_cents": 41200
+  }
+}
