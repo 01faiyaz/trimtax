@@ -30,6 +30,23 @@ def setup():
             " data TEXT NOT NULL,"
             " updated_at TEXT NOT NULL)"
         )
+        # One row per AI call: what ran, how long it took, what it cost. No receipt text.
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS traces ("
+            " id TEXT PRIMARY KEY,"
+            " workspace_id TEXT NOT NULL,"
+            " data TEXT NOT NULL,"
+            " created_at TEXT NOT NULL)"
+        )
+        # Receipt files people upload, base64 text so SQLite and Postgres work the same.
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS uploads ("
+            " id TEXT PRIMARY KEY,"
+            " workspace_id TEXT NOT NULL,"
+            " media_type TEXT NOT NULL,"
+            " data TEXT NOT NULL,"
+            " created_at TEXT NOT NULL)"
+        )
     conn.close()
 
 
@@ -69,3 +86,63 @@ def save(workspace_id, data):
             (json.dumps(data), now_text(), workspace_id),
         )
     conn.close()
+
+
+def add_trace(workspace_id, trace):
+    trace_id = uuid.uuid4().hex
+    conn, mark = connect()
+    with conn:
+        conn.execute(
+            f"INSERT INTO traces (id, workspace_id, data, created_at) VALUES ({mark}, {mark}, {mark}, {mark})",
+            (trace_id, workspace_id, json.dumps(trace), now_text()),
+        )
+    conn.close()
+    return trace_id
+
+
+def list_traces(workspace_id):
+    conn, mark = connect()
+    rows = conn.execute(
+        f"SELECT id, data, created_at FROM traces WHERE workspace_id = {mark} ORDER BY created_at",
+        (workspace_id,),
+    ).fetchall()
+    conn.close()
+    traces = []
+    for trace_id, data, created_at in rows:
+        trace = json.loads(data)
+        trace["id"] = trace_id
+        trace["created_at"] = created_at
+        traces.append(trace)
+    return traces
+
+
+def save_upload(workspace_id, media_type, base64_text):
+    upload_id = "up_" + uuid.uuid4().hex
+    conn, mark = connect()
+    with conn:
+        conn.execute(
+            f"INSERT INTO uploads (id, workspace_id, media_type, data, created_at) VALUES ({mark}, {mark}, {mark}, {mark}, {mark})",
+            (upload_id, workspace_id, media_type, base64_text, now_text()),
+        )
+    conn.close()
+    return upload_id
+
+
+def load_upload(upload_id):
+    """Returns (media_type, base64_text), or (None, None)."""
+    conn, mark = connect()
+    row = conn.execute(
+        f"SELECT media_type, data FROM uploads WHERE id = {mark}", (upload_id,)
+    ).fetchone()
+    conn.close()
+    if row is None:
+        return None, None
+    return row[0], row[1]
+
+
+def uploads_since(iso_time):
+    """How many files were uploaded since a time, across all workspaces."""
+    conn, mark = connect()
+    row = conn.execute(f"SELECT COUNT(*) FROM uploads WHERE created_at >= {mark}", (iso_time,)).fetchone()
+    conn.close()
+    return row[0]

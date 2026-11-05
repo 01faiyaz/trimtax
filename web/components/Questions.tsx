@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { get, post, receiptImageUrl } from "@/lib/api";
 import { dollars, longDate } from "@/lib/format";
 import type { Flagged, Question } from "@/lib/types";
+import Traces from "./Traces";
+import Upload from "./Upload";
 
 type Props = {
   workspaceId: string;
@@ -30,14 +32,14 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
   async function answer(question: Question, category: string, label: string) {
     await post(`/workspaces/${workspaceId}/questions/${question.transaction_id}/answer`, { category });
     notify(`Saved as: ${label.toLowerCase()}.`);
-    setVersion(version + 1);
+    setVersion((v) => v + 1);
     await refresh();
   }
 
   async function undo(question: Question) {
     await post(`/workspaces/${workspaceId}/questions/${question.transaction_id}/undo`);
     notify("Answer removed. Nothing is counted until you answer.");
-    setVersion(version + 1);
+    setVersion((v) => v + 1);
     await refresh();
   }
 
@@ -50,6 +52,14 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
       </h1>
       <p className="lead">When the AI isn&apos;t sure, it asks you one question instead of guessing. Nothing is counted until you answer.</p>
       {error && <p className="error">{error}</p>}
+
+      <Upload
+        workspaceId={workspaceId}
+        onDone={async () => {
+          setVersion((v) => v + 1);
+          await refresh();
+        }}
+      />
 
       {questions?.map((question) => (
         <div className="grid-2" key={question.transaction_id}>
@@ -127,6 +137,8 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
           </div>
         </div>
       )}
+
+      <Traces workspaceId={workspaceId} version={version} />
     </div>
   );
 }
