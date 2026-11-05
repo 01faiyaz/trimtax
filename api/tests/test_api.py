@@ -179,3 +179,13 @@ def test_reset_clears_w9_requests_and_purchases(client, demo):
     client.post(f"/workspaces/{demo}/packet/purchases", json=body)
     client.post(f"/workspaces/{demo}/reset")
     assert client.get(f"/workspaces/{demo}/packet").json()["purchases"] == []
+
+
+def test_questions_and_flagged_items_point_to_their_receipt_images(client, demo):
+    question = client.get(f"/workspaces/{demo}/questions").json()["questions"][0]
+    assert question["image"] == "rcp_140.png"
+    flagged = client.get(f"/workspaces/{demo}/overview").json()["flagged"]
+    images = sorted(f["image"] for f in flagged)
+    assert images == ["rcp_137.png", "rcp_139.png"]
+    for name in images:
+        assert client.get(f"/receipt-images/{name}").status_code == 200

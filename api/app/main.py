@@ -102,6 +102,23 @@ def as_of_for(workspace):
     return date.today()
 
 
+def receipt_image_for(workspace, transaction_id):
+    """The receipt image's file name for a transaction, or None."""
+    for r in workspace.receipts:
+        if r.transaction_id == transaction_id and r.has_image:
+            return f"{r.id}.png"
+    return None
+
+
+def add_receipt_images(workspace, flagged):
+    for item in flagged:
+        if "transaction_id" in item:
+            item["image"] = receipt_image_for(workspace, item["transaction_id"])
+        else:
+            item["image"] = f"{item['receipt_id']}.png"
+    return flagged
+
+
 def find_transaction(workspace, transaction_id):
     for t in workspace.transactions:
         if t.id == transaction_id:
@@ -169,6 +186,7 @@ def get_overview(workspace_id: str, year: int = 2026):
     result["is_demo"] = is_demo
     result["open_items"] = mark_w9_requests(result["open_items"], extras)
     result["packet_purchases"] = extras["packet_purchases"]
+    result["flagged"] = add_receipt_images(workspace, result["flagged"])
     return result
 
 
@@ -254,7 +272,7 @@ def get_categories():
 # Questions (one question instead of a guess)
 # ------------------------------------------------------------------
 
-def question_view(t, ruleset):
+def question_view(workspace, t, ruleset):
     options = []
     for category in t.options.split("|"):
         if not category:
@@ -272,6 +290,7 @@ def question_view(t, ruleset):
         "status": t.status,
         "category": t.category,
         "options": options,
+        "image": receipt_image_for(workspace, t.id),
         "ruleset_version": ruleset.version,
     }
 
@@ -284,7 +303,7 @@ def get_questions(workspace_id: str, year: int = 2026):
     questions = []
     for t in workspace.transactions:
         if t.question:
-            questions.append(question_view(t, ruleset))
+            questions.append(question_view(workspace, t, ruleset))
     return {"questions": questions}
 
 
@@ -302,7 +321,7 @@ def answer_question(workspace_id: str, transaction_id: str, answer: Answer):
     t.category = answer.category
     t.status = "confirmed"
     save_workspace(workspace_id, workspace, get_extras(workspace_id))
-    return question_view(t, get_rules(2026))
+    return question_view(workspace, t, get_rules(2026))
 
 
 @app.post("/workspaces/{workspace_id}/questions/{transaction_id}/undo")
@@ -314,7 +333,7 @@ def undo_answer(workspace_id: str, transaction_id: str):
     t.category = ""
     t.status = "needs_answer"
     save_workspace(workspace_id, workspace, get_extras(workspace_id))
-    return question_view(t, get_rules(2026))
+    return question_view(workspace, t, get_rules(2026))
 
 
 # ------------------------------------------------------------------
@@ -333,7 +352,7 @@ def get_packet(workspace_id: str, year: int = 2026):
         "as_of": as_of,
         "ruleset_version": ruleset.version,
         "open_items": mark_w9_requests(open_items(workspace, ruleset), extras),
-        "flagged": flagged_documents(workspace),
+        "flagged": add_receipt_images(workspace, flagged_documents(workspace)),
         "purchases": extras["packet_purchases"],
         "summary": overview(workspace, ruleset, as_of),
     }
