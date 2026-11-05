@@ -9,6 +9,8 @@ Plain words:
   small-item election.
 """
 
+from decimal import ROUND_HALF_UP, Decimal
+
 from engine.money import percent_of
 
 
@@ -66,13 +68,27 @@ def federal_equipment(transactions, ruleset):
     }
 
 
+def all_in_price(price_cents, sales_tax_percent="0", shipping_cents=0):
+    """Price of one item with sales tax and its share of shipping added.
+
+    The small-item line is checked against this, not the sticker price.
+    all_in_price(239900, "7.25") -> 257293  ($2,399 becomes $2,572.93)
+    """
+    tax = Decimal(price_cents) * Decimal(str(sales_tax_percent)) / 100
+    tax_cents = int(tax.quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    return price_cents + tax_cents + shipping_cents
+
+
 def small_item_check(price_each_cents, ruleset, company):
-    """Does one item fit under the $2,500 small-item line?
+    """Does one item fit under the small-item line ($2,500, or $5,000 with audited statements)?
 
     The price should be all-in: tax, shipping and setup on the same invoice count.
     """
     rule = ruleset.rule("de_minimis_safe_harbor")
-    line = rule["per_item_limit_cents"]
+    if company.has_audited_financials:
+        line = rule["per_item_limit_audited_cents"]
+    else:
+        line = rule["per_item_limit_cents"]
     return {
         "line_cents": line,
         "qualifies": company.small_item_election and price_each_cents <= line,

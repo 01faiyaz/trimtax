@@ -4,6 +4,7 @@ from datetime import date
 import pytest
 
 from engine.equipment import (
+    all_in_price,
     california_room,
     check_purchase,
     federal_equipment,
@@ -64,6 +65,24 @@ def test_three_laptops_at_2399(tidewell, rules_2026, demo_date):
 def test_exactly_2500_qualifies_but_one_cent_more_does_not(tidewell, rules_2026):
     assert small_item_check(250000, rules_2026, tidewell.company)["qualifies"] is True
     assert small_item_check(250001, rules_2026, tidewell.company)["qualifies"] is False
+
+
+def test_sticker_price_plus_sales_tax_can_cross_the_line(tidewell, rules_2026):
+    # A $2,399 laptop plus California's lowest sales tax (7.25%) is $2,572.93.
+    price = all_in_price(239900, "7.25")
+    assert price == 257293
+    assert small_item_check(price, rules_2026, tidewell.company)["qualifies"] is False
+    # Shipping on the same invoice counts too.
+    assert all_in_price(240000, "0", shipping_cents=1500) == 241500
+
+
+def test_audited_statements_raise_the_line_to_5000(tidewell, rules_2026):
+    audited = replace(tidewell.company, has_audited_financials=True)
+    check = small_item_check(400000, rules_2026, audited)
+    assert check["line_cents"] == 500000
+    assert check["qualifies"] is True
+    # Tidewell has no audited statements, so its line stays $2,500.
+    assert small_item_check(400000, rules_2026, tidewell.company)["qualifies"] is False
 
 
 def test_no_small_item_election_means_equipment(tidewell, rules_2026, demo_date):

@@ -96,8 +96,12 @@ every number is computed live by the engine from whatever data is loaded.
   profile (entity type, California or not, expected net income, small-item election
   yes/no) and upload receipts or a transactions CSV. Same engine, same rules.
 - **Limits, shown on screen:** federal + California only, the categories in the
-  rules file, no total tax bill, no filing. No bank or Ramp connection; data comes
+  rules file, no total tax bill, no filing, no limits that apply to each owner
+  personally (S corporation owners). No bank or Ramp connection; data comes
   from uploads and CSV.
+- **Prices are all-in.** The small-item line is checked against price + sales tax
+  + shipping. "Check a purchase" says "tax and shipping included"; a user can also
+  enter a sticker price plus a tax rate and the engine adds it (`all_in_price`).
 - **Cost guards:** image/PDF uploads only, size limit, a per-visitor cap on AI calls.
 
 If time runs short, cut animations before cutting any demo moment or the evals.
@@ -155,4 +159,6 @@ Marks: T (traced to receipts), Σ (added up), Δ (waiting on an answer).
 - [ ] Every rule in `rules/2026.yaml` has a real `approved_by` name and `approved_on` date
 - [ ] Rules with `check_status: needs_check` are resolved or shown as open on screen
 - [ ] Laptop prices on screen say "tax and shipping included"
+- [ ] The team-meal answer says "it depends on the facts"
+- [ ] California's leftover equipment cost says "spread over later years", never "$0 this year"
 - [ ] Repo is public (or judges are added) and the README says how to run it

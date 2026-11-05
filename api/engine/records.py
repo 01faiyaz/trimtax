@@ -17,6 +17,7 @@ class Company:
     expected_net_income_cents: int
     small_item_election: bool
     demo_date: date | None = None
+    has_audited_financials: bool = False
 
 
 @dataclass
@@ -86,6 +87,7 @@ def load_company(folder):
         expected_net_income_cents=data["expected_net_income_cents"],
         small_item_election=data["small_item_election"],
         demo_date=to_date(data.get("demo_date", "")),
+        has_audited_financials=data.get("has_audited_financials", False),
     )
 
 
