@@ -130,3 +130,62 @@ def test_receipt_images_are_served(client):
     response = client.get("/receipt-images/rcp_140.png")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/png"
+
+
+def test_request_w9_shows_on_the_open_item(client, demo):
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    dana = [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]
+    assert dana["w9_requested"] is False
+
+    client.post(f"/workspaces/{demo}/contractors/{dana['contractor_id']}/request-w9")
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    dana = [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]
+    assert dana["w9_requested"] is True
+    # Still an open item: asking isn't the same as having it.
+    assert len(view["open_items"]) == 3
+
+    client.post(f"/workspaces/{demo}/contractors/{dana['contractor_id']}/request-w9?undo=true")
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["w9_requested"] is False
+
+
+def test_answers_and_w9_requests_dont_erase_each_other(client, demo):
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    dana_id = [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["contractor_id"]
+    client.post(f"/workspaces/{demo}/contractors/{dana_id}/request-w9")
+    question = client.get(f"/workspaces/{demo}/questions").json()["questions"][0]
+    client.post(f"/workspaces/{demo}/questions/{question['transaction_id']}/answer",
+                json={"category": "client_meal"})
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["w9_requested"] is True
+
+
+def test_add_purchase_to_packet(client, demo):
+    body = {"price_each_cents": 289900, "quantity": 3, "in_use_by": "2026-12-10"}
+    saved = client.post(f"/workspaces/{demo}/packet/purchases", json=body).json()
+    assert saved[0]["result"]["california"]["this_year_cents"] == 660000
+    packet = client.get(f"/workspaces/{demo}/packet").json()
+    assert packet["purchases"][0]["input"]["in_use_by"] == "2026-12-10"
+    # Adding a purchase to the packet doesn't record it as bought.
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert view["california_equipment"]["room_cents"] == 660000
+
+    client.post(f"/workspaces/{demo}/packet/purchases/clear")
+    assert client.get(f"/workspaces/{demo}/packet").json()["purchases"] == []
+
+
+def test_reset_clears_w9_requests_and_purchases(client, demo):
+    body = {"price_each_cents": 289900, "quantity": 3, "in_use_by": "2026-12-10"}
+    client.post(f"/workspaces/{demo}/packet/purchases", json=body)
+    client.post(f"/workspaces/{demo}/reset")
+    assert client.get(f"/workspaces/{demo}/packet").json()["purchases"] == []
+
+
+def test_questions_and_flagged_items_point_to_their_receipt_images(client, demo):
+    question = client.get(f"/workspaces/{demo}/questions").json()["questions"][0]
+    assert question["image"] == "rcp_140.png"
+    flagged = client.get(f"/workspaces/{demo}/overview").json()["flagged"]
+    images = sorted(f["image"] for f in flagged)
+    assert images == ["rcp_137.png", "rcp_139.png"]
+    for name in images:
+        assert client.get(f"/receipt-images/{name}").status_code == 200

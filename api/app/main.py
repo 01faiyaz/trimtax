@@ -14,6 +14,7 @@ from datetime import date
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -63,6 +64,31 @@ def get_workspace(workspace_id):
     return data_to_workspace(data), is_demo
 
 
+def empty_extras():
+    """Things the person did that aren't tax data: W-9 requests, purchases added to the packet."""
+    return {"w9_requested": [], "packet_purchases": []}
+
+
+def get_extras(workspace_id):
+    data, _ = store.load(workspace_id)
+    extras = empty_extras()
+    extras.update(data.get("extras", {}))
+    return extras
+
+
+def save_workspace(workspace_id, workspace, extras):
+    data = workspace_to_data(workspace)
+    data["extras"] = extras
+    store.save(workspace_id, data)
+
+
+def mark_w9_requests(items, extras):
+    for item in items:
+        if item["kind"] == "missing_w9":
+            item["w9_requested"] = item["contractor_id"] in extras["w9_requested"]
+    return items
+
+
 def get_rules(year):
     if year not in RULES:
         raise HTTPException(status_code=404, detail=f"No ruleset for {year}.")
@@ -74,6 +100,23 @@ def as_of_for(workspace):
     if workspace.company.demo_date:
         return workspace.company.demo_date
     return date.today()
+
+
+def receipt_image_for(workspace, transaction_id):
+    """The receipt image's file name for a transaction, or None."""
+    for r in workspace.receipts:
+        if r.transaction_id == transaction_id and r.has_image:
+            return f"{r.id}.png"
+    return None
+
+
+def add_receipt_images(workspace, flagged):
+    for item in flagged:
+        if "transaction_id" in item:
+            item["image"] = receipt_image_for(workspace, item["transaction_id"])
+        else:
+            item["image"] = f"{item['receipt_id']}.png"
+    return flagged
 
 
 def find_transaction(workspace, transaction_id):
@@ -138,8 +181,12 @@ def reset_demo(workspace_id: str):
 @app.get("/workspaces/{workspace_id}/overview")
 def get_overview(workspace_id: str, year: int = 2026):
     workspace, is_demo = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
     result = overview(workspace, get_rules(year), as_of_for(workspace))
     result["is_demo"] = is_demo
+    result["open_items"] = mark_w9_requests(result["open_items"], extras)
+    result["packet_purchases"] = extras["packet_purchases"]
+    result["flagged"] = add_receipt_images(workspace, result["flagged"])
     return result
 
 
@@ -165,6 +212,44 @@ def post_check_purchase(workspace_id: str, purchase: PurchaseCheck):
                           workspace.transactions, ruleset, workspace.company)
 
 
+@app.post("/workspaces/{workspace_id}/packet/purchases")
+def add_purchase_to_packet(workspace_id: str, purchase: PurchaseCheck):
+    """Save a checked purchase so the accountant sees it. Nothing is recorded as bought."""
+    workspace, _ = get_workspace(workspace_id)
+    result = post_check_purchase(workspace_id, purchase)
+    extras = get_extras(workspace_id)
+    # One planned purchase at a time; a new check replaces the old one.
+    entry = jsonable_encoder({"input": purchase, "result": result})
+    extras["packet_purchases"] = [entry]
+    save_workspace(workspace_id, workspace, extras)
+    return extras["packet_purchases"]
+
+
+@app.post("/workspaces/{workspace_id}/packet/purchases/clear")
+def clear_packet_purchases(workspace_id: str):
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+    extras["packet_purchases"] = []
+    save_workspace(workspace_id, workspace, extras)
+    return {"ok": True}
+
+
+@app.post("/workspaces/{workspace_id}/contractors/{contractor_id}/request-w9")
+def request_w9(workspace_id: str, contractor_id: str, undo: bool = False):
+    """Note that a W-9 was asked for. TrimTax doesn't send anything itself."""
+    workspace, _ = get_workspace(workspace_id)
+    known = [c.id for c in workspace.contractors]
+    if contractor_id not in known:
+        raise HTTPException(status_code=404, detail="No such contractor.")
+    extras = get_extras(workspace_id)
+    requested = [c for c in extras["w9_requested"] if c != contractor_id]
+    if not undo:
+        requested.append(contractor_id)
+    extras["w9_requested"] = requested
+    save_workspace(workspace_id, workspace, extras)
+    return {"w9_requested": requested}
+
+
 @app.get("/rules/{year}")
 def get_ruleset(year: int):
     ruleset = get_rules(year)
@@ -187,7 +272,7 @@ def get_categories():
 # Questions (one question instead of a guess)
 # ------------------------------------------------------------------
 
-def question_view(t, ruleset):
+def question_view(workspace, t, ruleset):
     options = []
     for category in t.options.split("|"):
         if not category:
@@ -205,6 +290,7 @@ def question_view(t, ruleset):
         "status": t.status,
         "category": t.category,
         "options": options,
+        "image": receipt_image_for(workspace, t.id),
         "ruleset_version": ruleset.version,
     }
 
@@ -217,7 +303,7 @@ def get_questions(workspace_id: str, year: int = 2026):
     questions = []
     for t in workspace.transactions:
         if t.question:
-            questions.append(question_view(t, ruleset))
+            questions.append(question_view(workspace, t, ruleset))
     return {"questions": questions}
 
 
@@ -234,8 +320,8 @@ def answer_question(workspace_id: str, transaction_id: str, answer: Answer):
         raise HTTPException(status_code=400, detail="That isn't one of the answers for this question.")
     t.category = answer.category
     t.status = "confirmed"
-    store.save(workspace_id, workspace_to_data(workspace))
-    return question_view(t, get_rules(2026))
+    save_workspace(workspace_id, workspace, get_extras(workspace_id))
+    return question_view(workspace, t, get_rules(2026))
 
 
 @app.post("/workspaces/{workspace_id}/questions/{transaction_id}/undo")
@@ -246,8 +332,8 @@ def undo_answer(workspace_id: str, transaction_id: str):
         raise HTTPException(status_code=400, detail="This transaction had no question.")
     t.category = ""
     t.status = "needs_answer"
-    store.save(workspace_id, workspace_to_data(workspace))
-    return question_view(t, get_rules(2026))
+    save_workspace(workspace_id, workspace, get_extras(workspace_id))
+    return question_view(workspace, t, get_rules(2026))
 
 
 # ------------------------------------------------------------------
@@ -257,6 +343,7 @@ def undo_answer(workspace_id: str, transaction_id: str):
 @app.get("/workspaces/{workspace_id}/packet")
 def get_packet(workspace_id: str, year: int = 2026):
     workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
     ruleset = get_rules(year)
     as_of = as_of_for(workspace)
     return {
@@ -264,7 +351,8 @@ def get_packet(workspace_id: str, year: int = 2026):
         "company": workspace.company.name,
         "as_of": as_of,
         "ruleset_version": ruleset.version,
-        "open_items": open_items(workspace, ruleset),
-        "flagged": flagged_documents(workspace),
+        "open_items": mark_w9_requests(open_items(workspace, ruleset), extras),
+        "flagged": add_receipt_images(workspace, flagged_documents(workspace)),
+        "purchases": extras["packet_purchases"],
         "summary": overview(workspace, ruleset, as_of),
     }
