@@ -13,7 +13,7 @@ def test_team_meals_0_federal_100_california(tidewell, rules_2026):
     assert team["spent_cents"] == 418000
     assert team["federal"]["deductible_cents"] == 0
     assert team["california"]["deductible_cents"] == 418000
-    assert team["california"]["check_status"] == "needs_check"
+    assert team["california"]["check_status"] == "checked"
 
 
 def test_client_meals_50_on_both(tidewell, rules_2026):

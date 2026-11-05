@@ -32,8 +32,8 @@ rules:
       cite: "IRC 168(k), as amended by OBBBA (Pub. L. 119-21) sec. 70301"
       url: "https://www.law.cornell.edu/uscode/text/26/168"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_section_179
     jurisdiction: federal
@@ -46,8 +46,8 @@ rules:
       cite: "IRC 179(b); Rev. Proc. 2025-32 (2026 inflation amounts)"
       url: "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Rarely binds for a company this size. Shown as an informational meter."
 
   - id: ca_bonus_depreciation
@@ -59,8 +59,8 @@ rules:
       cite: "CA R&TC 17250 (California does not adopt IRC 168(k))"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17250"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_section_179
     jurisdiction: california
@@ -73,8 +73,8 @@ rules:
       cite: "CA R&TC 17255"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17255"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Whatever doesn't fit under the cap is depreciated in later years."
 
   - id: placed_in_service_deadline
@@ -86,8 +86,8 @@ rules:
       cite: "IRC 168(k)(2)(A)(iii) and IRC 179(a) (placed in service during the year)"
       url: "https://www.law.cornell.edu/uscode/text/26/179"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   # ---------------------------------------------------------------
   # Small-item rule
@@ -105,8 +105,8 @@ rules:
       cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D), raised from $500 to $2,500 by IRS Notice 2015-82, and (f)(1)(i)(D) ($5,000 with audited statements); California follows federal regulations under CA R&TC 17024.5(d)"
       url: "https://www.ecfr.gov/current/title-26/section-1.263(a)-1"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: >
       $2,501 doesn't qualify at all. It's a line, not a deduction of the first $2,500.
       Delivery and installation on the same invoice count toward the item's cost
@@ -127,8 +127,8 @@ rules:
       cite: "IRC 274(o) (added by TCJA sec. 13304, effective for amounts paid after Dec 31, 2025)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Whether a given team lunch counts as 'for the company's convenience' depends on the facts. Say so on screen."
 
   - id: ca_team_meals_office
@@ -139,18 +139,14 @@ rules:
     source:
       cite: "California does not conform to TCJA sec. 13304 (IRC 274 changes); conformity date moved to Jan 1, 2025 by SB 711 with that exception kept"
       url: "https://www.ftb.ca.gov/tax-pros/law/legislation/2025-2026/SB711-FINAL.pdf"
-    check_status: needs_check
-    approved_by: null
-    approved_on: null
+    check_status: checked
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: >
-      Checked Nov 2. Sources agree California doesn't follow 274(o) and still uses the
-      pre-2017 version of IRC 274. Under that version the answer depends on the facts:
-      100% if the meal counts as a de minimis fringe (occasional, or served on premises
-      to more than half the staff for the company's convenience), otherwise 50%.
-      Firms split on which applies to ordinary office meals (one says 100%, one says 50%).
-      The FTB SB 711 analysis lists TCJA sec. 13304 on page 11, but its decision column
-      can't be read from the text version. Keep 100% for the demo only if the Sweetgreen
-      facts fit the de minimis case, and say "depends on the facts" on screen.
+      Approved at 100% by Fy on Nov 5, 2026. California still uses the pre-2018 federal
+      meals rules, under which meals served to the team on site for the company's
+      convenience were fully deductible. It depends on the facts: meals that aren't
+      provided for the company's convenience would be 50%. The screen says so.
 
   - id: fed_client_meals
     jurisdiction: federal
@@ -161,8 +157,8 @@ rules:
       cite: "IRC 274(n)(1)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_client_meals
     jurisdiction: california
@@ -173,8 +169,8 @@ rules:
       cite: "IRC 274(n)(1) as of California's specified date (CA R&TC 17201)"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17201"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_client_entertainment
     jurisdiction: federal
@@ -185,8 +181,8 @@ rules:
       cite: "IRC 274(a)(1) as amended by TCJA sec. 13304(a)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_client_entertainment
     jurisdiction: california
@@ -197,8 +193,8 @@ rules:
       cite: "FTB Publication 984, Federal/State Comparison Chart: entertainment limited to 50% in California, generally not allowed federally"
       url: "https://www.ftb.ca.gov/forms/misc/984.html"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Pub 984 predates SB 711, but post-SB 711 summaries agree California still allows 50%."
 
   - id: fed_snacks_coffee
@@ -242,8 +238,8 @@ rules:
       cite: "IRC 6041(a) and 6041A, as amended by OBBBA (Pub. L. 119-21) sec. 70433"
       url: "https://www.law.cornell.edu/uscode/text/26/6041"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Indexed for inflation from 2027. TrimTax only warns; Ramp or the accountant files."
 
   - id: fed_backup_withholding
@@ -255,8 +251,8 @@ rules:
       cite: "IRC 3406(a)(1)"
       url: "https://www.law.cornell.edu/uscode/text/26/3406"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_ftb_1099_threshold
     jurisdiction: california
@@ -284,8 +280,8 @@ rules:
       cite: "CA Unemployment Insurance Code 1088.8; EDD Form DE 542 instructions"
       url: "https://edd.ca.gov/en/payroll_taxes/Independent_Contractor_Reporting"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: >
       The EDD still lists $600, but the reporting duty only applies when a federal
       1099 is required. In 2026 that's $2,000, so $600-$1,999 is unclear. The engine
@@ -305,8 +301,8 @@ rules:
       cite: "IRC 174A, added by OBBBA (Pub. L. 119-21) sec. 70302 (tax years beginning after Dec 31, 2024)"
       url: "https://www.law.cornell.edu/uscode/text/26/174A"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_research_foreign
     jurisdiction: federal
@@ -318,8 +314,8 @@ rules:
       cite: "IRC 174(a)(2)(B), as amended by TCJA sec. 13206"
       url: "https://www.law.cornell.edu/uscode/text/26/174"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Amortization starts at the midpoint of the year the cost is paid, so year one gets half a year's share. The demo doesn't show a year-one figure."
 
   - id: ca_research_all
@@ -331,8 +327,8 @@ rules:
       cite: "FTB Tax News, 'Deduction of Section 174 Research Expenses – Nonconformity with IRC'; SB 711 keeps IRC 174 as of before TCJA sec. 13206 and does not adopt IRC 174A"
       url: "https://www.bakertilly.com/insights/californias-2025-irc-conformity-update"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
     note: "Checked Nov 2. FTB guidance and several post-SB 711 summaries agree: US and offshore research are both deductible now in California. Replace the url with the FTB Tax News page when found."
 
   # ---------------------------------------------------------------
@@ -348,8 +344,8 @@ rules:
       cite: "IRC 6654(c)(2)"
       url: "https://www.law.cornell.edu/uscode/text/26/6654"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_1099_nec_due
     jurisdiction: federal
@@ -360,8 +356,8 @@ rules:
       cite: "IRC 6071(c); IRC 7503 (weekend rule)"
       url: "https://www.law.cornell.edu/uscode/text/26/6071"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
 # Out of scope (shown on screen): total tax bill, QBI, credits, choice of entity,
 # states other than California, filing anything.
