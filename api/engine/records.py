@@ -40,6 +40,8 @@ class Transaction:
     memo: str = ""
     payee_id: str = ""
     flag: str = ""
+    question: str = ""  # set when status is needs_answer
+    options: str = ""  # the categories the answer can be, separated by "|"
 
 
 @dataclass
@@ -117,6 +119,8 @@ def load_transactions(folder):
             memo=row["memo"],
             payee_id=row["payee_id"],
             flag=row["flag"],
+            question=row.get("question", ""),
+            options=row.get("options", ""),
         ))
     return transactions
 

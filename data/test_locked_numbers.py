@@ -148,6 +148,8 @@ def test_sweetgreen_waits_for_an_answer():
     assert row["amount_cents"] == 41200
     assert row["status"] == "needs_answer"
     assert row["category"] == ""
+    assert row["question"] == "Was this lunch for your team at the office, or a client?"
+    assert row["options"] == "team_meal_office|client_meal"
     # Either answer gives the locked totals.
     assert total_for("team_meal_office") + 41200 == 459200
     assert total_for("client_meal") + 41200 == 337200
