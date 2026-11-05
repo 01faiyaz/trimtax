@@ -183,9 +183,9 @@ def test_reset_clears_w9_requests_and_purchases(client, demo):
 
 def test_questions_and_flagged_items_point_to_their_receipt_images(client, demo):
     question = client.get(f"/workspaces/{demo}/questions").json()["questions"][0]
-    assert question["image"] == "rcp_140.png"
+    assert question["image"] == "receipt-images/rcp_140.png"
     flagged = client.get(f"/workspaces/{demo}/overview").json()["flagged"]
     images = sorted(f["image"] for f in flagged)
-    assert images == ["rcp_137.png", "rcp_139.png"]
+    assert images == ["receipt-images/rcp_137.png", "receipt-images/rcp_139.png"]
     for name in images:
-        assert client.get(f"/receipt-images/{name}").status_code == 200
+        assert client.get(f"/{name}").status_code == 200

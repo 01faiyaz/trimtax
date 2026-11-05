@@ -10,15 +10,19 @@ Run locally from the api/ folder:
 
 import os
 from contextlib import asynccontextmanager
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+import base64
+
+from fastapi import FastAPI, File, HTTPException, Response, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+from ai import model as ai_model
+from ai.pipeline import process_receipt
 from app import store
 from app.convert import data_to_workspace, workspace_to_data
 from engine.categories import CATEGORIES, is_category, label
@@ -33,6 +37,16 @@ from engine.rules import load_ruleset
 RULES = {2025: load_ruleset(2025), 2026: load_ruleset(2026)}
 RECEIPT_IMAGES = Path(__file__).resolve().parents[2] / "data" / "tidewell" / "receipt_images"
 PACKET_NOTE = "Prepared for your accountant to review. This is not a tax filing."
+
+# Cost guards for uploads.
+UPLOAD_TYPES = {"image/png", "image/jpeg", "image/webp", "application/pdf"}
+MAX_UPLOAD_BYTES = 5 * 1024 * 1024
+MAX_UPLOADS_PER_WORKSPACE = 10
+# Reset demo starts a workspace's count over, so there's also a cap for the whole server.
+MAX_UPLOADS_PER_DAY = int(os.environ.get("TRIMTAX_MAX_UPLOADS_PER_DAY", "300"))
+
+# Tests replace this with a fake model; in production it's the Claude API.
+make_model = None
 
 
 @asynccontextmanager
@@ -66,7 +80,7 @@ def get_workspace(workspace_id):
 
 def empty_extras():
     """Things the person did that aren't tax data: W-9 requests, purchases added to the packet."""
-    return {"w9_requested": [], "packet_purchases": []}
+    return {"w9_requested": [], "packet_purchases": [], "uploads": 0}
 
 
 def get_extras(workspace_id):
@@ -102,11 +116,17 @@ def as_of_for(workspace):
     return date.today()
 
 
+def image_path(receipt_id):
+    """Where the web app can load a receipt's image from, relative to the API."""
+    if receipt_id.startswith("up_"):
+        return f"uploads/{receipt_id}"
+    return f"receipt-images/{receipt_id}.png"
+
+
 def receipt_image_for(workspace, transaction_id):
-    """The receipt image's file name for a transaction, or None."""
     for r in workspace.receipts:
         if r.transaction_id == transaction_id and r.has_image:
-            return f"{r.id}.png"
+            return image_path(r.id)
     return None
 
 
@@ -115,7 +135,7 @@ def add_receipt_images(workspace, flagged):
         if "transaction_id" in item:
             item["image"] = receipt_image_for(workspace, item["transaction_id"])
         else:
-            item["image"] = f"{item['receipt_id']}.png"
+            item["image"] = image_path(item["receipt_id"])
     return flagged
 
 
@@ -356,3 +376,73 @@ def get_packet(workspace_id: str, year: int = 2026):
         "purchases": extras["packet_purchases"],
         "summary": overview(workspace, ruleset, as_of),
     }
+
+
+# ------------------------------------------------------------------
+# Uploads: the AI reads a receipt, plain code decides what counts
+# ------------------------------------------------------------------
+
+def get_model():
+    if make_model is not None:
+        return make_model()
+    if not ai_model.available():
+        raise HTTPException(status_code=503, detail="Receipt reading isn't switched on for this server.")
+    return ai_model.ClaudeModel()
+
+
+@app.post("/workspaces/{workspace_id}/receipts")
+async def upload_receipt(workspace_id: str, file: UploadFile = File(...)):
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+
+    if file.content_type not in UPLOAD_TYPES:
+        raise HTTPException(status_code=415, detail="Upload a PNG, JPEG, WebP or PDF.")
+    contents = await file.read(MAX_UPLOAD_BYTES + 1)
+    if len(contents) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="That file is over 5 MB.")
+    if extras["uploads"] >= MAX_UPLOADS_PER_WORKSPACE:
+        raise HTTPException(status_code=429, detail="This workspace has reached its upload limit.")
+    a_day_ago = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+    if store.uploads_since(a_day_ago) >= MAX_UPLOADS_PER_DAY:
+        raise HTTPException(status_code=429, detail="Receipt reading is busy today. Try the demo receipts instead.")
+
+    model = get_model()
+    file_base64 = base64.b64encode(contents).decode("ascii")
+    upload_id = store.save_upload(workspace_id, file.content_type, file_base64)
+    ruleset = get_rules(2026)
+
+    transaction, receipt, summary, traces = process_receipt(
+        model, file_base64, file.content_type, upload_id, as_of_for(workspace), ruleset.version)
+
+    if transaction is not None:
+        workspace.transactions.append(transaction)
+    workspace.receipts.append(receipt)
+    extras["uploads"] += 1
+    save_workspace(workspace_id, workspace, extras)
+    for trace in traces:
+        trace["upload_id"] = upload_id
+        store.add_trace(workspace_id, trace)
+
+    return {
+        "summary": summary,
+        "transaction_id": transaction.id if transaction else None,
+        "receipt_id": receipt.id,
+        "image": image_path(receipt.id),
+        "note": receipt.note,
+        "traces": traces,
+    }
+
+
+@app.get("/uploads/{upload_id}")
+def get_upload(upload_id: str):
+    """An uploaded receipt file. Ids are long and random, like the workspace ids."""
+    media_type, file_base64 = store.load_upload(upload_id)
+    if media_type is None:
+        raise HTTPException(status_code=404, detail="No such upload.")
+    return Response(content=base64.b64decode(file_base64), media_type=media_type)
+
+
+@app.get("/workspaces/{workspace_id}/traces")
+def get_traces(workspace_id: str):
+    get_workspace(workspace_id)
+    return {"traces": store.list_traces(workspace_id)}
