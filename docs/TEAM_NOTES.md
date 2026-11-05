@@ -42,6 +42,10 @@ Run the API locally (from `api/`): `uvicorn app.main:app --reload`, then open
 http://localhost:8000/docs. Without `DATABASE_URL` it saves to a local SQLite file;
 with it (Neon), Postgres. `ALLOWED_ORIGINS` lists the web app's address(es).
 
+Run the web app (from `web/`): `npm install`, then `npm run dev` and open
+http://localhost:3000/app. It talks to the API at `NEXT_PUBLIC_API_URL`
+(default http://localhost:8000). Run both at once to use the demo locally.
+
 ## How the pieces fit
 
 1. Transactions CSV + receipt images come in through an adapter (mock now).
