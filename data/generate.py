@@ -213,6 +213,8 @@ def make_transaction(day, merchant, cents, category, status="confirmed",
         "memo": memo,
         "payee_id": payee_id,
         "flag": flag,
+        "question": "",
+        "options": "",
     }
 
 
@@ -240,9 +242,12 @@ def meal_transactions():
 
 def sweetgreen_transaction():
     # Not sorted yet: the AI asks who the lunch was for.
-    return make_transaction(SWEETGREEN["date"], SWEETGREEN["merchant"],
-                            SWEETGREEN["total_cents"], "", status="needs_answer",
-                            memo="Catering order #" + SWEETGREEN["order_number"])
+    row = make_transaction(SWEETGREEN["date"], SWEETGREEN["merchant"],
+                           SWEETGREEN["total_cents"], "", status="needs_answer",
+                           memo="Catering order #" + SWEETGREEN["order_number"])
+    row["question"] = "Was this lunch for your team at the office, or a client?"
+    row["options"] = "team_meal_office|client_meal"
+    return row
 
 
 def contractor_transactions():
@@ -590,7 +595,7 @@ def main():
               ["id", "name", "entity_type", "w9_on_file", "country"])
     write_csv(OUT_DIR / "transactions.csv", transactions,
               ["id", "date", "merchant", "amount_cents", "category", "status",
-               "memo", "payee_id", "flag"])
+               "memo", "payee_id", "flag", "question", "options"])
     write_csv(OUT_DIR / "receipts.csv", receipts,
               ["id", "transaction_id", "date", "merchant", "total_cents",
                "has_image", "note"])

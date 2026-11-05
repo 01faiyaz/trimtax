@@ -38,6 +38,10 @@ python data/generate.py      # only after changing the generator
 python -m pytest
 ```
 
+Run the API locally (from `api/`): `uvicorn app.main:app --reload`, then open
+http://localhost:8000/docs. Without `DATABASE_URL` it saves to a local SQLite file;
+with it (Neon), Postgres. `ALLOWED_ORIGINS` lists the web app's address(es).
+
 ## How the pieces fit
 
 1. Transactions CSV + receipt images come in through an adapter (mock now).
@@ -87,8 +91,9 @@ fails if any one is off. Don't change a locked number without Fy and Sean agreei
 Nothing on screen is hard-coded. The Tidewell data is only the starting point;
 every number is computed live by the engine from whatever data is loaded.
 
-- **Each visitor gets their own copy** of the Tidewell workspace (keyed by a cookie),
-  so two judges trying it at once don't overwrite each other. "Reset demo" restores it.
+- **Each visitor gets their own copy** of the Tidewell workspace. The browser keeps its
+  workspace id and sends it in the API URL (no cross-site cookies), so two judges trying
+  it at once don't overwrite each other. "Reset demo" restores it.
 - **Judges can try it:** upload a receipt photo, type in a purchase for the
   "Check a purchase" tab, answer a question, switch rule years. The AI reads and
   sorts, the engine recalculates, and the screens update.
