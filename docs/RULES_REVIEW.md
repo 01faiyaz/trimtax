@@ -1,5 +1,10 @@
 # Rules review sheet
 
+> **Result, Nov 5, 2026:** Fy checked the sources for section A and approved all of it,
+> in both `rules/2026.yaml` and `rules/2025.yaml`. California office team meals: approved
+> at 100%, with "it depends on the facts" on screen. Still open: `ca_ftb_1099_threshold`,
+> `fed_snacks_coffee`, `ca_snacks_coffee` (none feeds a demo number).
+
 Approving a rule means you opened its source and the value matches the plain-words line.
 The app shows "Approved by <name> on <date>" next to each rule, so only approve rules you checked.
 

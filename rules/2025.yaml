@@ -30,8 +30,8 @@ rules:
       cite: "IRC 168(k), as amended by OBBBA (Pub. L. 119-21) sec. 70301"
       url: "https://www.law.cornell.edu/uscode/text/26/168"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_section_179
     jurisdiction: federal
@@ -44,8 +44,8 @@ rules:
       cite: "IRC 179(b), as amended by OBBBA (Pub. L. 119-21) sec. 70306 (property placed in service in tax years beginning after Dec 31, 2024)"
       url: "https://www.law.cornell.edu/uscode/text/26/179"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_bonus_depreciation
     jurisdiction: california
@@ -56,8 +56,8 @@ rules:
       cite: "CA R&TC 17250 (California does not adopt IRC 168(k))"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17250"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_section_179
     jurisdiction: california
@@ -70,8 +70,8 @@ rules:
       cite: "CA R&TC 17255"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17255"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: placed_in_service_deadline
     jurisdiction: both
@@ -82,8 +82,8 @@ rules:
       cite: "IRC 168(k)(2)(A)(iii) and IRC 179(a) (placed in service during the year)"
       url: "https://www.law.cornell.edu/uscode/text/26/179"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   # ---------------------------------------------------------------
   # Small-item rule (unchanged from 2025 to 2026)
@@ -101,8 +101,8 @@ rules:
       cite: "Treas. Reg. 1.263(a)-1(f)(1)(ii)(D), raised from $500 to $2,500 by IRS Notice 2015-82, and (f)(1)(i)(D) ($5,000 with audited statements); California follows federal regulations under CA R&TC 17024.5(d)"
       url: "https://www.ecfr.gov/current/title-26/section-1.263(a)-1"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   # ---------------------------------------------------------------
   # Meals
@@ -117,8 +117,8 @@ rules:
       cite: "IRC 274(n)(1) as amended by TCJA sec. 13304(b) (50% limit through Dec 31, 2025; IRC 274(o) starts in 2026)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_team_meals_office
     jurisdiction: california
@@ -128,10 +128,14 @@ rules:
     source:
       cite: "California nonconformity to TCJA sec. 13304 (see 2026.yaml note)"
       url: "https://www.ftb.ca.gov/tax-pros/law/legislation/2025-2026/SB711-FINAL.pdf"
-    check_status: needs_check
-    approved_by: null
-    approved_on: null
-    note: "Same open question as in 2026.yaml: 100% if a de minimis fringe, otherwise 50%."
+    check_status: checked
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
+    note: >
+      Approved at 100% by Fy on Nov 5, 2026. California still uses the pre-2018 federal
+      meals rules, under which meals served to the team on site for the company's
+      convenience were fully deductible. It depends on the facts: meals that aren't
+      provided for the company's convenience would be 50%. The screen says so.
 
   - id: fed_client_meals
     jurisdiction: federal
@@ -142,8 +146,8 @@ rules:
       cite: "IRC 274(n)(1)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_client_meals
     jurisdiction: california
@@ -154,8 +158,8 @@ rules:
       cite: "IRC 274(n)(1) as of California's specified date (CA R&TC 17201)"
       url: "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17201"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_client_entertainment
     jurisdiction: federal
@@ -166,8 +170,8 @@ rules:
       cite: "IRC 274(a)(1) as amended by TCJA sec. 13304(a)"
       url: "https://www.law.cornell.edu/uscode/text/26/274"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_client_entertainment
     jurisdiction: california
@@ -178,8 +182,8 @@ rules:
       cite: "FTB Publication 984, Federal/State Comparison Chart"
       url: "https://www.ftb.ca.gov/forms/misc/984.html"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_snacks_coffee
     jurisdiction: federal
@@ -218,8 +222,8 @@ rules:
       cite: "IRC 6041(a) (before OBBBA sec. 70433 took effect for 2026 payments)"
       url: "https://www.law.cornell.edu/uscode/text/26/6041"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_backup_withholding
     jurisdiction: federal
@@ -230,8 +234,8 @@ rules:
       cite: "IRC 3406(a)(1)"
       url: "https://www.law.cornell.edu/uscode/text/26/3406"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_ftb_1099_threshold
     jurisdiction: california
@@ -257,8 +261,8 @@ rules:
       cite: "CA Unemployment Insurance Code 1088.8; EDD Form DE 542 instructions"
       url: "https://edd.ca.gov/en/payroll_taxes/Independent_Contractor_Reporting"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   # ---------------------------------------------------------------
   # Research spending
@@ -273,8 +277,8 @@ rules:
       cite: "IRC 174A, added by OBBBA (Pub. L. 119-21) sec. 70302 (tax years beginning after Dec 31, 2024)"
       url: "https://www.law.cornell.edu/uscode/text/26/174A"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_research_foreign
     jurisdiction: federal
@@ -286,8 +290,8 @@ rules:
       cite: "IRC 174(a)(2)(B), as amended by TCJA sec. 13206"
       url: "https://www.law.cornell.edu/uscode/text/26/174"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: ca_research_all
     jurisdiction: california
@@ -298,8 +302,8 @@ rules:
       cite: "FTB Tax News, 'Deduction of Section 174 Research Expenses – Nonconformity with IRC'"
       url: "https://www.bakertilly.com/insights/californias-2025-irc-conformity-update"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   # ---------------------------------------------------------------
   # Deadlines for the 2025 tax year
@@ -314,8 +318,8 @@ rules:
       cite: "IRC 6654(c)(2)"
       url: "https://www.law.cornell.edu/uscode/text/26/6654"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
 
   - id: fed_1099_nec_due
     jurisdiction: federal
@@ -326,5 +330,5 @@ rules:
       cite: "IRC 6071(c); IRC 7503 (weekend rule)"
       url: "https://www.law.cornell.edu/uscode/text/26/6071"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Faiyaz Mashrafi"
+    approved_on: 2026-11-05
