@@ -22,35 +22,31 @@ sys.path.insert(0, str(ROOT / "evals"))
 
 from ai.grounding import is_grounded  # noqa: E402
 from ai.model import DEFAULT_MODEL, ClaudeModel  # noqa: E402
-from ai.pipeline import process_receipt  # noqa: E402
-from ai.skills import (  # noqa: E402
-    CLASSIFY_VERSION, EXTRACT_VERSION, QUESTION_VERSION,
-    ask_clarifying_question, classify_transaction, extract_receipt,
-)
+from ai.pipeline import process_receipt, sort_purchase  # noqa: E402
+from ai.skills import CLASSIFY_VERSION, EXTRACT_VERSION, QUESTION_VERSION, extract_receipt  # noqa: E402
+from engine.rules import load_ruleset  # noqa: E402
 from cases import AMBIGUOUS, CLEAR, INJECTION  # noqa: E402
 import scoring  # noqa: E402
 
-RULESET = "2026.1"
+RULES = load_ruleset(2026)
 AS_OF = date(2026, 11, 19)
 TIDEWELL = ROOT / "data" / "tidewell"
 
 
 def run_sorting_case(model, case):
-    """The sorting step plus the question, the way the pipeline runs them."""
+    """The sorting step plus the question, using the same code as the app."""
     traces = []
     facts = case["facts"]
-    sorted_as = classify_transaction(model, facts, RULESET, traces)
+    sorted_as = sort_purchase(model, facts, RULES, traces)
     result = {"id": case["id"], "expected": case["expected"], "category": sorted_as["category"],
-              "options": [], "question": None, "traces": traces}
-    if not traces[0]["ok"]:
+              "same_as": sorted_as["same_as"], "options": sorted_as["options"],
+              "question": sorted_as["question"], "traces": traces}
+    if sorted_as["failed"]:
         # A failed call is its own result. It is not counted as the model choosing to ask.
         result["failed"] = True
         return result
-    if sorted_as["category"] is None:
-        asked = ask_clarifying_question(model, facts, sorted_as["candidates"], RULESET, traces)
-        result["options"] = asked["options"]
-        result["question"] = asked["question"]
-        result["question_grounded"] = is_grounded(asked["question"], [facts["total_cents"]])
+    if result["question"]:
+        result["question_grounded"] = is_grounded(result["question"], [facts["total_cents"]])
         result["used_template"] = traces[-1].get("used_template", False)
     return result
 
@@ -62,7 +58,7 @@ def read_image(path):
 
 def run_injection_case(model, case):
     transaction, receipt, summary, traces = process_receipt(
-        model, read_image(case["image"]), "image/png", "up_eval", AS_OF, RULESET)
+        model, read_image(case["image"]), "image/png", "up_eval", AS_OF, RULES)
     return {"id": case["id"], "expected": case["expected"], "state": summary["state"],
             "reason": summary.get("reason"), "category": summary.get("category"),
             "skills": [t["skill"] for t in traces], "traces": traces}
@@ -83,7 +79,7 @@ def extraction_cases():
 
 def run_extraction_case(model, case):
     traces = []
-    facts = extract_receipt(model, read_image(case["image"]), "image/png", RULESET, traces)
+    facts = extract_receipt(model, read_image(case["image"]), "image/png", RULES.version, traces)
     facts = facts or {}
     return {"id": case["id"], "expected": case["expected"], "total_cents": facts.get("total_cents"),
             "date": facts.get("date"), "merchant": facts.get("merchant"), "traces": traces}
@@ -107,7 +103,7 @@ def summarize(results):
     if "clear" in results:
         summary["clear"] = scoring.score_clear(results["clear"])
     if "ambiguous" in results:
-        summary["ambiguous"] = scoring.score_ambiguous(results["ambiguous"])
+        summary["ambiguous"] = scoring.score_ambiguous(results["ambiguous"], RULES)
     if "injection" in results:
         summary["injection"] = scoring.score_injection(results["injection"])
     if "extraction" in results:
@@ -129,7 +125,7 @@ def results_markdown(summary, model_name, when):
     lines = [
         "# Eval results",
         "",
-        f"Run {when} on `{model_name}`, ruleset {RULESET}. Prompts: {EXTRACT_VERSION}, "
+        f"Run {when} on `{model_name}`, ruleset {RULES.version}. Prompts: {EXTRACT_VERSION}, "
         f"{CLASSIFY_VERSION}, {QUESTION_VERSION}. Every case is included, failures too.",
         "",
         "| Check | Result |",
@@ -143,8 +139,10 @@ def results_markdown(summary, model_name, when):
         lines.append(f"| Clear purchases lost to a failed model call | {s['failed']} |")
     if "ambiguous" in summary:
         s = summary["ambiguous"]
-        lines.append(f"| Ambiguous purchases where it asked instead of guessing | {pct(s['asked'], s['total'])} |")
-        lines.append(f"| ...and offered two fair answers | {pct(s['good_options'], s['total'])} |")
+        lines.append(f"| Ambiguous purchases handled right | {pct(s['handled_right'], s['total'])} |")
+        lines.append(f"| Ambiguous, the answer changes a number: asked | {pct(s['asked'], s['changes_a_number'])} |")
+        lines.append(f"| ...and offered two fair answers that change a number | {pct(s['good_options'], s['changes_a_number'])} |")
+        lines.append(f"| Ambiguous, the answer changes nothing: sorted without a question | {pct(s['settled_without_asking'], s['changes_nothing'])} |")
         lines.append(f"| Ambiguous purchases lost to a failed model call | {s['failed']} |")
     if "injection" in summary:
         s = summary["injection"]

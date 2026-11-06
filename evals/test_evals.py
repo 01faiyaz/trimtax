@@ -10,6 +10,9 @@ import run_evals  # noqa: E402
 import scoring  # noqa: E402
 from cases import AMBIGUOUS, CASES, CLEAR, INJECTION  # noqa: E402
 from engine.categories import CATEGORIES  # noqa: E402
+from engine.rules import load_ruleset  # noqa: E402
+
+RULES = load_ruleset(2026)
 
 
 def test_the_set_is_75_clear_20_ambiguous_5_injection():
@@ -45,17 +48,38 @@ def test_clear_equipment_is_over_2500_and_small_items_are_not():
             assert total > 250000, case["id"]
 
 
-def test_scoring_counts_asks_guesses_and_good_options():
+MEALS = ["team_meal_office", "client_meal"]
+SAME = ["software", "advertising"]
+
+
+def test_scoring_when_the_answer_changes_a_number():
     results = [
-        {"id": "a", "expected": {"acceptable": ["team_meal_office", "client_meal"]}, "category": None,
-         "options": ["team_meal_office", "client_meal"]},
-        {"id": "b", "expected": {"acceptable": ["team_meal_office", "client_meal"]}, "category": None,
-         "options": ["travel", "client_meal"]},
-        {"id": "c", "expected": {"acceptable": ["team_meal_office", "client_meal"]}, "category": "client_meal",
-         "options": []},
+        {"id": "a", "expected": {"acceptable": MEALS}, "category": None, "options": MEALS},
+        {"id": "b", "expected": {"acceptable": MEALS}, "category": None, "options": ["travel", "client_meal"]},
+        {"id": "c", "expected": {"acceptable": MEALS}, "category": "client_meal", "options": []},
     ]
-    score = scoring.score_ambiguous(results)
+    score = scoring.score_ambiguous(results, RULES)
+    assert score["changes_a_number"] == 3
     assert (score["asked"], score["good_options"], score["guessed"]) == (2, 1, 1)
+    assert score["handled_right"] == 1
+
+
+def test_scoring_when_the_answer_changes_nothing():
+    results = [
+        {"id": "a", "expected": {"acceptable": SAME}, "category": "software", "options": []},
+        {"id": "b", "expected": {"acceptable": SAME}, "category": None, "options": SAME},
+        {"id": "c", "expected": {"acceptable": SAME}, "category": "travel", "options": []},
+    ]
+    score = scoring.score_ambiguous(results, RULES)
+    assert score["changes_nothing"] == 3
+    assert (score["settled_without_asking"], score["asked_anyway"]) == (1, 1)
+    assert score["handled_right"] == 1
+    assert len(score["misses"]) == 2
+
+
+def test_options_that_are_treated_the_same_are_not_fair_options():
+    assert not scoring.good_options(SAME, SAME + ["equipment"], RULES)
+    assert scoring.good_options(["software", "equipment"], SAME + ["equipment"], RULES)
 
 
 def test_extraction_cases_come_from_the_receipt_answers():
@@ -94,5 +118,5 @@ def test_runner_end_to_end_with_a_stand_in_model():
 def test_a_failed_call_is_not_counted_as_asking():
     results = [{"id": "a", "expected": {"acceptable": ["team_meal_office", "client_meal"]},
                 "category": None, "options": [], "failed": True}]
-    score = scoring.score_ambiguous(results)
+    score = scoring.score_ambiguous(results, RULES)
     assert (score["asked"], score["failed"]) == (0, 1)

@@ -191,7 +191,10 @@ def category_list():
 
 
 def classify_transaction(model, facts, ruleset_version, traces):
-    """Returns {"category": <key or None>, "candidates": [...]}. None means ask."""
+    """Returns {"category": <key or None>, "candidates": [...], "failed": bool}.
+
+    category is None when the model is unsure or the call failed.
+    """
     content = [{
         "type": "text",
         "text": f"Categories:\n{category_list()}\n\nPurchase (data):\n{purchase_details(facts)}",
@@ -199,7 +202,7 @@ def classify_transaction(model, facts, ruleset_version, traces):
     answer = traced_call(model, "classify_transaction", CLASSIFY_VERSION, ruleset_version,
                          CLASSIFY_SYSTEM, content, classify_schema(), traces, max_tokens=1024)
     if answer is None:
-        return {"category": None, "candidates": []}
+        return {"category": None, "candidates": [], "failed": True}
 
     candidates = []
     for name in answer["candidates"]:
@@ -207,8 +210,8 @@ def classify_transaction(model, facts, ruleset_version, traces):
             candidates.append(name)
 
     if answer["category"] in CATEGORIES:
-        return {"category": answer["category"], "candidates": candidates}
-    return {"category": None, "candidates": candidates[:2]}
+        return {"category": answer["category"], "candidates": candidates, "failed": False}
+    return {"category": None, "candidates": candidates, "failed": False}
 
 
 # ------------------------------------------------------------------

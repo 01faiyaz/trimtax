@@ -2,6 +2,8 @@
 
 from statistics import median
 
+from engine.treatment import same_treatment, worth_asking
+
 
 def score_clear(results):
     correct = asked = wrong = failed = 0
@@ -22,29 +24,60 @@ def score_clear(results):
             "failed": failed, "misses": misses}
 
 
-def good_options(options, acceptable):
-    return len(options) == 2 and options[0] != options[1] and all(o in acceptable for o in options)
+def needs_question(acceptable, ruleset):
+    """A question is expected only when the fair answers aren't all treated the same.
+
+    Uses the same engine check as the app (engine/treatment.py), so the scoring and the
+    app agree on when a question is worth the owner's time.
+    """
+    return worth_asking(acceptable, ruleset) != []
 
 
-def score_ambiguous(results):
-    asked = good = guessed = failed = 0
-    misses = []
+def good_options(options, acceptable, ruleset):
+    """Two fair answers that would be treated differently."""
+    return (len(options) == 2 and all(o in acceptable for o in options)
+            and not same_treatment(options[0], options[1], ruleset))
+
+
+def score_ambiguous(results, ruleset):
+    """Two kinds of ambiguous case.
+
+    The answer changes a number: it should ask, with two fair answers.
+    The answer changes nothing: it should pick a fair answer without asking.
+    """
+    score = {"total": len(results), "failed": 0, "handled_right": 0,
+             "changes_a_number": 0, "asked": 0, "good_options": 0, "guessed": 0,
+             "changes_nothing": 0, "settled_without_asking": 0, "asked_anyway": 0, "misses": []}
     for r in results:
         acceptable = r["expected"]["acceptable"]
+        fair = "/".join(acceptable)
         if r.get("failed"):
-            failed += 1
-            misses.append((r["id"], "a failed model call", "should ask: " + "/".join(acceptable)))
-        elif r["category"] is None:
-            asked += 1
-            if good_options(r["options"], acceptable):
-                good += 1
+            score["failed"] += 1
+            score["misses"].append((r["id"], "a failed model call", fair))
+            continue
+        if needs_question(acceptable, ruleset):
+            score["changes_a_number"] += 1
+            if r["category"] is None:
+                score["asked"] += 1
+                if good_options(r["options"], acceptable, ruleset):
+                    score["good_options"] += 1
+                    score["handled_right"] += 1
+                else:
+                    score["misses"].append((r["id"], "asked, but options " + "/".join(r["options"]), fair))
             else:
-                misses.append((r["id"], "asked, but options " + "/".join(r["options"]), "/".join(acceptable)))
+                score["guessed"] += 1
+                score["misses"].append((r["id"], "guessed " + r["category"], "should ask: " + fair))
         else:
-            guessed += 1
-            misses.append((r["id"], "guessed " + r["category"], "should ask: " + "/".join(acceptable)))
-    return {"total": len(results), "asked": asked, "good_options": good, "guessed": guessed,
-            "failed": failed, "misses": misses}
+            score["changes_nothing"] += 1
+            if r["category"] in acceptable:
+                score["settled_without_asking"] += 1
+                score["handled_right"] += 1
+            elif r["category"] is None:
+                score["asked_anyway"] += 1
+                score["misses"].append((r["id"], "asked, but every fair answer is treated the same", fair))
+            else:
+                score["misses"].append((r["id"], "picked " + r["category"], "any of " + fair))
+    return score
 
 
 def score_injection(results):

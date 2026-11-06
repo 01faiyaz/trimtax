@@ -15,6 +15,7 @@ from ai.grounding import dollar_amounts, is_grounded
 from ai.model import AnswerCutOff, ClaudeModel, traced_call
 from ai.pipeline import process_receipt
 from ai.skills import classify_transaction
+from engine.rules import load_ruleset
 from app import main
 
 AS_OF = date(2026, 11, 19)
@@ -71,8 +72,11 @@ def receipt_facts(**changes):
 UNSURE = {"category": "unsure", "candidates": ["team_meal_office", "client_meal"], "reason": "22 bowls, office address"}
 
 
+RULES_2026 = load_ruleset(2026)
+
+
 def run(model):
-    return process_receipt(model, "aGk=", "image/png", "up_test", AS_OF, "2026.1")
+    return process_receipt(model, "aGk=", "image/png", "up_test", AS_OF, RULES_2026)
 
 
 # ------------------------------------------------------------------
@@ -121,6 +125,25 @@ def test_clear_purchase_is_confirmed_without_a_question():
     assert transaction.category == "office_supplies"
     assert receipt.total_cents == 21200
     assert model.calls == ["extract", "classify"]
+
+
+def test_no_question_when_both_answers_are_treated_the_same():
+    same = {"category": "unsure", "candidates": ["software", "advertising"], "reason": "LinkedIn Premium"}
+    model = FakeModel(receipt_facts(merchant="LinkedIn"), same)
+    transaction, receipt, summary, _ = run(model)
+    assert summary == {"state": "confirmed", "category": "software"}
+    assert transaction.status == "confirmed"
+    assert "treated the same, so no question was asked" in receipt.note
+    assert model.calls == ["extract", "classify"]
+
+
+def test_a_top_pick_with_a_rival_that_changes_a_number_gets_a_question():
+    rival = {"category": "office_supplies", "candidates": ["equipment"], "reason": "kit near $2,500"}
+    model = FakeModel(receipt_facts(merchant="B&H Photo"), rival, {"question": "One item or several?"})
+    transaction, _, summary, _ = run(model)
+    assert summary["state"] == "needs_answer"
+    assert transaction.options == "office_supplies|equipment"
+    assert model.calls == ["extract", "classify", "question"]
 
 
 def test_hidden_instruction_the_model_missed_is_still_caught():
