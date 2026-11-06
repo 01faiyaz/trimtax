@@ -55,7 +55,7 @@ def main():
             "id": next_id(updates),
             "year": args.year,
             **proposal,
-            "source": {"cite": args.cite, "url": args.url, "file": str(text_file.relative_to(ROOT))},
+            "source": {"cite": args.cite, "url": args.url, "file": text_file.relative_to(ROOT).as_posix()},
             "base_version": base.version,
             "proposed_by": f"{PROPOSE_VERSION} on {model.model}",
             "proposed_on": date.today(),

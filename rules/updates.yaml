@@ -1,0 +1,100 @@
+# Rule update log for TrimTax.
+#
+# Each entry is a rule change the AI proposed (propose_rule_update) from a passage of
+# official text, with the exact sentence it relied on. A person then approves or rejects it.
+# Written by api/scripts/propose_rule_update.py and api/scripts/review_rule_update.py.
+# Don't edit by hand.
+#
+# outcome: "changed" = the value in rules/<year>.yaml moved and its version went up;
+#          "already_matches" = the file already had this value, so only the approval is recorded.
+
+updates:
+- id: upd_001
+  year: 2026
+  rule_id: fed_section_179
+  field: limit_cents
+  from: 250000000
+  to: 256000000
+  figure: $2,560,000
+  quote: For taxable years beginning in 2026, under § 179(b)(1), the aggregate cost of any § 179 property
+    that a taxpayer elects to treat as an expense cannot exceed $2,560,000
+  reason: Sets the federal section 179 expensing limit to $2,560,000 for 2026.
+  source:
+    cite: Rev. Proc. 2025-32 sec. 4.24
+    url: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
+    file: rules/sources/rev_proc_2025_32.txt
+  base_version: '2025.1'
+  proposed_by: propose_rule_update.v2 on claude-sonnet-5-5
+  proposed_on: 2026-11-05
+  status: approved
+  decided_by: Faiyaz Mashrafi
+  decided_on: 2026-11-05
+  outcome: already_matches
+  ruleset_version: '2026.1'
+- id: upd_002
+  year: 2026
+  rule_id: fed_section_179
+  field: phaseout_start_cents
+  from: 400000000
+  to: 409000000
+  figure: $4,090,000
+  quote: Under § 179(b)(2), the $2,560,000 limitation under § 179(b)(1) is reduced (but not below zero)
+    by the amount by which the cost of § 179 property placed in service during the 2026 taxable year exceeds
+    $4,090,000.
+  reason: Sets the federal section 179 phaseout threshold to $4,090,000 for 2026.
+  source:
+    cite: Rev. Proc. 2025-32 sec. 4.24
+    url: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
+    file: rules/sources/rev_proc_2025_32.txt
+  base_version: '2025.1'
+  proposed_by: propose_rule_update.v2 on claude-sonnet-5-5
+  proposed_on: 2026-11-05
+  status: approved
+  decided_by: Faiyaz Mashrafi
+  decided_on: 2026-11-05
+  outcome: already_matches
+  ruleset_version: '2026.1'
+- id: upd_003
+  year: 2026
+  rule_id: fed_1099_nec_threshold
+  field: threshold_cents
+  from: 60000
+  to: 200000
+  figure: $2,000
+  quote: Section 6041(a) is amended by striking “$600” and inserting “$2,000”.
+  reason: The threshold rises to $2,000 for payments made after December 31, 2025, which covers 2026,
+    and section 6041A(a)(2) for contractor pay now follows the section 6041(a) amount.
+  source:
+    cite: OBBBA (Pub. L. 119-21) sec. 70433(a)
+    url: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    file: rules/sources/obbba_70433.txt
+  base_version: '2025.1'
+  proposed_by: propose_rule_update.v3 on claude-sonnet-5-5
+  proposed_on: 2026-11-05
+  status: approved
+  decided_by: Faiyaz Mashrafi
+  decided_on: 2026-11-05
+  outcome: already_matches
+  ruleset_version: '2026.1'
+- id: upd_004
+  year: 2026
+  rule_id: fed_team_meals_office
+  field: percent
+  from: 50
+  to: 0
+  figure: No deduction
+  quote: no deduction shall be allowed under this chapter for—
+  reason: Section 274(o) disallows deductions for meals described in section 119(a), and the 2017 amendment
+    applies to amounts incurred or paid after December 31, 2025, which covers tax year 2026.
+  source:
+    cite: IRC 274(o); Pub. L. 115-97 sec. 13304(e)(2)
+    url: https://www.law.cornell.edu/uscode/text/26/274
+    file: rules/sources/irc_274o.txt
+  base_version: '2025.1'
+  proposed_by: propose_rule_update.v3 on claude-sonnet-5-5
+  proposed_on: 2026-11-05
+  status: approved
+  decided_by: Faiyaz Mashrafi
+  decided_on: 2026-11-05
+  outcome: already_matches
+  ruleset_version: '2026.1'
