@@ -1,0 +1,22 @@
+Sec. 70433. 	Increase in threshold for requiring information reporting with respect to certain payees.
+
+SEC. 70433. INCREASE IN THRESHOLD FOR REQUIRING INFORMATION REPORTING WITH RESPECT TO CERTAIN PAYEES.
+(a) In General.—Section 6041(a) is amended by striking “$600” and inserting “$2,000”.
+139 STAT. 244
+(b) Inflation Adjustment.—Section 6041 is amended by adding at the end the following new subsection:
+“(h) Inflation Adjustment.—In the case of any calendar year after 2026, the dollar amount in subsection (a) shall be increased by an amount equal to—
+“(1) such dollar amount, multiplied by
+“(2) the cost-of-living adjustment determined under section 1(f)(3) for such calendar year, determined by substituting ‘calendar year 2025’ for ‘calendar year 2016’ in subparagraph (A)(ii) thereof.
+If any increase under the preceding sentence is not a multiple of $100, such increase shall be rounded to the nearest multiple of $100.”
+.
+(c) Application to Reporting on Remuneration for Services.—Section 6041A(a)(2) is amended by striking “is $600 or more” and inserting “equals or exceeds the dollar amount in effect for such calendar year under section 6041(a)”.
+(d) Application to Backup Withholding.—Section 3406(b)(6) is amended—
+(1) by striking “$600” in subparagraph (A) and inserting “the dollar amount in effect for such calendar year under section 6041(a)”, and
+(2) by striking “Only Where Aggregate for Calendar Year Is $600 or More” in the heading and inserting “Only Where in Excess of Threshold”.
+(e) Conforming Amendments.—
+(1) The heading of section 6041(a) is amended by striking “of $600 or More” and inserting “Exceeding Threshold”.
+(2) Section 6041(a) is amended by striking “taxable year” and inserting “calendar year”.
+(f) 
+26 USC 3406 note.
+
+Effective Date.—The amendments made by this section shall apply with respect to payments made after December 31, 2025.

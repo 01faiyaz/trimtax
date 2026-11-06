@@ -1,0 +1,7 @@
+.24 Election to Expense Certain Depreciable Assets. For taxable years beginning in
+2026, under § 179(b)(1), the aggregate cost of any § 179 property that a taxpayer elects
+to treat as an expense cannot exceed $2,560,000 and, under § 179(b)(5)(A), the cost of
+any sport utility vehicle that may be taken into account under § 179 cannot exceed
+$32,000. Under § 179(b)(2), the $2,560,000 limitation under § 179(b)(1) is reduced (but
+not below zero) by the amount by which the cost of § 179 property placed in service
+during the 2026 taxable year exceeds $4,090,000.
