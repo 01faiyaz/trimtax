@@ -146,3 +146,14 @@ def uploads_since(iso_time):
     row = conn.execute(f"SELECT COUNT(*) FROM uploads WHERE created_at >= {mark}", (iso_time,)).fetchone()
     conn.close()
     return row[0]
+
+
+def skill_calls_since(iso_time, skill):
+    """How many calls of one AI skill were made since a time, across all workspaces."""
+    conn, mark = connect()
+    pattern = f'%"skill": "{skill}"%'
+    row = conn.execute(
+        f"SELECT COUNT(*) FROM traces WHERE created_at >= {mark} AND data LIKE {mark}", (iso_time, pattern)
+    ).fetchone()
+    conn.close()
+    return row[0]
