@@ -132,3 +132,16 @@ def test_files_are_read_and_written_as_utf8(tmp_path):
     save_log([{"id": "upd_001", "year": 2026, "quote": "striking “$600” — note", "proposed_on": date(2026, 11, 6)}], path)
     assert "“$600” —" in path.read_bytes().decode("utf-8")
     assert load_log(path)[0]["quote"] == "striking “$600” — note"
+
+
+def test_the_model_is_told_the_target_year(rules_2025):
+    model = Fake([])
+    propose_rule_update(model, TEXT, rules_2025, [], target_year=2026)
+    assert "tax year 2025" in model.seen
+    assert "Target tax year: 2026" in model.seen
+
+
+def test_target_year_defaults_to_the_rulesets_own_year(rules_2026):
+    model = Fake([])
+    propose_rule_update(model, TEXT, rules_2026, [])
+    assert "Target tax year: 2026" in model.seen
