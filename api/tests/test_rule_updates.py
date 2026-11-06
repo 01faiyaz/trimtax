@@ -103,3 +103,32 @@ def test_figures_become_values_only_when_plain():
 
 def test_quotes_compare_ignoring_curly_quotes_and_spacing():
     assert same_text("striking “$600”  and") == same_text('striking "$600" and')
+
+
+def test_congress_gov_quote_marks_match_plain_quotes(rules_2025):
+    # congress.gov prints an opening curly quote and two apostrophes to close.
+    text = "(a) In General. Section 6041(a) is amended by striking “$600'' and inserting “$2,000''."
+    quote = 'Section 6041(a) is amended by striking "$600" and inserting "$2,000".'
+    result = propose_rule_update(Fake([change(quote=quote)]), text, rules_2025, [])
+    assert result["rejected"] == []
+    assert result["proposals"][0]["to"] == 200000
+
+
+def test_no_deduction_means_zero_percent(rules_2025):
+    text = ("(o) Meals provided for convenience of employer. No deduction shall be allowed under this chapter "
+            "for any expense for meals described in section 119(a).")
+    quote = "No deduction shall be allowed under this chapter for any expense for meals described in section 119(a)."
+    meals = change(rule_id="fed_team_meals_office", field="percent", figure="No deduction", quote=quote)
+    result = propose_rule_update(Fake([meals]), text, rules_2025, [])
+    assert result["rejected"] == []
+    assert (result["proposals"][0]["from"], result["proposals"][0]["to"]) == (50, 0)
+    assert figure_to_value("threshold_cents", "No deduction") is None
+
+
+def test_files_are_read_and_written_as_utf8(tmp_path):
+    from datetime import date
+    from app.rule_log import load_log, save_log
+    path = tmp_path / "updates.yaml"
+    save_log([{"id": "upd_001", "year": 2026, "quote": "striking “$600” — note", "proposed_on": date(2026, 11, 6)}], path)
+    assert "“$600” —" in path.read_bytes().decode("utf-8")
+    assert load_log(path)[0]["quote"] == "striking “$600” — note"
