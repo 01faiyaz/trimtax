@@ -11,6 +11,7 @@ from decimal import Decimal, InvalidOperation
 
 from ai.model import traced_call
 from ai.skills import INJECTION_PATTERN
+from engine.rule_updates import show_value
 
 PROPOSE_VERSION = "propose_rule_update.v1"
 
@@ -57,16 +58,6 @@ PROPOSE_SCHEMA = {
         "note": {"type": "string"},
     },
 }
-
-
-def show_value(field, value):
-    if value is None:
-        return "not decided"
-    if field.endswith("_cents"):
-        return f"${value // 100:,}" + (f".{value % 100:02d}" if value % 100 else "")
-    if field == "percent":
-        return f"{value}%"
-    return f"{value} years"
 
 
 def rule_list(ruleset):

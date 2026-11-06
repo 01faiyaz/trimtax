@@ -23,7 +23,9 @@ def next_version(version):
 
 
 def show_value(field, value):
-    """The comment written next to a changed value, like "# $2,000"."""
+    """A value in plain words, like "$2,000", "50%" or "15 years"."""
+    if value is None:
+        return "not decided"
     if field.endswith("_cents"):
         return f"${value // 100:,}" + (f".{value % 100:02d}" if value % 100 else "")
     if field == "percent":

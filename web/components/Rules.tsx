@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { get } from "@/lib/api";
 import { dollars, longDate } from "@/lib/format";
 import type { Comparison, Rule, RuleChange } from "@/lib/types";
+import RuleUpdateLog from "./RuleUpdateLog";
 
 type Props = { workspaceId: string };
 
@@ -125,6 +126,8 @@ export default function Rules({ workspaceId }: Props) {
           </ul>
         </div>
       )}
+
+      <RuleUpdateLog year={year} />
     </div>
   );
 }

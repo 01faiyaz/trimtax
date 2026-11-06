@@ -138,3 +138,22 @@ export type Comparison = {
   forms_needed: { before: number; after: number };
   team_meals_federal_deductible: { before: number; after: number };
 };
+
+export type RuleUpdate = {
+  id: string;
+  year: number;
+  rule_id: string;
+  field: string;
+  plain_words: string;
+  from_text: string;
+  to_text: string;
+  quote: string;
+  source: { cite: string; url: string; file: string };
+  proposed_by: string;
+  proposed_on: string;
+  status: "proposed" | "approved" | "rejected";
+  decided_by: string | null;
+  decided_on: string | null;
+  outcome: "changed" | "already_matches" | null;
+  ruleset_version: string | null;
+};

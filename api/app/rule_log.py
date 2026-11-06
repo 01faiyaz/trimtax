@@ -24,17 +24,17 @@ HEADER = """# Rule update log for TrimTax.
 """
 
 
-def load_log(path=LOG_PATH):
-    path = Path(path)
+def load_log(path=None):
+    path = Path(path or LOG_PATH)
     if not path.exists():
         return []
     data = yaml.safe_load(path.read_text()) or {}
     return data.get("updates", [])
 
 
-def save_log(updates, path=LOG_PATH):
+def save_log(updates, path=None):
     text = yaml.safe_dump({"updates": updates}, sort_keys=False, allow_unicode=True, width=100)
-    Path(path).write_text(HEADER + text)
+    Path(path or LOG_PATH).write_text(HEADER + text)
 
 
 def next_id(updates):
@@ -49,5 +49,5 @@ def find(updates, update_id):
     raise KeyError(f"No update with id {update_id}")
 
 
-def updates_for_year(year, path=LOG_PATH):
+def updates_for_year(year, path=None):
     return [u for u in load_log(path) if u["year"] == year]

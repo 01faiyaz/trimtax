@@ -27,6 +27,7 @@ from app import store
 from app.convert import data_to_workspace, workspace_to_data
 from app.packet_export import packet_csv
 from app.packet_pdf import packet_pdf
+from app.rule_log import updates_for_year
 from engine.categories import CATEGORIES, is_category, label
 from engine.compare import compare_years
 from engine.equipment import all_in_price, check_purchase
@@ -34,6 +35,7 @@ from engine.meals import MEAL_RULES, meal_outcomes
 from engine.overview import overview
 from engine.records import Company, Workspace, load_workspace
 from engine.review import flagged_documents, open_items
+from engine.rule_updates import show_value
 from engine.rules import load_ruleset
 
 RULES = {2025: load_ruleset(2025), 2026: load_ruleset(2026)}
@@ -277,6 +279,22 @@ def get_ruleset(year: int):
     ruleset = get_rules(year)
     return {"version": ruleset.version, "tax_year": ruleset.tax_year,
             "rules": list(ruleset.rules.values())}
+
+
+@app.get("/rules/{year}/updates")
+def get_rule_updates(year: int):
+    """The rule update log for one year: what the AI proposed, from which text, and who decided."""
+    ruleset = get_rules(year)
+    entries = []
+    for update in updates_for_year(year):
+        rule = ruleset.rules.get(update["rule_id"], {})
+        entries.append({
+            **update,
+            "plain_words": rule.get("plain_words", update["rule_id"]),
+            "from_text": show_value(update["field"], update["from"]),
+            "to_text": show_value(update["field"], update["to"]),
+        })
+    return jsonable_encoder(entries)
 
 
 @app.get("/workspaces/{workspace_id}/compare")
