@@ -12,7 +12,7 @@ The result is always one of three states: confirmed, needs_answer, cant_determin
 from datetime import date
 
 from ai.skills import ask_clarifying_question, classify_transaction, extract_receipt
-from engine.categories import label
+from engine.categories import CATEGORIES, label
 from engine.records import Receipt, Transaction
 from engine.treatment import worth_asking
 
@@ -22,6 +22,9 @@ def read_date(text, fallback):
         return date.fromisoformat(text)
     except (TypeError, ValueError):
         return fallback
+
+
+PICK_A_CATEGORY = "This one couldn't be sorted automatically. Which category is it?"
 
 
 def possible_categories(sorted_as):
@@ -46,14 +49,17 @@ def sort_purchase(model, facts, ruleset, traces):
     result = {"category": None, "same_as": [], "question": None, "options": [], "failed": sorted_as["failed"]}
     possible = possible_categories(sorted_as)
 
-    if possible:
-        choices = worth_asking(possible, ruleset)
-        if not choices:
-            result["category"] = possible[0]
-            result["same_as"] = possible[1:]
-            return result
-    else:
-        choices = []
+    # The call failed, or the model gave no category at all: the owner picks from the full list.
+    if not possible:
+        result["question"] = PICK_A_CATEGORY
+        result["options"] = list(CATEGORIES)
+        return result
+
+    choices = worth_asking(possible, ruleset)
+    if not choices:
+        result["category"] = possible[0]
+        result["same_as"] = possible[1:]
+        return result
 
     asked = ask_clarifying_question(model, facts, choices, ruleset.version, traces)
     result["question"] = asked["question"]
@@ -113,6 +119,8 @@ def process_receipt(model, file_base64, media_type, upload_id, as_of, ruleset):
                               "which is treated the same, so no question was asked")
         return transaction, receipt, {"state": "confirmed", "category": transaction.category}, traces
 
+    if sorted_as["question"] == PICK_A_CATEGORY:
+        add_note(receipt, "Couldn't be sorted automatically" + (" (the AI call failed)" if sorted_as["failed"] else ""))
     transaction.status = "needs_answer"
     transaction.question = sorted_as["question"]
     transaction.options = "|".join(sorted_as["options"])

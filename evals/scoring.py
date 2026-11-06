@@ -113,7 +113,7 @@ def score_questions(results):
     """Every question shown must pass the dollar-figure check; count template fallbacks."""
     shown = ungrounded = templates = 0
     for r in results:
-        if r.get("question"):
+        if r.get("question") and not r.get("failed"):
             shown += 1
             if not r["question_grounded"]:
                 ungrounded += 1

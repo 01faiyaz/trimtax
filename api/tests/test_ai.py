@@ -15,6 +15,7 @@ from ai.grounding import dollar_amounts, is_grounded
 from ai.model import AnswerCutOff, ClaudeModel, traced_call
 from ai.pipeline import process_receipt
 from ai.skills import classify_transaction
+from engine.categories import CATEGORIES
 from engine.rules import load_ruleset
 from app import main
 
@@ -144,6 +145,35 @@ def test_a_top_pick_with_a_rival_that_changes_a_number_gets_a_question():
     assert summary["state"] == "needs_answer"
     assert transaction.options == "office_supplies|equipment"
     assert model.calls == ["extract", "classify", "question"]
+
+
+class SortingFails(FakeModel):
+    """Reading works, sorting times out."""
+
+    def run(self, system, content, schema, max_tokens=1024):
+        if "candidates" in schema["properties"]:
+            self.calls.append("classify")
+            raise TimeoutError("model timed out")
+        return super().run(system, content, schema, max_tokens)
+
+
+def test_failed_sort_asks_the_owner_to_pick_from_every_category():
+    model = SortingFails(receipt_facts())
+    transaction, receipt, summary, traces = run(model)
+    assert summary["state"] == "needs_answer"
+    assert transaction.question == "This one couldn't be sorted automatically. Which category is it?"
+    assert transaction.options.split("|") == list(CATEGORIES)
+    assert "the AI call failed" in receipt.note
+    assert model.calls == ["extract", "classify"]  # no made-up two-choice question
+    assert traces[-1]["ok"] is False
+
+
+def test_unsure_with_no_categories_also_asks_to_pick_one():
+    model = FakeModel(receipt_facts(), {"category": "unsure", "candidates": [], "reason": ""})
+    transaction, receipt, _, _ = run(model)
+    assert transaction.options.split("|") == list(CATEGORIES)
+    assert receipt.note == "Couldn't be sorted automatically"
+    assert model.calls == ["extract", "classify"]
 
 
 def test_hidden_instruction_the_model_missed_is_still_caught():

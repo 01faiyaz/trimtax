@@ -247,12 +247,7 @@ def template_question(facts, candidates):
 
 
 def ask_clarifying_question(model, facts, candidates, ruleset_version, traces):
-    """One question with two answers. Falls back to a template if the model's text fails a check."""
-    if len(candidates) < 2:
-        candidates = (candidates + ["other", "office_supplies"])[:2]
-        if candidates[0] == candidates[1]:
-            candidates[1] = "other"
-
+    """One question with exactly two answers (candidates). Falls back to a template if the model's text fails a check."""
     content = [{
         "type": "text",
         "text": (
