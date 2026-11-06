@@ -19,6 +19,7 @@ def open_items(workspace, ruleset):
                 "merchant": t.merchant,
                 "date": t.date,
                 "amount_cents": t.amount_cents,
+                "question": t.question,
             })
 
     watch = contractor_watch(workspace.transactions, workspace.contractors, ruleset)

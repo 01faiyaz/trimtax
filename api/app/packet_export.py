@@ -67,13 +67,12 @@ def receipts_by_transaction(workspace):
 
 
 def open_item_rows(packet, workspace, ruleset):
-    questions = {t.id: t.question for t in workspace.transactions}
     receipts = receipts_by_transaction(workspace)
     rows = []
     for item in packet["open_items"]:
         if item["kind"] == "question":
             rows.append(row("Open item", date=item["date"], merchant=item["merchant"],
-                            what=questions.get(item["transaction_id"]) or "Needs one answer",
+                            what=item["question"] or "Needs one answer",
                             amount=money(item["amount_cents"]), status="Waiting on your answer",
                             receipt=" ".join(receipts.get(item["transaction_id"], []))))
         elif item["kind"] == "missing_w9":

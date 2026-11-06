@@ -10,6 +10,7 @@ def test_three_open_items(tidewell, rules_2026):
     assert [item["kind"] for item in items] == ["question", "missing_w9", "de542_unclear"]
     assert items[0]["merchant"] == "Sweetgreen"
     assert items[0]["amount_cents"] == 41200
+    assert items[0]["question"] == "Was this lunch for your team at the office, or a client?"
     assert items[1]["name"] == "Dana Reyes"
 
 

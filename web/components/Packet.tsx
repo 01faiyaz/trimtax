@@ -125,7 +125,7 @@ export default function Packet({ workspaceId }: { workspaceId: string }) {
 
 function openItemText(item: OpenItem): string {
   if (item.kind === "question") {
-    return `${item.merchant}, ${dollars(item.amount_cents)} on ${shortDate(item.date)}: team meal or client meal?`;
+    return `${item.merchant}, ${dollars(item.amount_cents)} on ${shortDate(item.date)}: ${item.question}`;
   }
   if (item.kind === "missing_w9") {
     return `${item.name}: no W-9 on file. Paid ${dollars(item.paid_cents)}, ${dollars(item.cents_to_line)} from the 1099 line.`;

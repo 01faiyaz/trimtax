@@ -11,7 +11,7 @@ export type Deductible = {
 };
 
 export type OpenItem =
-  | { kind: "question"; transaction_id: string; merchant: string; date: string; amount_cents: number }
+  | { kind: "question"; transaction_id: string; merchant: string; date: string; amount_cents: number; question: string }
   | { kind: "missing_w9"; contractor_id: string; name: string; paid_cents: number; cents_to_line: number; w9_requested: boolean }
   | { kind: "de542_unclear"; names: string[]; count: number };
 
