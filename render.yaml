@@ -4,7 +4,7 @@ services:
   - type: web
     name: trimtax-api
     runtime: python
-    plan: free # free sleeps after 15 minutes idle and takes about a minute to wake; starter doesn't sleep
+    plan: starter # never sleeps, so judges never wait for it to wake up (free sleeps after 15 idle minutes)
     buildCommand: pip install -r api/requirements.txt
     startCommand: cd api && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
