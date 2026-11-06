@@ -412,7 +412,7 @@ async def upload_receipt(workspace_id: str, file: UploadFile = File(...)):
     ruleset = get_rules(2026)
 
     transaction, receipt, summary, traces = process_receipt(
-        model, file_base64, file.content_type, upload_id, as_of_for(workspace), ruleset.version)
+        model, file_base64, file.content_type, upload_id, as_of_for(workspace), ruleset)
 
     if transaction is not None:
         workspace.transactions.append(transaction)

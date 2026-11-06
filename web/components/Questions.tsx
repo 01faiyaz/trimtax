@@ -79,7 +79,7 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
             )}
 
             {question.status === "needs_answer" ? (
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 16 }}>
+              <div style={{ display: "flex", flexDirection: question.options.length > 2 ? "row" : "column", flexWrap: "wrap", gap: 12, marginTop: 16 }}>
                 {question.options.map((option) => (
                   <div className="question-box" key={option.category}>
                     <button className="button" onClick={() => answer(question, option.category, option.label)}>

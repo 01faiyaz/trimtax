@@ -2,8 +2,9 @@
 
 1. extract_receipt reads it.
 2. Plain code checks it: hidden instructions? readable total? do the amounts add up?
-3. classify_transaction sorts it, or says it's unsure.
-4. If unsure, ask_clarifying_question writes one question with two answers.
+3. classify_transaction sorts it and lists any other categories it could be.
+4. Plain code checks whether those categories are treated differently. Only if they
+   are does ask_clarifying_question write one question with two answers.
 
 The result is always one of three states: confirmed, needs_answer, cant_determine.
 """
@@ -11,7 +12,9 @@ The result is always one of three states: confirmed, needs_answer, cant_determin
 from datetime import date
 
 from ai.skills import ask_clarifying_question, classify_transaction, extract_receipt
+from engine.categories import CATEGORIES, label
 from engine.records import Receipt, Transaction
+from engine.treatment import worth_asking
 
 
 def read_date(text, fallback):
@@ -21,10 +24,53 @@ def read_date(text, fallback):
         return fallback
 
 
-def process_receipt(model, file_base64, media_type, upload_id, as_of, ruleset_version):
+PICK_A_CATEGORY = "This one couldn't be sorted automatically. Which category is it?"
+
+
+def possible_categories(sorted_as):
+    """The model's pick first, then the other categories it listed, without repeats."""
+    possible = []
+    if sorted_as["category"]:
+        possible.append(sorted_as["category"])
+    for name in sorted_as["candidates"]:
+        if name not in possible:
+            possible.append(name)
+    return possible
+
+
+def sort_purchase(model, facts, ruleset, traces):
+    """Sort one purchase, and ask the owner only if the answer would change something.
+
+    Returns {"category", "same_as", "question", "options", "failed"}. Either category is
+    set (no question), or question and options are set (the owner picks one).
+    same_as lists categories that were possible but are treated the same as the one used.
+    """
+    sorted_as = classify_transaction(model, facts, ruleset.version, traces)
+    result = {"category": None, "same_as": [], "question": None, "options": [], "failed": sorted_as["failed"]}
+    possible = possible_categories(sorted_as)
+
+    # The call failed, or the model gave no category at all: the owner picks from the full list.
+    if not possible:
+        result["question"] = PICK_A_CATEGORY
+        result["options"] = list(CATEGORIES)
+        return result
+
+    choices = worth_asking(possible, ruleset)
+    if not choices:
+        result["category"] = possible[0]
+        result["same_as"] = possible[1:]
+        return result
+
+    asked = ask_clarifying_question(model, facts, choices, ruleset.version, traces)
+    result["question"] = asked["question"]
+    result["options"] = asked["options"]
+    return result
+
+
+def process_receipt(model, file_base64, media_type, upload_id, as_of, ruleset):
     """Returns (transaction or None, receipt, summary, traces). Nothing is saved here."""
     traces = []
-    facts = extract_receipt(model, file_base64, media_type, ruleset_version, traces)
+    facts = extract_receipt(model, file_base64, media_type, ruleset.version, traces)
 
     receipt = Receipt(id=upload_id, transaction_id="", date=None, merchant="",
                       total_cents=None, has_image=True)
@@ -64,13 +110,22 @@ def process_receipt(model, file_base64, media_type, upload_id, as_of, ruleset_ve
     if facts["adds_up"] is False:
         receipt.note = "The printed lines don't add up to the total; the total was used"
 
-    sorted_as = classify_transaction(model, facts, ruleset_version, traces)
+    sorted_as = sort_purchase(model, facts, ruleset, traces)
     if sorted_as["category"]:
         transaction.category = sorted_as["category"]
+        if sorted_as["same_as"]:
+            others = ", ".join(label(name) for name in sorted_as["same_as"])
+            add_note(receipt, f"Sorted as {label(transaction.category)}. It could also be {others}, "
+                              "which is treated the same, so no question was asked")
         return transaction, receipt, {"state": "confirmed", "category": transaction.category}, traces
 
-    asked = ask_clarifying_question(model, facts, sorted_as["candidates"], ruleset_version, traces)
+    if sorted_as["question"] == PICK_A_CATEGORY:
+        add_note(receipt, "Couldn't be sorted automatically" + (" (the AI call failed)" if sorted_as["failed"] else ""))
     transaction.status = "needs_answer"
-    transaction.question = asked["question"]
-    transaction.options = "|".join(asked["options"])
-    return transaction, receipt, {"state": "needs_answer", "question": asked["question"]}, traces
+    transaction.question = sorted_as["question"]
+    transaction.options = "|".join(sorted_as["options"])
+    return transaction, receipt, {"state": "needs_answer", "question": sorted_as["question"]}, traces
+
+
+def add_note(receipt, text):
+    receipt.note = f"{receipt.note}. {text}" if receipt.note else text
