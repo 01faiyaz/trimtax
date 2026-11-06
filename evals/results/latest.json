@@ -19,20 +19,15 @@
     "ambiguous": {
       "total": 20,
       "failed": 0,
-      "handled_right": 17,
+      "handled_right": 18,
       "changes_a_number": 18,
       "asked": 17,
-      "good_options": 15,
+      "good_options": 16,
       "guessed": 1,
       "changes_nothing": 2,
       "settled_without_asking": 2,
       "asked_anyway": 0,
       "misses": [
-        [
-          "a09",
-          "asked, but options contractor/research_us",
-          "contractor/research_offshore"
-        ],
         [
           "a19",
           "asked, but options team_meal_office/client_meal",
@@ -2177,6 +2172,7 @@
           "state": "needs_answer",
           "acceptable": [
             "contractor",
+            "research_us",
             "research_offshore"
           ]
         },
@@ -3748,5 +3744,6 @@
         ]
       }
     ]
-  }
+  },
+  "rescored": "2026-11-06 03:05 UTC"
 }

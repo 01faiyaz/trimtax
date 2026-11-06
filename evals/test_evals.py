@@ -125,3 +125,15 @@ def test_a_failed_call_is_not_counted_as_asking():
 def test_a_failed_call_with_a_pick_a_category_question_is_not_counted_as_a_question():
     results = [{"id": "a", "failed": True, "question": "Which category is it?", "options": list(CATEGORIES)}]
     assert scoring.score_questions(results)["questions_shown"] == 0
+
+
+def test_rescore_uses_the_current_labels_and_keeps_the_model_answers():
+    from rescore import rescore
+    old = {"acceptable": ["contractor", "research_offshore"]}
+    run = {"results": {"ambiguous": [{"id": "a09", "expected": old, "category": None,
+                                      "options": ["contractor", "research_us"], "traces": []}]}}
+    run = rescore(run)
+    result = run["results"]["ambiguous"][0]
+    assert "research_us" in result["expected"]["acceptable"]
+    assert result["options"] == ["contractor", "research_us"]
+    assert run["summary"]["ambiguous"]["handled_right"] == 1

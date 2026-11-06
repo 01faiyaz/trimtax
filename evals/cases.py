@@ -133,7 +133,7 @@ AMBIGUOUS = [
     ambiguous("a06", ["office_supplies", "snacks_coffee"], "Amazon Business", ["Logitech webcam", "Snack variety pack, 40 count"], 132.48),
     ambiguous("a07", ["client_entertainment", "other"], "Golden State Warriors", ["6 tickets, upper bowl"], 720),
     ambiguous("a08", ["equipment", "office_supplies"], "B&H Photo", ["Lighting kit", "Microphone", "Stands"], 2860),
-    ambiguous("a09", ["contractor", "research_offshore"], "Upwork", ["Payment to Mateusz K.: mobile app work, 40 hours"], 1600),
+    ambiguous("a09", ["contractor", "research_us", "research_offshore"], "Upwork", ["Payment to Mateusz K.: mobile app work, 40 hours"], 1600),
     ambiguous("a10", ["contractor", "research_us"], "Riley Tran", ["Invoice: development work, October"], 2400),
     ambiguous("a11", ["travel", "client_meal"], "Wynn Las Vegas", ["Room, 3 nights", "SW Steakhouse charge, party of 4"], 1890),
     ambiguous("a12", ["snacks_coffee", "client_meal", "team_meal_office"], "Blue Bottle Coffee", ["Coffee and pastries for 6"], 86.40),

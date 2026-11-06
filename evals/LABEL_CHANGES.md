@@ -37,3 +37,19 @@ as fees and insurance. So every case with "other" as a fair answer still expects
 
 Run 3 scored again this way: 12/20 handled right (it was 10/20 with fair options under
 the old scoring). The 2 extra are a13 and a14, which it sorted without asking.
+
+## After run 4 (Nov 5, 2026)
+
+- **a09** (Upwork, "Payment to Mateusz K.: mobile app work, 40 hours"): added
+  `research_us` as a fair answer. The receipt doesn't say where the work was done, and
+  our own sorting rule (since prompt v3) says not to guess that from a person's name.
+  The label had assumed offshore from the name, which is the guess the rule forbids.
+  Run 4 offered contractor or US research, which is fair under the corrected label.
+
+Kept as real misses: c70 (UX research interviews from a freelancer, asked instead of
+sorting as contractor), a19 (cakes, plates and balloons: offered team meal or client
+meal, but a client meal isn't a fair answer), a20 (Airbnb for 8 in Lake Tahoe, guessed
+travel).
+
+From here on, prompts are not tuned against this set. A separate held-out set
+(evals/holdout_cases.py) was written before any held-out run and is reported on its own.
