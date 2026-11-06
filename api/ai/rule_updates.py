@@ -29,7 +29,8 @@ For each one:
 - figure: the new value copied exactly as the passage writes it, like "$2,000", "100 percent"
   or "15-year". If the passage says no deduction is allowed, the figure is "No deduction"
   (field percent). Don't convert, round or work anything out.
-- quote: the sentence or clause from the passage that states it, copied exactly.
+- quote: the sentence or clause from the passage that states it, copied exactly as one
+  continuous stretch. Don't skip words or join separate parts.
 - reason: one short sentence.
 
 If the passage doesn't change any listed rule, or you're not sure, return no changes and say
