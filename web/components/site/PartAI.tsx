@@ -5,7 +5,8 @@
 
 import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
-import ReceiptScan from "./ReceiptScan";
+import ReceiptScan, { STACKED_SIZE } from "./ReceiptScan";
+import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
 
 const card = { padding: "18px 20px", background: "#ffffff", border: "1px solid #d6d9db" };
@@ -19,6 +20,7 @@ function delay(d: string) {
 
 export default function PartAI() {
   const [ref, seen] = useSeen();
+  const narrow = useNarrow();
 
   return (
     <div id="ai" ref={ref} className={seen ? "page page-in" : "page"} style={{ position: "relative", scrollMarginTop: 80 }}>
@@ -26,12 +28,16 @@ export default function PartAI() {
       <section aria-labelledby="ai-title" className="paper">
         <Holes />
         <PartHead part="Part II" name="The AI reads, the code counts" page={3} />
-        <div style={{ padding: "56px 32px 56px" }}>
-          <h2 id="ai-title" className="reveal" style={{ ...delay(".1s"), margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "26ch" }}>
+        <div className="page-body" style={{ paddingBottom: 56 }}>
+          <h2 id="ai-title" className="reveal page-title" style={{ ...delay(".1s"), maxWidth: "26ch" }}>
             The AI reads. The code counts. <span className="muted" style={{ fontWeight: 600 }}>Claude never does the tax math.</span>
           </h2>
           <div className="reveal" style={{ ...delay(".25s"), marginTop: 44 }}>
-            <Fit width={1080} height={520}>{seen && <ReceiptScan />}</Fit>
+            {narrow ? (
+              <Fit {...STACKED_SIZE}>{seen && <ReceiptScan stacked />}</Fit>
+            ) : (
+              <Fit width={1080} height={520}>{seen && <ReceiptScan />}</Fit>
+            )}
           </div>
 
           <p className="reveal" style={{ ...delay(".35s"), margin: "44px 0 14px", fontSize: 15, fontWeight: 700 }}>Every purchase ends in one of three states</p>

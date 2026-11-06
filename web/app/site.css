@@ -109,4 +109,27 @@
 .site .part-name { font-weight: 600; }
 .site .part-chip { padding: 1px 8px; background: var(--ink); color: var(--page); font-weight: 700; }
 .site .mono { font-family: var(--mono); }
+.site .site-nav { display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 15px; }
+.site .cover-mast { margin: 28px 32px 0; }
+.site .mast-cell { border-right: 1px solid #d6d9db; }
+.site .mast-mid { padding-left: 20px; }
+.site .cover-body { padding: 0 32px; }
+.site .hero-title { font-size: 64px; line-height: 64px; }
+.site .page-body { padding: 56px 32px 64px; }
+.site .page-title { margin: 0; font-size: 42px; line-height: 48px; font-weight: 700; letter-spacing: -0.03em; }
+
+/* Phones: less padding, smaller headlines, and no decorations that would sit on top of the text. */
+@media (max-width: 700px) {
+  .site .column { padding: 12px 10px 0; gap: 28px; }
+  .site .page-body { padding: 36px 18px 40px; }
+  .site .page-title { font-size: 30px; line-height: 36px; }
+  .site .cover-mast { margin: 18px 18px 0; }
+  .site .mast-cell { border-right: 0; }
+  .site .mast-mid { padding-left: 0; }
+  .site .cover-body { padding: 0 18px; }
+  .site .hero-title { font-size: 44px; line-height: 46px; }
+  .site .part-head { padding: 12px 18px; }
+  .site .part-chip { white-space: nowrap; }
+  .site .holes, .site .bob, .site .site-nav { display: none; }
+}
 .site .muted { color: var(--ink-muted); }

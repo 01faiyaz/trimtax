@@ -7,6 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
+import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
 import { money, useTween } from "./useTween";
 
@@ -71,6 +72,9 @@ function useFiling(started: boolean, paused: boolean) {
 
 export default function PartFile() {
   const [ref, seen] = useSeen();
+  const narrow = useNarrow();
+  // On phones the folder is drawn narrower and taller so the sheets stay readable.
+  const folder = narrow ? { width: 560, height: 960 } : { width: 940, height: 690 };
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("questions");
   const [opened, setOpened] = useState(0); // goes up each time a sheet opens, so its numbers roll in again
@@ -130,15 +134,15 @@ export default function PartFile() {
         <div aria-hidden="true" className="blob" style={{ zIndex: -1, left: "50%", top: 260, width: 900, height: 640, marginLeft: -450, background: "radial-gradient(closest-side, rgba(226,212,170,.42), rgba(226,212,170,0))" }} />
         <div aria-hidden="true" className="blob" style={{ zIndex: -1, right: -200, top: 60, width: 600, height: 520, background: "radial-gradient(closest-side, rgba(44,91,160,.10), rgba(44,91,160,0))", animationDelay: "-11s" }} />
         <PartHead part="Part IV" name="Your tax file" page={5} />
-        <div style={{ padding: "56px 32px 64px" }}>
-          <h2 id="file-title" className="reveal" style={{ "--d": ".1s", margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "26ch" } as React.CSSProperties}>
+        <div className="page-body">
+          <h2 id="file-title" className="reveal page-title" style={{ "--d": ".1s", maxWidth: "26ch" } as React.CSSProperties}>
             Your 2026 tax file. <span className="muted" style={{ fontWeight: 600 }}>Kept up to date all year, not assembled in April.</span>
           </h2>
 
           <div className="reveal" style={{ "--d": ".25s", position: "relative", maxWidth: 940, margin: "44px auto 0" } as React.CSSProperties}>
             <div aria-hidden="true" style={{ position: "absolute", left: "5%", right: "5%", bottom: -26, height: 56, background: "radial-gradient(ellipse at center, rgba(38,41,44,.26), rgba(38,41,44,0) 70%)", filter: "blur(6px)" }} />
-            <Fit width={940} height={690}>
-              <div style={{ position: "relative", height: 690, overflow: "hidden" }}>
+            <Fit {...folder}>
+              <div style={{ position: "relative", height: folder.height, overflow: "hidden" }}>
 
                 <div className="mono" style={{ position: "absolute", right: 40, top: 0, width: 160, height: 42, background: "linear-gradient(180deg, #efe4c8, #e4d5ac)", borderRadius: "9px 9px 0 0", boxShadow: "inset 0 1px 0 rgba(255,255,255,.6)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: "#3d3627" }}>Tax year 2026</div>
                 <div style={{ position: "absolute", left: 0, right: 0, top: 36, bottom: 0, background: "linear-gradient(180deg, #efe4c8 0%, #e6d8b2 45%, #dccb9b 100%)", borderRadius: 12, boxShadow: "inset 0 1px 0 rgba(255,255,255,.55), inset 0 -20px 40px rgba(120,95,40,.10)", overflow: "hidden" }}>
@@ -165,7 +169,7 @@ export default function PartFile() {
                     const selected = open && tab === key;
                     return (
                       <button key={key} type="button" role="tab" aria-selected={selected} onClick={() => showSheet(key)} className="smooth"
-                        style={{ position: "relative", flex: "1 1 0", marginRight: -8, minHeight: 40, padding: "0 14px", border: 0, borderRadius: "10px 10px 0 0", fontSize: 14, cursor: "pointer", whiteSpace: "nowrap", zIndex: selected ? 10 : 5 - i,
+                        style={{ position: "relative", flex: "1 1 0", marginRight: -8, minHeight: 40, padding: narrow ? "0 6px" : "0 14px", border: 0, borderRadius: "10px 10px 0 0", fontSize: narrow ? 13 : 14, cursor: "pointer", whiteSpace: "nowrap", zIndex: selected ? 10 : 5 - i,
                           ...(selected
                             ? { background: "linear-gradient(180deg, #ffffff, #fdfdfc)", color: "#26292c", fontWeight: 700, transform: "translateY(0)", boxShadow: "0 -4px 12px rgba(90,70,30,.12)" }
                             : { background: "linear-gradient(180deg, #f0e5c9, #ddcd9f)", color: "#3d3627", fontWeight: 500, transform: "translateY(3px)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), 3px 0 6px rgba(90,70,30,.14)" }) }}>
@@ -181,7 +185,7 @@ export default function PartFile() {
                 {open && (
                   <div role="tabpanel" aria-label={tabTitle} style={{ position: "absolute", left: 30, right: 30, top: 104, bottom: 96, background: "linear-gradient(180deg, #fdfdfc, #f8f8f6)", boxShadow: "0 1px 0 #d8c79c, 0 14px 30px rgba(38,41,44,.12)", overflow: "hidden", zIndex: 2 }}>
                     <div aria-hidden="true" style={{ position: "absolute", left: 56, top: 0, bottom: 0, width: 1, background: "#cfdcea" }} />
-                    <div key={opened} className={opened % 2 ? "sheet-a" : "sheet-b"} style={{ position: "absolute", inset: 0, padding: "28px 36px 28px 80px" }}>
+                    <div key={opened} className={opened % 2 ? "sheet-a" : "sheet-b"} style={{ position: "absolute", inset: 0, padding: narrow ? "24px 20px 24px 72px" : "28px 36px 28px 80px" }}>
 
                       {tab === "questions" && (
                         <div style={{ position: "relative", height: "100%", display: "flex", flexDirection: "column", gap: 14 }}>

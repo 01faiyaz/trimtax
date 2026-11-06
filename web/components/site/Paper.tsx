@@ -17,7 +17,7 @@ export function PartHead({ part, name, page, nameId }: { part: string; name: str
         <span className="part-chip">{part}</span>
         <span id={nameId} className="part-name">{name}</span>
       </span>
-      <span className="mono muted">Page {page} of 8</span>
+      <span className="mono muted" style={{ whiteSpace: "nowrap" }}>Page {page} of 8</span>
     </div>
   );
 }
