@@ -67,7 +67,7 @@ def test_approving_changes_this_demo_copy_and_says_so(client):
     rules = client.get(f"/workspaces/{demo}/rules/2026").json()
     rule = next(r for r in rules["rules"] if r["id"] == "ca_section_179")
     assert rule["limit_cents"] == 3000000
-    assert rule["demo_change"] is True
+    assert rule["demo_change"] == "$25,000 \u2192 $30,000"
     assert rule["approved_by"] == "A judge"
     assert len(rules["demo_changes"]) == 1
 

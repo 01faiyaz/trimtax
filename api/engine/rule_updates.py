@@ -112,6 +112,6 @@ def with_demo_changes(ruleset, changes):
         rule["check_status"] = "checked"
         rule["approved_by"] = change["decided_by"]
         rule["approved_on"] = change["decided_on"]
-        rule["demo_change"] = True
+        rule["demo_change"] = f"{show_value(change['field'], change['from'])} \u2192 {show_value(change['field'], change['to'])}"
     data["ruleset_version"] = f"{ruleset.version}+demo.{len(changes)}"
     return Ruleset(data)

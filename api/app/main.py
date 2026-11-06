@@ -345,7 +345,8 @@ def propose_from_text(workspace_id: str, pasted: PastedText):
 
     model = get_model()
     traces = []
-    result = propose_rule_update(model, pasted.text, rules_for(workspace_id, pasted.year), traces)
+    ruleset = rules_for(workspace_id, pasted.year)
+    result = propose_rule_update(model, pasted.text, ruleset, traces)
     for trace in traces:
         store.add_trace(workspace_id, trace)
 
@@ -361,6 +362,7 @@ def propose_from_text(workspace_id: str, pasted: PastedText):
             "decided_on": None,
             "from_text": show_value(proposal["field"], proposal["from"]),
             "to_text": show_value(proposal["field"], proposal["to"]),
+            "plain_words": ruleset.rule(proposal["rule_id"])["plain_words"],
         })
         extras["rule_proposals"].append(proposal)
     save_workspace(workspace_id, workspace, extras)

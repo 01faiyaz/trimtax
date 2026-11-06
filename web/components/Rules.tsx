@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { get } from "@/lib/api";
+import { get, post } from "@/lib/api";
 import { dollars, longDate } from "@/lib/format";
-import type { Comparison, Rule, RuleChange } from "@/lib/types";
+import type { Comparison, Rule, RuleChange, WorkspaceRules } from "@/lib/types";
 import RuleUpdateLog from "./RuleUpdateLog";
+import TryRuleChange from "./TryRuleChange";
 
-type Props = { workspaceId: string };
+type Props = { workspaceId: string; refresh: () => Promise<void>; notify: (message: string) => void };
 
 const FIELD_NAMES: Record<string, string> = {
   limit_cents: "Limit",
@@ -25,19 +26,34 @@ const TOPICS: [string, string][] = [
   ["deadlines", "Deadlines"],
 ];
 
-export default function Rules({ workspaceId }: Props) {
+export default function Rules({ workspaceId, refresh, notify }: Props) {
   const [year, setYear] = useState(2026);
-  const [rules, setRules] = useState<{ version: string; rules: Rule[] } | null>(null);
+  const [rules, setRules] = useState<WorkspaceRules | null>(null);
   const [comparison, setComparison] = useState<Comparison | null>(null);
   const [error, setError] = useState("");
 
+  // This demo copy's rules: the real ruleset plus any change approved here.
+  // `version` goes up after an approval or undo, which loads them again.
+  const [version, setVersion] = useState(0);
+
   useEffect(() => {
-    get<{ version: string; rules: Rule[] }>(`/rules/${year}`).then(setRules).catch((e: Error) => setError(e.message));
-  }, [year]);
+    get<WorkspaceRules>(`/workspaces/${workspaceId}/rules/${year}`).then(setRules).catch((e: Error) => setError(e.message));
+  }, [workspaceId, year, version]);
 
   useEffect(() => {
     get<Comparison>(`/workspaces/${workspaceId}/compare`).then(setComparison).catch((e: Error) => setError(e.message));
-  }, [workspaceId]);
+  }, [workspaceId, version]);
+
+  async function afterChange() {
+    setVersion((n) => n + 1);
+    await refresh();
+  }
+
+  async function undoDemoChanges() {
+    await post(`/workspaces/${workspaceId}/rule-changes/clear`);
+    await afterChange();
+    notify("Back to the real rules.");
+  }
 
   const changedIds = new Set((comparison?.rule_changes ?? []).map((change) => change.rule_id));
 
@@ -58,6 +74,16 @@ export default function Rules({ workspaceId }: Props) {
       </div>
 
       {error && <p className="error">{error}</p>}
+
+      {rules && rules.demo_changes.length > 0 && (
+        <p className="state open" style={{ display: "flex", gap: 16, alignItems: "center", padding: "10px 14px", marginTop: 16 }}>
+          <span>
+            This demo copy uses ruleset {rules.version}: the real rules plus {rules.demo_changes.length} change
+            {rules.demo_changes.length === 1 ? "" : "s"} approved here. Every number on every screen uses it.
+          </span>
+          <button className="button small light" onClick={undoDemoChanges}>Undo</button>
+        </p>
+      )}
 
       {comparison && (
         <div className="grid-2">
@@ -95,7 +121,7 @@ export default function Rules({ workspaceId }: Props) {
                       <br />
                       <ApprovalLine rule={rule} />
                     </span>
-                    <span className={"figure" + (year === 2026 && changedIds.has(rule.id) ? " changed" : "")}>{ruleValue(rule)}</span>
+                    <span className={"figure" + ((year === 2026 && changedIds.has(rule.id)) || rule.demo_change ? " changed" : "")}>{ruleValue(rule)}</span>
                   </li>
                 ))}
               </ul>
@@ -128,6 +154,7 @@ export default function Rules({ workspaceId }: Props) {
       )}
 
       <RuleUpdateLog year={year} />
+      <TryRuleChange workspaceId={workspaceId} year={year} onChanged={afterChange} notify={notify} />
     </div>
   );
 }
@@ -142,6 +169,13 @@ function SourceLink({ rule }: { rule: Pick<Rule, "source"> }) {
 }
 
 function ApprovalLine({ rule }: { rule: Rule }) {
+  if (rule.demo_change) {
+    return (
+      <span className="small muted">
+        <strong>Changed in this demo</strong> by {rule.approved_by}: {rule.demo_change}. The sentence above describes the real rule.
+      </span>
+    );
+  }
   if (rule.check_status === "needs_check") {
     return <span className="state open">Δ Open: still being checked</span>;
   }
