@@ -37,7 +37,7 @@ export default function Traces({ workspaceId, version }: { workspaceId: string; 
       <p style={{ margin: "0 0 8px" }}><strong>How it got here: every AI call in this workspace</strong></p>
       {traces && traces.length === 0 && (
         <p style={{ margin: 0 }}>
-          No AI calls yet. The demo&apos;s receipts were sorted before the demo; upload one above to see a live run.
+          No AI calls yet. Upload a receipt above to see a live run. (The demo company&apos;s receipts were sorted ahead of time.)
         </p>
       )}
       {traces && traces.length > 0 && (

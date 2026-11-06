@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { NotFound, get, newDemoWorkspace, post, savedWorkspaceId } from "@/lib/api";
+import { NotFound, get, newDemoWorkspace, post, saveWorkspaceId, savedOwnWorkspaceId, savedWorkspaceId } from "@/lib/api";
 import { shortDate } from "@/lib/format";
 import type { Overview as OverviewData } from "@/lib/types";
 import Overview from "./Overview";
@@ -10,6 +10,7 @@ import Packet from "./Packet";
 import Purchase from "./Purchase";
 import Questions from "./Questions";
 import Rules from "./Rules";
+import StartFresh from "./StartFresh";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -36,6 +37,7 @@ export default function DemoApp() {
   const tab = useSyncExternalStore(subscribeToHash, tabFromHash, () => "overview");
   const [toast, setToast] = useState("");
   const [error, setError] = useState("");
+  const [starting, setStarting] = useState(false); // showing the "Start fresh" form
 
   const loadOverview = useCallback(async (id: string) => {
     const data = await get<OverviewData>(`/workspaces/${id}/overview`);
@@ -80,6 +82,25 @@ export default function DemoApp() {
     window.scrollTo({ top: 0 });
   }
 
+  // Switch between the demo and your own company.
+  async function openWorkspace(id: string, message: string) {
+    try {
+      await loadOverview(id);
+    } catch {
+      setToast("That tax file isn't available anymore.");
+      return;
+    }
+    saveWorkspaceId(id);
+    setWorkspaceId(id);
+    setStarting(false);
+    goTo("overview");
+    setToast(message);
+  }
+
+  async function backToDemo() {
+    await openWorkspace(await newDemoWorkspace(), "Back in the demo.");
+  }
+
   async function resetDemo() {
     if (!workspaceId) return;
     await post(`/workspaces/${workspaceId}/reset`);
@@ -87,6 +108,9 @@ export default function DemoApp() {
     goTo("overview");
     setToast("Demo reset to Nov 19.");
   }
+
+  // Your own company, if you made one. Read once the page is in the browser.
+  const ownId = workspaceId ? savedOwnWorkspaceId() : null;
 
   const openQuestions = overview ? overview.open_items.filter((item) => item.kind === "question").length : 0;
 
@@ -111,6 +135,13 @@ export default function DemoApp() {
           {overview?.is_demo && (
             <button className="linklike" onClick={resetDemo}>Reset demo</button>
           )}
+          {overview?.is_demo && !starting && !ownId && (
+            <button className="linklike" onClick={() => setStarting(true)}>Start fresh with your company</button>
+          )}
+          {overview?.is_demo && ownId && (
+            <button className="linklike" onClick={() => openWorkspace(ownId, "Back to your company.")}>Your company</button>
+          )}
+          {overview && !overview.is_demo && <button className="linklike" onClick={backToDemo}>Back to the demo</button>}
           <Link href="/" className="small">Back to the site</Link>
         </div>
       </header>
@@ -118,7 +149,10 @@ export default function DemoApp() {
       <main className="desk">
         {error && <p className="error">{error}</p>}
         {!error && (!overview || !workspaceId) && <p className="muted">Opening your tax file…</p>}
-        {overview && workspaceId && (
+        {starting && (
+          <StartFresh onDone={(id) => openWorkspace(id, "Your tax file is ready. Add your transactions to fill it in.")} onCancel={() => setStarting(false)} />
+        )}
+        {!starting && overview && workspaceId && (
           <>
             {tab === "overview" && (
               <Overview workspaceId={workspaceId} data={overview} refresh={refresh} notify={setToast} goTo={goTo} />
