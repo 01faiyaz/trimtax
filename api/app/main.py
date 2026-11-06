@@ -346,7 +346,7 @@ def propose_from_text(workspace_id: str, pasted: PastedText):
     model = get_model()
     traces = []
     ruleset = rules_for(workspace_id, pasted.year)
-    result = propose_rule_update(model, pasted.text, ruleset, traces)
+    result = propose_rule_update(model, pasted.text, ruleset, traces, target_year=pasted.year)
     for trace in traces:
         store.add_trace(workspace_id, trace)
 

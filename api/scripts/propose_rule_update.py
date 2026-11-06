@@ -41,7 +41,7 @@ def main():
     base = load_ruleset(args.base)
     model = ClaudeModel()
     traces = []
-    result = propose_rule_update(model, source_text, base, traces)
+    result = propose_rule_update(model, source_text, base, traces, target_year=args.year)
 
     if result["failed"]:
         print(f"The model call failed ({traces[-1].get('error')}). Nothing was proposed.")

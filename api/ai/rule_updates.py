@@ -13,7 +13,7 @@ from ai.model import traced_call
 from ai.skills import INJECTION_PATTERN
 from engine.rule_updates import show_value
 
-PROPOSE_VERSION = "propose_rule_update.v2"
+PROPOSE_VERSION = "propose_rule_update.v3"
 
 # The rule fields a proposal may change. All are whole numbers.
 NUMBER_FIELDS = ("percent", "threshold_cents", "limit_cents", "phaseout_start_cents",
@@ -21,8 +21,12 @@ NUMBER_FIELDS = ("percent", "threshold_cents", "limit_cents", "phaseout_start_ce
 
 PROPOSE_SYSTEM = """You help keep a small-business tax ruleset up to date.
 
-You get a passage of official text (a law, a regulation, or an IRS or state notice) and the
-rules TrimTax uses now. Find each listed rule whose value this passage changes or sets.
+You get a passage of official text (a law, a regulation, or an IRS or state notice), the
+rules TrimTax has now, and a target tax year. Find each listed rule whose value for the
+target year this passage sets or changes. A value counts for the target year if the passage
+says it applies then, for example "for taxable years beginning in 2026" or "for payments made
+after December 31, 2025" when the target year is 2026. If the passage doesn't say when it
+applies, don't assume: return no change for it and say so in note.
 
 For each one:
 - rule_id and field: from the list. Only a field listed for that rule.
@@ -129,15 +133,20 @@ def check_change(change, ruleset, source_text):
     return proposal, None
 
 
-def propose_rule_update(model, source_text, ruleset, traces):
-    """Read official text and propose changes to `ruleset`. Nothing is changed here.
+def propose_rule_update(model, source_text, ruleset, traces, target_year=None):
+    """Read official text and propose changes to `ruleset` for `target_year`. Nothing is changed here.
+
+    target_year defaults to the ruleset's own tax year. The scripts compare the 2025 rules
+    with text about 2026, so they pass 2026.
 
     Returns {"proposals": [...], "rejected": [...], "note": str, "instructions_found": bool, "failed": bool}.
     A rejected change keeps the model's answer and the reason it failed a check, so the
     person reviewing can see it.
     """
+    target_year = target_year or ruleset.tax_year
     content = [{"type": "text", "text": (
-        f"Rules TrimTax uses now (ruleset {ruleset.version}):\n{rule_list(ruleset)}\n\n"
+        f"Rules TrimTax has now (ruleset {ruleset.version}, tax year {ruleset.tax_year}):\n{rule_list(ruleset)}\n\n"
+        f"Target tax year: {target_year}\n\n"
         f"Official text:\n<official_text>\n{source_text}\n</official_text>"
     )}]
     answer = traced_call(model, "propose_rule_update", PROPOSE_VERSION, ruleset.version,
