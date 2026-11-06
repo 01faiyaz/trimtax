@@ -6,12 +6,15 @@ code does with those answers: the checks, the states, the traces.
 
 from datetime import date
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
 
 from ai.grounding import dollar_amounts, is_grounded
+from ai.model import AnswerCutOff, ClaudeModel, traced_call
 from ai.pipeline import process_receipt
+from ai.skills import classify_transaction
 from app import main
 
 AS_OF = date(2026, 11, 19)
@@ -177,6 +180,62 @@ def test_traces_record_cost_and_versions_but_no_receipt_text():
     # 1,500 input tokens at $2/M + 300 output at $10/M = $0.006
     assert first["cost_nanodollars"] == 6_000_000
     assert "Sweetgreen" not in str(traces)
+
+
+# ------------------------------------------------------------------
+# The real model wrapper, with a stand-in API client
+# ------------------------------------------------------------------
+
+def api_reply(text, stop_reason):
+    """Shaped like an Anthropic Messages API response, with only the fields run() reads."""
+    return SimpleNamespace(
+        content=[SimpleNamespace(type="text", text=text)],
+        stop_reason=stop_reason,
+        usage=SimpleNamespace(input_tokens=900, output_tokens=120),
+    )
+
+
+def claude_model_with(reply):
+    """A ClaudeModel whose client returns `reply`, without needing the anthropic package or a key."""
+    client = SimpleNamespace(messages=SimpleNamespace(create=lambda **kwargs: reply))
+    model = ClaudeModel.__new__(ClaudeModel)
+    model.client = client
+    model.model = "claude-sonnet-5-5"
+    return model
+
+
+def test_finished_answer_is_parsed():
+    model = claude_model_with(api_reply('{"category": "software"}', "end_turn"))
+    answer, usage = model.run("system", [], {}, max_tokens=1024)
+    assert answer == {"category": "software"}
+    assert usage == {"input_tokens": 900, "output_tokens": 120}
+
+
+def test_answer_cut_off_at_max_tokens_says_so():
+    model = claude_model_with(api_reply('{"category": "unsure", "reason": "The receipt', "max_tokens"))
+    with pytest.raises(AnswerCutOff):
+        model.run("system", [], {}, max_tokens=400)
+
+
+def test_cut_off_answer_is_traced_by_name():
+    model = claude_model_with(api_reply('{"category": "uns', "max_tokens"))
+    traces = []
+    answer = traced_call(model, "classify_transaction", "v3", "2026.1", "system", [], {}, traces)
+    assert answer is None
+    assert traces[0]["ok"] is False
+    assert traces[0]["error"] == "AnswerCutOff"
+
+
+def test_sorting_asks_for_enough_tokens():
+    seen = []
+
+    class Recorder(FakeModel):
+        def run(self, system, content, schema, max_tokens=1024):
+            seen.append(max_tokens)
+            return super().run(system, content, schema, max_tokens)
+
+    classify_transaction(Recorder(classify=UNSURE), receipt_facts(), "2026.1", [])
+    assert seen == [1024]
 
 
 # ------------------------------------------------------------------

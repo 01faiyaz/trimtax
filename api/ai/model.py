@@ -18,6 +18,10 @@ PRICES = {
 }
 
 
+class AnswerCutOff(Exception):
+    """The model hit max_tokens before finishing, so its JSON is incomplete."""
+
+
 def cost_nanodollars(model, input_tokens, output_tokens):
     price = PRICES.get(model)
     if price is None:
@@ -47,6 +51,8 @@ class ClaudeModel:
         for block in response.content:
             if block.type == "text":
                 text += block.text
+        if response.stop_reason == "max_tokens":
+            raise AnswerCutOff(f"answer stopped at max_tokens={max_tokens}")
         usage = {
             "input_tokens": response.usage.input_tokens,
             "output_tokens": response.usage.output_tokens,

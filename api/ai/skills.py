@@ -197,7 +197,7 @@ def classify_transaction(model, facts, ruleset_version, traces):
         "text": f"Categories:\n{category_list()}\n\nPurchase (data):\n{purchase_details(facts)}",
     }]
     answer = traced_call(model, "classify_transaction", CLASSIFY_VERSION, ruleset_version,
-                         CLASSIFY_SYSTEM, content, classify_schema(), traces, max_tokens=400)
+                         CLASSIFY_SYSTEM, content, classify_schema(), traces, max_tokens=1024)
     if answer is None:
         return {"category": None, "candidates": []}
 
