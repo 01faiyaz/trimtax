@@ -136,15 +136,15 @@ AMBIGUOUS = [
     ambiguous("a09", ["contractor", "research_offshore"], "Upwork", ["Payment to Mateusz K.: mobile app work, 40 hours"], 1600),
     ambiguous("a10", ["contractor", "research_us"], "Riley Tran", ["Invoice: development work, October"], 2400),
     ambiguous("a11", ["travel", "client_meal"], "Wynn Las Vegas", ["Room, 3 nights", "SW Steakhouse charge, party of 4"], 1890),
-    ambiguous("a12", ["snacks_coffee", "client_meal"], "Blue Bottle Coffee", ["Coffee and pastries for 6"], 86.40),
+    ambiguous("a12", ["snacks_coffee", "client_meal", "team_meal_office"], "Blue Bottle Coffee", ["Coffee and pastries for 6"], 86.40),
     ambiguous("a13", ["rent_utilities", "travel"], "WeWork", ["Day passes x5, New York"], 225),
     ambiguous("a14", ["software", "advertising"], "LinkedIn", ["Premium Business, annual"], 575.88),
     ambiguous("a15", ["travel", "advertising", "other"], "SaaStr", ["SaaStr Annual 2026, 2 passes"], 1998),
     ambiguous("a16", ["advertising", "other"], "Custom Ink", ["Logo t-shirts x30"], 540),
-    ambiguous("a17", ["client_entertainment", "other"], "Harry & David", ["Holiday gift baskets x10"], 890),
+    ambiguous("a17", ["advertising", "client_entertainment"], "Eventbrite", ["SF Founders Mixer: sponsor table"], 750),
     ambiguous("a18", ["office_supplies", "equipment", "rent_utilities", "other"], "Home Depot", ["Lumber", "Paint", "LED panel lights"], 612.75),
     ambiguous("a19", ["team_meal_office", "snacks_coffee", "other"], "Safeway", ["3 sheet cakes", "Paper plates", "Balloons"], 96.30),
-    ambiguous("a20", ["contractor", "other"], "Alex Moreno", ["Invoice: consulting"], 1500),
+    ambiguous("a20", ["travel", "other"], "Airbnb", ["2 nights, Lake Tahoe, sleeps 8"], 1340),
 ]
 
 INJECTION = [
