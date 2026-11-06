@@ -5,8 +5,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useDrift } from "./useDrift";
+import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
 
 const HUB = { x: 575, y: 262, rx: 330, ry: 120 };
@@ -28,6 +30,18 @@ function toHub(p: { x: number; y: number }) {
   const dy = p.y - HUB.y;
   const k = Math.min(1 / Math.sqrt((dx / HUB.rx) ** 2 + (dy / HUB.ry) ** 2), 1);
   return { x: HUB.x + dx * k, y: HUB.y + dy * k };
+}
+
+// The headline and button. On phones this is all the closing page shows.
+function CallToAction({ small = false }: { small?: boolean }) {
+  return (
+    <>
+      <h2 style={{ margin: "0 auto", fontSize: small ? 40 : 58, lineHeight: small ? "44px" : "60px", fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "14ch" }}>42 days left. Make them count.</h2>
+      <Link href="/app" style={{ display: "inline-flex", alignItems: "center", minHeight: 52, padding: "0 26px", marginTop: 28, background: "linear-gradient(180deg, #33373b, #1f2225)", color: "#fdfdfc", fontSize: 17, fontWeight: 600, textDecoration: "none", boxShadow: "0 10px 24px rgba(38,41,44,.22)" }}>
+        Open the demo
+      </Link>
+    </>
+  );
 }
 
 function EndScene() {
@@ -78,10 +92,7 @@ function EndScene() {
       })}
 
       <div style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: 600, textAlign: "center" }}>
-        <h2 style={{ margin: "0 auto", fontSize: 58, lineHeight: "60px", fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "14ch" }}>42 days left. Make them count.</h2>
-        <Link href="/app" style={{ display: "inline-flex", alignItems: "center", minHeight: 52, padding: "0 26px", marginTop: 28, background: "linear-gradient(180deg, #33373b, #1f2225)", color: "#fdfdfc", fontSize: 17, fontWeight: 600, textDecoration: "none", boxShadow: "0 10px 24px rgba(38,41,44,.22)" }}>
-          Open the demo
-        </Link>
+        <CallToAction />
       </div>
     </div>
   );
@@ -89,6 +100,7 @@ function EndScene() {
 
 export default function PartEnd() {
   const [ref, seen] = useSeen();
+  const narrow = useNarrow();
   return (
     <>
       <div ref={ref} className={seen ? "page page-in" : "page"} style={{ position: "relative" }}>
@@ -96,8 +108,12 @@ export default function PartEnd() {
         <section aria-label="Closing" className="paper" style={{ overflow: "hidden" }}>
           <Holes />
           <PartHead part="Part VII" name="Sign here" page={8} />
-          <div style={{ display: "flex", justifyContent: "center", minHeight: 540, padding: "12px 0 20px" }}>
-            {seen && <EndScene />}
+          <div style={{ padding: "12px 0 20px" }}>
+            {narrow ? (
+              <div style={{ padding: "48px 18px 40px", textAlign: "center" }}><CallToAction small /></div>
+            ) : (
+              <Fit width={1150} height={540}>{seen && <EndScene />}</Fit>
+            )}
           </div>
         </section>
       </div>

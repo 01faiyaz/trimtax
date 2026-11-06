@@ -4,7 +4,9 @@
 // packet that ends up with the accountant.
 
 import { useEffect, useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
+import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
 
 const mono = { fontFamily: "var(--mono)" };
@@ -46,7 +48,7 @@ function Step({ n, children }: { n: number; children: React.ReactNode }) {
   );
 }
 
-function OnTime() {
+function OnTime({ stacked = false }: { stacked?: boolean }) {
   const [shown, setShown] = useState(0); // how many notifications are on the phone
   const [drawn, setDrawn] = useState(false); // the pen circle around Dec 31
   const [spread, setSpread] = useState(0); // 0 stacked, 1 fanned a little, 2 fanned wide on hover
@@ -84,9 +86,10 @@ function OnTime() {
   const sheetBox = { position: "absolute", left: 10, top: 10, width: 230, height: 320, padding: "16px 18px", boxSizing: "border-box", transformOrigin: "20% 100%", transition: `transform .8s ${ease}` } as const;
 
   return (
-    <div style={{ position: "relative", width: 1080, height: 560, display: "flex", justifyContent: "space-between", lineHeight: "normal", fontVariantNumeric: "tabular-nums" }}>
+    <div style={{ position: "relative", display: "flex", lineHeight: "normal", fontVariantNumeric: "tabular-nums",
+      ...(stacked ? { flexDirection: "column", alignItems: "center", gap: 40 } : { width: 1080, height: 560, justifyContent: "space-between" }) }}>
 
-      <div style={{ width: 280, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: 280, maxWidth: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <div style={{ alignSelf: "flex-start" }}><Step n={1}>A heads-up before it&apos;s late</Step></div>
         <div aria-hidden="true" style={{ position: "relative", width: 250, height: 500, borderRadius: 38, background: "linear-gradient(145deg, #3a3e43, #1c1f22)", padding: 10, boxSizing: "border-box", boxShadow: "0 30px 60px rgba(38,41,44,.25), inset 0 1px 0 rgba(255,255,255,.12)" }}>
           <div style={{ position: "relative", height: "100%", borderRadius: 30, overflow: "hidden", background: "linear-gradient(180deg, #dfe6ef 0%, #eef0f0 55%, #f3eee0 100%)" }}>
@@ -118,9 +121,9 @@ function OnTime() {
         </div>
       </div>
 
-      <Arrow />
+      {!stacked && <Arrow />}
 
-      <div style={{ width: 320, display: "flex", flexDirection: "column" }}>
+      <div style={{ width: 320, maxWidth: "100%", display: "flex", flexDirection: "column" }}>
         <Step n={2}>The dates that decide it</Step>
         <div style={{ background: "linear-gradient(180deg, #ffffff, #fafbfa)", border: "1px solid #d6d9db", boxShadow: "0 1px 2px rgba(38,41,44,.04), 0 22px 44px rgba(38,41,44,.10)", padding: "18px 20px 20px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
@@ -160,9 +163,9 @@ function OnTime() {
         </div>
       </div>
 
-      <Arrow />
+      {!stacked && <Arrow />}
 
-      <div style={{ width: 340, display: "flex", flexDirection: "column" }} onMouseEnter={() => setSpread(2)} onMouseLeave={() => setSpread(1)}>
+      <div style={{ width: 340, maxWidth: "100%", display: "flex", flexDirection: "column" }} onMouseEnter={() => setSpread(2)} onMouseLeave={() => setSpread(1)}>
         <Step n={3}>Handed to your accountant</Step>
         <div aria-hidden="true" style={{ position: "relative", height: 380 }}>
           {SHEETS.map((title, i) => {
@@ -204,18 +207,19 @@ function OnTime() {
 
 export default function PartOnTime() {
   const [ref, seen] = useSeen();
+  const narrow = useNarrow();
   return (
     <div id="ontime" ref={ref} className={seen ? "page page-in" : "page"} style={{ position: "relative", scrollMarginTop: 80 }}>
       <div aria-hidden="true" className="under" />
       <section aria-labelledby="ontime-title" className="paper">
         <Holes />
         <PartHead part="Part V" name="On time" page={6} />
-        <div style={{ padding: "56px 32px 64px" }}>
-          <h2 id="ontime-title" className="reveal" style={{ "--d": ".1s", margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "26ch" } as React.CSSProperties}>
+        <div className="page-body">
+          <h2 id="ontime-title" className="reveal page-title" style={{ "--d": ".1s", maxWidth: "26ch" } as React.CSSProperties}>
             It watches the calendar for you. <span className="muted" style={{ fontWeight: 600 }}>A nudge before each line, a packet at the end.</span>
           </h2>
-          <div className="reveal" style={{ "--d": ".25s", minHeight: 560, marginTop: 44, display: "flex", justifyContent: "center" } as React.CSSProperties}>
-            {seen && <OnTime />}
+          <div className="reveal" style={{ "--d": ".25s", marginTop: 44 } as React.CSSProperties}>
+            {narrow ? seen && <OnTime stacked /> : <Fit width={1080} height={560}>{seen && <OnTime />}</Fit>}
           </div>
         </div>
       </section>

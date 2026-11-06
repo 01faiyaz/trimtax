@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppWindow from "./AppWindow";
+import Fit from "./Fit";
 import { Holes } from "./Paper";
 import { useSeen } from "./useSeen";
 import YearRing from "./YearRing";
@@ -22,7 +23,7 @@ export function SiteHeader() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "12px 24px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "12px 32px" }}>
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px 36px" }}>
           <p style={{ margin: 0, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>TrimTax</p>
-          <nav aria-label="Main" style={{ display: "flex", flexWrap: "wrap", gap: "4px 24px", fontSize: 15 }}>
+          <nav aria-label="Main" className="site-nav">
             <a href="#how" style={navLink}>How it works</a>
             <a href="#ai" style={navLink}>The AI</a>
             <a href="#file" style={navLink}>Your tax file</a>
@@ -65,12 +66,12 @@ export function CoverPage() {
         </div>
         <Holes />
 
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", margin: "28px 32px 0", borderTop: "4px solid #26292c", borderBottom: "1px solid #26292c", background: "rgba(253,253,252,.74)", WebkitBackdropFilter: "blur(8px)", backdropFilter: "blur(8px)" }}>
-          <div style={{ flex: "1 1 220px", padding: "12px 20px 12px 0", borderRight: "1px solid #d6d9db" }}>
+        <div className="cover-mast" style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch", borderTop: "4px solid #26292c", borderBottom: "1px solid #26292c", background: "rgba(253,253,252,.74)", WebkitBackdropFilter: "blur(8px)", backdropFilter: "blur(8px)" }}>
+          <div className="mast-cell" style={{ flex: "1 1 220px", padding: "12px 20px 12px 0" }}>
             <p style={{ margin: 0, fontSize: 26, lineHeight: "30px", fontWeight: 800, letterSpacing: "-0.02em" }}>TrimTax</p>
             <p className="muted" style={{ margin: "2px 0 0", fontSize: 13, lineHeight: "18px" }}>A tax file that fills itself in all year</p>
           </div>
-          <div style={{ flex: "2 1 300px", padding: "12px 20px", borderRight: "1px solid #d6d9db" }}>
+          <div className="mast-cell mast-mid" style={{ flex: "2 1 300px", paddingTop: 12, paddingRight: 20, paddingBottom: 12 }}>
             <p className="muted" style={{ margin: 0, fontSize: 12, lineHeight: "16px" }}>Business</p>
             <p className="mono" style={{ margin: "2px 0 0", fontSize: 19, lineHeight: "24px", fontWeight: 700 }}>Tidewell Labs</p>
             <p className="muted" style={{ margin: "2px 0 0", fontSize: 12, lineHeight: "16px" }}>Synthetic demo data. Federal and California, ruleset 2026.1</p>
@@ -81,13 +82,13 @@ export function CoverPage() {
           </div>
         </div>
 
-        <div style={{ padding: "0 32px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "24px 48px", minHeight: 600 }}>
+        <div className="cover-body" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "24px 48px", minHeight: 600 }}>
           <div style={{ flex: "1 1 440px", padding: "48px 0 56px", position: "relative", zIndex: 1 }}>
             <p className="intro" style={{ margin: "0 0 24px", fontSize: 14, lineHeight: "20px", animationDelay: ".1s" }}>
               Tax year 2026 already gone:{" "}
               <span className="live mono" style={{ fontWeight: 700, color: "#2c5ba0", padding: "2px 6px", borderRadius: 4 }}>{gone}%</span>
             </p>
-            <h1 id="hero" className="intro" style={{ margin: 0, fontSize: 64, lineHeight: "64px", fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "13ch", animationDelay: ".2s" }}>
+            <h1 id="hero" className="intro hero-title" style={{ margin: 0, fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "13ch", animationDelay: ".2s" }}>
               See your taxes while you can{" "}
               <span style={{ background: "linear-gradient(90deg, #2c5ba0, #5f88cc 60%, #b08a45)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>still change them.</span>
             </h1>
@@ -135,10 +136,10 @@ export function ProductShot() {
   return (
     <div ref={ref} style={{ position: "relative", zIndex: 2, marginTop: -190, display: "flex", justifyContent: "center" }}>
       <div aria-hidden="true" className="blob" style={{ left: "10%", top: "8%", width: "70%", height: "90%", background: "radial-gradient(closest-side, rgba(44,91,160,.16), rgba(44,91,160,0))", animationDuration: "26s" }} />
-      <div className={standing ? "shot shot-in" : "shot"} style={{ position: "relative", width: 950, height: 528 }}>
-        <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 600, transform: "scale(.88)", transformOrigin: "0 0" }}>
+      <div className={standing ? "shot shot-in" : "shot"} style={{ position: "relative", width: "100%", maxWidth: 950 }}>
+        <Fit width={1080} height={600} max={0.88}>
           <AppWindow />
-        </div>
+        </Fit>
       </div>
 
       <div aria-hidden="true" className="bob" style={{ "--tilt": "-4deg", position: "absolute", left: 0, top: 300, width: 190, padding: "12px 14px", background: "linear-gradient(180deg, #ffffff, #f7f8f7)", border: "1px solid #d6d9db", boxShadow: "0 18px 36px rgba(38,41,44,.16)", fontSize: 12, lineHeight: "16px", animation: "site-bob 6s ease-in-out infinite" } as React.CSSProperties}>

@@ -3,6 +3,7 @@
 // The Sweetgreen receipt being read: a scan line passes over each field, a wire carries it
 // to "What the AI read", the category comes back as a question, then "What the code did"
 // lights up. Steps 1 to 4 read one field each, 5 is the category, 6 hands off to the code.
+// On phones (stacked) the panels sit under the receipt and the wires are left out.
 
 import { useEffect, useState } from "react";
 
@@ -50,16 +51,21 @@ const line = { position: "absolute" as const, left: 22, right: 22, margin: 0, di
 const codeLine = { margin: 0, fontSize: 14, lineHeight: "24px" };
 const arrow = { color: "#8fb0e0", fontWeight: 700 };
 
-export default function ReceiptScan() {
+export const STACKED_SIZE = { width: 500, height: 1020 };
+
+export default function ReceiptScan({ stacked = false }: { stacked?: boolean }) {
   const step = useScanSteps();
+  const receiptLeft = stacked ? (STACKED_SIZE.width - RECEIPT.width) / 2 : RECEIPT.left;
+  const panelLeft = stacked ? 0 : CARD.left;
+  const drop = stacked ? 500 : 0; // how far the panels move down when stacked
 
   return (
     <div role="group" aria-label="A receipt being read. The AI pulls out the vendor, date, total and a clue, then plain code checks the numbers and applies the rule."
-      style={{ position: "relative", width: 1080, height: 520 }}>
+      style={{ position: "relative", ...(stacked ? STACKED_SIZE : { width: 1080, height: 520 }) }}>
       <div aria-hidden="true" style={{ position: "absolute", left: -40, top: -20, width: 520, height: 560, background: "radial-gradient(ellipse at center, rgba(44,91,160,.10), rgba(44,91,160,0) 62%)" }} />
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(#d9dde0 1px, transparent 1px)", backgroundSize: "22px 22px", WebkitMaskImage: "radial-gradient(ellipse at 30% 50%, #000 15%, transparent 65%)", maskImage: "radial-gradient(ellipse at 30% 50%, #000 15%, transparent 65%)" }} />
 
-      <div aria-hidden="true" style={{ position: "absolute", left: RECEIPT.left, top: RECEIPT.top, width: RECEIPT.width, filter: "drop-shadow(0 2px 2px rgba(38,41,44,.06)) drop-shadow(0 22px 34px rgba(38,41,44,.14))" }}>
+      <div aria-hidden="true" style={{ position: "absolute", left: receiptLeft, top: RECEIPT.top, width: RECEIPT.width, filter: "drop-shadow(0 2px 2px rgba(38,41,44,.06)) drop-shadow(0 22px 34px rgba(38,41,44,.14))" }}>
         <div className="mono" style={{ position: "relative", height: 460, background: "linear-gradient(180deg, #ffffff, #fbfbfa)", fontSize: 13, lineHeight: "18px", overflow: "hidden" }}>
           <p style={{ position: "absolute", left: 0, right: 0, top: 22, margin: 0, textAlign: "center", fontSize: 21, lineHeight: "24px", fontWeight: 700, letterSpacing: ".08em" }}>SWEETGREEN</p>
           <p className="muted" style={{ position: "absolute", left: 0, right: 0, top: 54, margin: 0, textAlign: "center", fontSize: 12 }}>Catering order #4471</p>
@@ -91,25 +97,27 @@ export default function ReceiptScan() {
         <div style={{ height: 12, background: "linear-gradient(135deg, #fbfbfa 6px, transparent 0) 0 0 / 12px 12px, linear-gradient(-135deg, #fbfbfa 6px, transparent 0) 0 0 / 12px 12px" }} />
       </div>
 
-      <svg aria-hidden="true" width="1080" height="520" viewBox="0 0 1080 520" style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "visible" }}>
-        {FIELDS.map((f, i) => {
-          const x1 = RECEIPT.left + RECEIPT.width - f.right + 4;
-          const y1 = RECEIPT.top + f.top + f.height / 2;
-          const x2 = CARD.left;
-          const y2 = CARD.firstRow + i * CARD.rowHeight + CARD.rowHeight / 2;
-          const on = step >= i + 1;
-          return (
-            <g key={f.tag}>
-              <path d={`M${x1} ${y1} C${x1 + 80} ${y1}, ${x2 - 80} ${y2}, ${x2} ${y2}`} pathLength={1} fill="none" stroke="#2c5ba0" strokeWidth="1.5" strokeDasharray="1"
-                style={{ strokeDashoffset: on ? 0 : 1, transition: "stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)" }} />
-              <circle cx={x1} cy={y1} r="3.5" fill="#2c5ba0" style={{ opacity: on ? 1 : 0, transition: "opacity .3s ease" }} />
-              <circle cx={x2} cy={y2} r="3.5" fill="#ffffff" stroke="#2c5ba0" strokeWidth="1.5" style={{ opacity: on ? 1 : 0, transition: "opacity .3s ease .4s" }} />
-            </g>
-          );
-        })}
-      </svg>
+      {!stacked && (
+        <svg aria-hidden="true" width="1080" height="520" viewBox="0 0 1080 520" style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "visible" }}>
+          {FIELDS.map((f, i) => {
+            const x1 = RECEIPT.left + RECEIPT.width - f.right + 4;
+            const y1 = RECEIPT.top + f.top + f.height / 2;
+            const x2 = CARD.left;
+            const y2 = CARD.firstRow + i * CARD.rowHeight + CARD.rowHeight / 2;
+            const on = step >= i + 1;
+            return (
+              <g key={f.tag}>
+                <path d={`M${x1} ${y1} C${x1 + 80} ${y1}, ${x2 - 80} ${y2}, ${x2} ${y2}`} pathLength={1} fill="none" stroke="#2c5ba0" strokeWidth="1.5" strokeDasharray="1"
+                  style={{ strokeDashoffset: on ? 0 : 1, transition: "stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)" }} />
+                <circle cx={x1} cy={y1} r="3.5" fill="#2c5ba0" style={{ opacity: on ? 1 : 0, transition: "opacity .3s ease" }} />
+                <circle cx={x2} cy={y2} r="3.5" fill="#ffffff" stroke="#2c5ba0" strokeWidth="1.5" style={{ opacity: on ? 1 : 0, transition: "opacity .3s ease .4s" }} />
+              </g>
+            );
+          })}
+        </svg>
+      )}
 
-      <div style={{ position: "absolute", left: 520, top: 28, width: 500, height: 300, background: "linear-gradient(180deg, #ffffff, #fafbfa)", border: "1px solid #d6d9db", boxShadow: "0 1px 2px rgba(38,41,44,.04), 0 18px 36px rgba(38,41,44,.08)" }}>
+      <div style={{ position: "absolute", left: panelLeft, top: 28 + drop, width: 500, height: 300, background: "linear-gradient(180deg, #ffffff, #fafbfa)", border: "1px solid #d6d9db", boxShadow: "0 1px 2px rgba(38,41,44,.04), 0 18px 36px rgba(38,41,44,.08)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: "1px solid #e3e5e6" }}>
           <p style={{ margin: 0, fontSize: 15, fontWeight: 700 }}>What the AI read</p>
           <span className="muted" style={{ fontSize: 12 }}>Claude, fixed list of categories</span>
@@ -127,11 +135,11 @@ export default function ReceiptScan() {
         })}
       </div>
 
-      <div aria-hidden="true" className="muted" style={{ position: "absolute", left: 520, width: 500, top: 338, display: "flex", alignItems: "center", gap: 12, fontSize: 12, fontWeight: 600 }}>
+      <div aria-hidden="true" className="muted" style={{ position: "absolute", left: panelLeft, width: 500, top: 338 + drop, display: "flex", alignItems: "center", gap: 12, fontSize: 12, fontWeight: 600 }}>
         <span style={{ flex: 1, borderTop: "1px dashed #b4b8bc" }} /><span>The AI stops here. Plain code does the math.</span><span style={{ flex: 1, borderTop: "1px dashed #b4b8bc" }} />
       </div>
 
-      <div style={{ position: "absolute", left: 520, top: 366, width: 500, padding: "14px 20px", background: "#26292c", color: "#fdfdfc", boxShadow: "0 18px 36px rgba(38,41,44,.22)", transition: "opacity .6s ease, transform .7s cubic-bezier(.22,1,.36,1)", opacity: step >= 6 ? 1 : 0.18, transform: `translateY(${step >= 6 ? 0 : 10}px)` }}>
+      <div style={{ position: "absolute", left: panelLeft, top: 366 + drop, width: 500, padding: "14px 20px", background: "#26292c", color: "#fdfdfc", boxShadow: "0 18px 36px rgba(38,41,44,.22)", transition: "opacity .6s ease, transform .7s cubic-bezier(.22,1,.36,1)", opacity: step >= 6 ? 1 : 0.18, transform: `translateY(${step >= 6 ? 0 : 10}px)` }}>
         <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: "#c9d6ea" }}>What the code did</p>
         <p style={codeLine}><span style={arrow}>✓</span> Number check: <span className="mono" style={{ fontWeight: 700 }}>$412.00</span> is printed on the receipt</p>
         <p style={codeLine}><span style={arrow}>→</span> Rule <span className="mono">meals.office</span> <span className="mono" style={arrow}>[[IRC 274(o)]]</span>: team 0% federal, 100% California; client 50%</p>

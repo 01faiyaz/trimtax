@@ -6,8 +6,10 @@
 // and the test scores are the real ones from the README.
 
 import { useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useDrift } from "./useDrift";
+import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
 
 type Node = {
@@ -62,7 +64,7 @@ const SCORES = [
   ["Dollar figures the AI made up", "0", "0"],
 ];
 
-function GraphView() {
+function GraphView({ stacked = false }: { stacked?: boolean }) {
   const [selected, setSelected] = useState("room");
   const t = useDrift(); // the nodes drift a little so the graph feels alive
 
@@ -78,33 +80,38 @@ function GraphView() {
     ? `Read by the AI on ${chosen.date}: ${chosen.item}. Over $2,500 per item, and traced to the card transaction, so it counts toward equipment in use.`
     : chosen.text;
 
-  return (
-    <div style={{ position: "relative", width: 1080, height: 560, display: "flex", background: "#fdfdfc", lineHeight: "normal" }}>
-      <div style={{ position: "relative", width: 720, height: 560 }}>
-        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(#e4e7e9 1px, transparent 1px), linear-gradient(90deg, #e4e7e9 1px, transparent 1px)", backgroundSize: "32px 32px", WebkitMaskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)", maskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)" }} />
-        <svg width="720" height="560" viewBox="0 0 720 560" role="img" aria-label="How the $6,600 California equipment room is linked to its rule, code, test and four receipts" style={{ position: "relative" }}>
-          {LINKS.map(([a, b], i) => {
-            const lit = a === selected || b === selected;
-            return (
-              <line key={a + b} className="edge" x1={at[a].px.toFixed(1)} y1={at[a].py.toFixed(1)} x2={at[b].px.toFixed(1)} y2={at[b].py.toFixed(1)} pathLength={1}
-                stroke={lit ? "#2c5ba0" : "#b9bec2"} strokeWidth={lit ? 1.8 : 1} strokeOpacity={lit ? 1 : 0.7} style={{ animationDelay: `${(0.2 + i * 0.06).toFixed(2)}s` }} />
-            );
-          })}
-          {NODES.map((n, i) => {
-            const p = at[n.id];
-            const receipt = n.kind === "Receipt";
-            return (
-              <g key={n.id} className="node-pop" onClick={() => setSelected(n.id)} opacity={near.has(n.id) ? 1 : 0.35} style={{ cursor: "pointer", animationDelay: `${(i * 0.04).toFixed(2)}s` }}>
-                <circle cx={p.px.toFixed(1)} cy={p.py.toFixed(1)} r={n.r + 6} fill="none" stroke="#2c5ba0" strokeWidth="2" strokeOpacity={n.id === selected ? 1 : 0} />
-                <circle cx={p.px.toFixed(1)} cy={p.py.toFixed(1)} r={n.r} fill={receipt ? "#e9dcb8" : n.fill} stroke={receipt ? "#b8a675" : n.stroke} strokeWidth="1.5" />
-                <text x={p.px.toFixed(1)} y={(p.py + n.r + 16).toFixed(1)} textAnchor="middle" fontSize="12" fontWeight={n.id === selected ? 700 : 500} fill="#3f454b">{n.label}</text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+  // The graph itself. On phones it's scaled to fit and the panel goes underneath.
+  const graph = (
+    <div style={{ position: "relative", width: 720, height: 560 }}>
+      <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(#e4e7e9 1px, transparent 1px), linear-gradient(90deg, #e4e7e9 1px, transparent 1px)", backgroundSize: "32px 32px", WebkitMaskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)", maskImage: "radial-gradient(ellipse at center, #000 30%, transparent 75%)" }} />
+      <svg width="720" height="560" viewBox="0 0 720 560" role="img" aria-label="How the $6,600 California equipment room is linked to its rule, code, test and four receipts" style={{ position: "relative" }}>
+        {LINKS.map(([a, b], i) => {
+          const lit = a === selected || b === selected;
+          return (
+            <line key={a + b} className="edge" x1={at[a].px.toFixed(1)} y1={at[a].py.toFixed(1)} x2={at[b].px.toFixed(1)} y2={at[b].py.toFixed(1)} pathLength={1}
+              stroke={lit ? "#2c5ba0" : "#b9bec2"} strokeWidth={lit ? 1.8 : 1} strokeOpacity={lit ? 1 : 0.7} style={{ animationDelay: `${(0.2 + i * 0.06).toFixed(2)}s` }} />
+          );
+        })}
+        {NODES.map((n, i) => {
+          const p = at[n.id];
+          const receipt = n.kind === "Receipt";
+          return (
+            <g key={n.id} className="node-pop" onClick={() => setSelected(n.id)} opacity={near.has(n.id) ? 1 : 0.35} style={{ cursor: "pointer", animationDelay: `${(i * 0.04).toFixed(2)}s` }}>
+              <circle cx={p.px.toFixed(1)} cy={p.py.toFixed(1)} r={n.r + 6} fill="none" stroke="#2c5ba0" strokeWidth="2" strokeOpacity={n.id === selected ? 1 : 0} />
+              <circle cx={p.px.toFixed(1)} cy={p.py.toFixed(1)} r={n.r} fill={receipt ? "#e9dcb8" : n.fill} stroke={receipt ? "#b8a675" : n.stroke} strokeWidth="1.5" />
+              <text x={p.px.toFixed(1)} y={(p.py + n.r + 16).toFixed(1)} textAnchor="middle" fontSize="12" fontWeight={n.id === selected ? 700 : 500} fill="#3f454b">{n.label}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
 
-      <aside aria-label="Selected item" aria-live="polite" style={{ width: 360, height: 560, boxSizing: "border-box", padding: "28px 28px 24px", borderLeft: "1px solid #e3e5e6", display: "flex", flexDirection: "column", gap: 14, overflow: "hidden" }}>
+  return (
+    <div style={{ position: "relative", display: "flex", background: "#fdfdfc", lineHeight: "normal", ...(stacked ? { flexDirection: "column" } : { width: 1080, height: 560 }) }}>
+      {stacked ? <Fit width={720} height={560}>{graph}</Fit> : graph}
+
+      <aside aria-label="Selected item" aria-live="polite" style={{ ...(stacked ? { borderTop: "1px solid #e3e5e6" } : { width: 360, height: 560, borderLeft: "1px solid #e3e5e6" }), boxSizing: "border-box", padding: "28px 28px 24px", display: "flex", flexDirection: "column", gap: 14, overflow: "hidden" }}>
         <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: "#61666b" }}>{chosen.kind}</p>
         <p style={{ margin: 0, fontSize: 22, lineHeight: "28px", fontWeight: 700 }}>{chosen.label}</p>
         <p style={{ margin: 0, fontSize: 15, lineHeight: "23px", color: "#4f555b" }}>{text}</p>
@@ -128,6 +135,7 @@ function GraphView() {
 
 export default function PartBuilt() {
   const [ref, seen] = useSeen();
+  const narrow = useNarrow();
   const reveal = (d: string) => ({ "--d": d } as React.CSSProperties);
   const row = { display: "flex", gap: 10, padding: "8px 0", borderTop: "1px solid #e3e5e6" };
   const score = { margin: 0, width: 78, flex: "none", textAlign: "right", fontFamily: "var(--mono)", fontWeight: 700 } as const;
@@ -138,15 +146,15 @@ export default function PartBuilt() {
       <section aria-labelledby="built-title" className="paper">
         <Holes />
         <PartHead part="Part VI" name="How every number is linked" page={7} />
-        <div style={{ padding: "56px 32px" }}>
-          <h2 id="built-title" className="reveal" style={{ ...reveal(".1s"), margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "28ch" }}>
+        <div className="page-body" style={{ paddingBottom: 56 }}>
+          <h2 id="built-title" className="reveal page-title" style={{ ...reveal(".1s"), maxWidth: "28ch" }}>
             Every number links back to where it came from. <span className="muted" style={{ fontWeight: 600 }}>Click any dot.</span>
           </h2>
-          <div className="reveal" style={{ ...reveal(".25s"), marginTop: 36, minHeight: 562, border: "1px solid #e3e5e6", overflow: "hidden" }}>
-            {seen && <GraphView />}
+          <div className="reveal" style={{ ...reveal(".25s"), marginTop: 36, border: "1px solid #e3e5e6", overflow: "hidden" }}>
+            {narrow ? seen && <GraphView stacked /> : <Fit width={1080} height={560}>{seen && <GraphView />}</Fit>}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 32, marginTop: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: 32, marginTop: 40 }}>
             {[
               ["The AI reads and asks", "Claude reads receipts and sorts each purchase into a fixed list of categories. If the answer would change a number, it asks you one question."],
               ["Plain code does the math", "Limits and write-offs come from tested Python and versioned rule files, never from the AI."],
@@ -159,7 +167,7 @@ export default function PartBuilt() {
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 24, marginTop: 48 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))", gap: 24, marginTop: 48 }}>
             <div className="reveal" style={{ ...reveal(".3s"), padding: "24px 26px", background: "#ffffff", border: "1px solid #d6d9db", boxShadow: "0 16px 34px rgba(38,41,44,.08)" }}>
               <p style={{ margin: 0, fontSize: 20, lineHeight: "28px", fontWeight: 700 }}>How we test it</p>
               <p style={{ margin: "4px 0 0", fontSize: 14, color: "#61666b" }}>100 labeled purchases we tuned on, and a held-out set of 29 we never tuned on.</p>
