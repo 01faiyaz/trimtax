@@ -24,7 +24,7 @@ CATEGORIES = {
 # One line per category for the sorting step, so it sorts the same way the engine counts.
 HINTS = {
     "equipment": "computers, machines, furniture: any single item over $2,500 that lasts more than a year",
-    "team_meal_office": "food for the company's own team, served at the office",
+    "team_meal_office": "food for the company's own team at the office, when the receipt says it was for the team",
     "client_meal": "a meal with a client or prospect, anywhere",
     "client_entertainment": "tickets, games, shows or outings with a client",
     "snacks_coffee": "snacks, drinks and coffee for the office kitchen",
