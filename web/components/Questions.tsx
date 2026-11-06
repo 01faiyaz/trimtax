@@ -70,7 +70,7 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
           <div>
             <p className="muted small">{question.merchant}, {dollars(question.amount_cents, true)}, {longDate(question.date)}</p>
             <h2 style={{ fontSize: 22, lineHeight: "30px", margin: "6px 0 12px" }}>{question.question}</h2>
-            {question.options.some((option) => option.outcome !== null) && (
+            {isTeamOrClientMeal(question) && (
             <p style={{ color: "var(--ink-soft)" }}>
               Team meals at the office are 0% deductible on the federal return in 2026, but California still allows 100%.
               Client meals are 50% on both. Whether it counts as a team meal depends on the facts.{" "}
@@ -146,4 +146,11 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
 function labelFor(question: Question): string {
   const match = question.options.find((option) => option.category === question.category);
   return match ? match.label.toLowerCase() : question.category;
+}
+
+
+// The meals note below is written for one choice: team meal at the office or client meal.
+function isTeamOrClientMeal(question: Question) {
+  const categories = question.options.map((option) => option.category);
+  return categories.includes("team_meal_office") && categories.includes("client_meal");
 }
