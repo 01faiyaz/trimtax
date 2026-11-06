@@ -11,7 +11,7 @@ export type Deductible = {
 };
 
 export type OpenItem =
-  | { kind: "question"; transaction_id: string; merchant: string; date: string; amount_cents: number }
+  | { kind: "question"; transaction_id: string; merchant: string; date: string; amount_cents: number; question: string }
   | { kind: "missing_w9"; contractor_id: string; name: string; paid_cents: number; cents_to_line: number; w9_requested: boolean }
   | { kind: "de542_unclear"; names: string[]; count: number };
 
@@ -137,4 +137,23 @@ export type Comparison = {
   rule_changes: RuleChange[];
   forms_needed: { before: number; after: number };
   team_meals_federal_deductible: { before: number; after: number };
+};
+
+export type RuleUpdate = {
+  id: string;
+  year: number;
+  rule_id: string;
+  field: string;
+  plain_words: string;
+  from_text: string;
+  to_text: string;
+  quote: string;
+  source: { cite: string; url: string; file: string };
+  proposed_by: string;
+  proposed_on: string;
+  status: "proposed" | "approved" | "rejected";
+  decided_by: string | null;
+  decided_on: string | null;
+  outcome: "changed" | "already_matches" | null;
+  ruleset_version: string | null;
 };

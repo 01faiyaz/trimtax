@@ -68,8 +68,8 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
               <li>
                 <span className="mark">Δ</span>
                 <span className="grow">
-                  Was the <strong className="figure" style={{ fontSize: 16 }}>{dollars(question.amount_cents)}</strong>{" "}
-                  {question.merchant} order on {shortDate(question.date)} for your team at the office, or a client?
+                  {question.merchant}, <strong className="figure" style={{ fontSize: 16 }}>{dollars(question.amount_cents)}</strong>{" "}
+                  on {shortDate(question.date)}: {question.question}
                 </span>
                 <button className="button small light" onClick={() => goTo("questions")}>Answer</button>
               </li>

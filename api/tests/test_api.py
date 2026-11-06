@@ -274,3 +274,21 @@ def test_packet_exports_work_for_an_empty_company(client):
     _, rows = packet_csv_rows(client, workspace)
     assert not [row for row in rows if row["section"] in ("Open item", "Transaction")]
     assert client.get(f"/workspaces/{workspace}/packet.pdf").content.startswith(b"%PDF")
+
+def test_rule_update_log_shows_each_update_in_plain_words(client, tmp_path, monkeypatch):
+    from datetime import date
+    from app import rule_log
+    monkeypatch.setattr(rule_log, "LOG_PATH", tmp_path / "updates.yaml")
+    assert client.get("/rules/2026/updates").json() == []
+    rule_log.save_log([{
+        "id": "upd_001", "year": 2026, "rule_id": "fed_1099_nec_threshold", "field": "threshold_cents",
+        "from": 60000, "to": 200000, "quote": 'striking "$600" and inserting "$2,000"',
+        "source": {"cite": "OBBBA sec. 70433", "url": "https://example.gov", "file": "rules/sources/x.txt"},
+        "status": "approved", "decided_by": "Faiyaz Mashrafi", "decided_on": date(2026, 11, 6),
+        "proposed_on": date(2026, 11, 6),
+    }])
+    [entry] = client.get("/rules/2026/updates").json()
+    assert (entry["from_text"], entry["to_text"]) == ("$600", "$2,000")
+    assert entry["decided_on"] == "2026-11-06"
+    assert "1099-NEC" in entry["plain_words"]
+    assert client.get("/rules/2025/updates").json() == []
