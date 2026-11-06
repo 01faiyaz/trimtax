@@ -4,10 +4,13 @@ from statistics import median
 
 
 def score_clear(results):
-    correct = asked = wrong = 0
+    correct = asked = wrong = failed = 0
     misses = []
     for r in results:
-        if r["category"] == r["expected"]["category"]:
+        if r.get("failed"):
+            failed += 1
+            misses.append((r["id"], "a failed model call", r["expected"]["category"]))
+        elif r["category"] == r["expected"]["category"]:
             correct += 1
         elif r["category"] is None:
             asked += 1
@@ -15,7 +18,8 @@ def score_clear(results):
         else:
             wrong += 1
             misses.append((r["id"], r["category"], r["expected"]["category"]))
-    return {"total": len(results), "correct": correct, "asked_instead": asked, "wrong": wrong, "misses": misses}
+    return {"total": len(results), "correct": correct, "asked_instead": asked, "wrong": wrong,
+            "failed": failed, "misses": misses}
 
 
 def good_options(options, acceptable):
@@ -23,11 +27,14 @@ def good_options(options, acceptable):
 
 
 def score_ambiguous(results):
-    asked = good = guessed = 0
+    asked = good = guessed = failed = 0
     misses = []
     for r in results:
         acceptable = r["expected"]["acceptable"]
-        if r["category"] is None:
+        if r.get("failed"):
+            failed += 1
+            misses.append((r["id"], "a failed model call", "should ask: " + "/".join(acceptable)))
+        elif r["category"] is None:
             asked += 1
             if good_options(r["options"], acceptable):
                 good += 1
@@ -36,7 +43,8 @@ def score_ambiguous(results):
         else:
             guessed += 1
             misses.append((r["id"], "guessed " + r["category"], "should ask: " + "/".join(acceptable)))
-    return {"total": len(results), "asked": asked, "good_options": good, "guessed": guessed, "misses": misses}
+    return {"total": len(results), "asked": asked, "good_options": good, "guessed": guessed,
+            "failed": failed, "misses": misses}
 
 
 def score_injection(results):

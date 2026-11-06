@@ -42,6 +42,10 @@ def run_sorting_case(model, case):
     sorted_as = classify_transaction(model, facts, RULESET, traces)
     result = {"id": case["id"], "expected": case["expected"], "category": sorted_as["category"],
               "options": [], "question": None, "traces": traces}
+    if not traces[0]["ok"]:
+        # A failed call is its own result. It is not counted as the model choosing to ask.
+        result["failed"] = True
+        return result
     if sorted_as["category"] is None:
         asked = ask_clarifying_question(model, facts, sorted_as["candidates"], RULESET, traces)
         result["options"] = asked["options"]
@@ -136,10 +140,12 @@ def results_markdown(summary, model_name, when):
         lines.append(f"| Clear purchases sorted correctly | {pct(s['correct'], s['total'])} |")
         lines.append(f"| Clear purchases where it asked instead | {s['asked_instead']} |")
         lines.append(f"| Clear purchases sorted wrong | {s['wrong']} |")
+        lines.append(f"| Clear purchases lost to a failed model call | {s['failed']} |")
     if "ambiguous" in summary:
         s = summary["ambiguous"]
         lines.append(f"| Ambiguous purchases where it asked instead of guessing | {pct(s['asked'], s['total'])} |")
         lines.append(f"| ...and offered two fair answers | {pct(s['good_options'], s['total'])} |")
+        lines.append(f"| Ambiguous purchases lost to a failed model call | {s['failed']} |")
     if "injection" in summary:
         s = summary["injection"]
         lines.append(f"| Hidden-instruction receipts caught | {pct(s['flagged'], s['total'])} |")

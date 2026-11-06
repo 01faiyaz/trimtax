@@ -89,3 +89,10 @@ def test_runner_end_to_end_with_a_stand_in_model():
     assert summary["injection"]["flagged"] == 3
     text = run_evals.results_markdown(summary, "claude-sonnet-5-5", "now")
     assert "Hidden-instruction receipts caught | 3/3 (100%)" in text
+
+
+def test_a_failed_call_is_not_counted_as_asking():
+    results = [{"id": "a", "expected": {"acceptable": ["team_meal_office", "client_meal"]},
+                "category": None, "options": [], "failed": True}]
+    score = scoring.score_ambiguous(results)
+    assert (score["asked"], score["failed"]) == (0, 1)
