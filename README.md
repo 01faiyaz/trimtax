@@ -8,7 +8,7 @@ The short version: **the AI reads and lists the options, plain code does the mat
 
 TrimTax never files anything and doesn't give tax advice. It's a during-the-year view to bring to your accountant.
 
-Built by Team Taxaphobe (Faiyaz Mashrafi and Sean Zhou) for the Berkeley Business Society x Ramp hackathon. It isn't affiliated with Ramp, and everything in the demo is synthetic data.
+Built by Team Taxaphobe (Faiyaz Mashrafi and Sean Zhou) for the Berkeley Business Society x Ramp hackathon.
 
 ## The demo company
 
