@@ -5,6 +5,7 @@ Formatting only. Every number here comes from the packet, which comes from the e
 
 import csv
 import io
+from datetime import date
 from pathlib import Path
 
 from engine.categories import label
@@ -29,6 +30,17 @@ def money(cents):
     sign = "-" if cents < 0 else ""
     cents = abs(cents)
     return f"{sign}{cents // 100}.{cents % 100:02d}"
+
+
+def dollars(cents):
+    """For sentences: 15000 -> "$150.00", 289900 -> "$2,899.00"."""
+    return f"${cents // 100:,}.{cents % 100:02d}"
+
+
+def long_date(iso):
+    """ "2026-12-10" -> "Dec 10, 2026" """
+    day = date.fromisoformat(str(iso))
+    return f"{day.strftime('%b')} {day.day}, {day.year}"
 
 
 def row(section, **fields):
@@ -66,7 +78,7 @@ def open_item_rows(packet, workspace, ruleset):
                             receipt=" ".join(receipts.get(item["transaction_id"], []))))
         elif item["kind"] == "missing_w9":
             rows.append(row("Open item", merchant=item["name"],
-                            what=f"No W-9 on file. {money(item['cents_to_line'])} from the 1099 line.",
+                            what=f"No W-9 on file. {dollars(item['cents_to_line'])} from the 1099 line.",
                             amount=money(item["paid_cents"]),
                             status="W-9 requested" if item["w9_requested"] else "W-9 needed",
                             **rule_fields(ruleset, "fed_1099_nec_threshold", "fed_backup_withholding")))
@@ -84,8 +96,9 @@ def purchase_rows(packet, ruleset):
         given, result = saved["input"], saved["result"]
         later = result["california"]["later_cents"]
         rows.append(row("Planned purchase (not bought)",
-                        what=(f"{given['quantity']} at {money(result['price_each_cents'])} each, in use by "
-                              f"{given['in_use_by']}" + (f". California spreads {money(later)} over later years" if later else "")),
+                        what=(f"{given['quantity']} at {dollars(result['price_each_cents'])} each, in use by "
+                              f"{long_date(given['in_use_by'])}"
+                              + (f". California spreads {dollars(later)} over later years" if later else "")),
                         amount=money(result["price_each_cents"] * given["quantity"]),
                         federal=money(result["federal"]["this_year_cents"]),
                         california=money(result["california"]["this_year_cents"]),
@@ -119,7 +132,7 @@ def summary_rows(packet, ruleset):
         row("Where things stand", what="California equipment room left",
             california=money(room["room_cents"]), status="Confirmed", **rule_fields(ruleset, "ca_section_179")),
         row("Where things stand",
-            what=f"1099 forms needed: {contractors['forms_needed']} at the federal {money(contractors['line_cents'])} line",
+            what=f"1099 forms needed: {contractors['forms_needed']} (line {dollars(contractors['line_cents'])})",
             status="Confirmed", **rule_fields(ruleset, "fed_1099_nec_threshold")),
     ]
     for meal in summary["meals"]["rows"]:
@@ -131,7 +144,7 @@ def summary_rows(packet, ruleset):
                         **rule_fields(ruleset, meal["federal"]["rule_id"], meal["california"]["rule_id"])))
     for research in summary["research"]["rows"]:
         where = "US" if research["where"] == "us" else "outside the US"
-        rows.append(row("Where things stand", what=f"Research, {where} (deducted this year)",
+        rows.append(row("Where things stand", what=f"Research, {where}",
                         amount=money(research["spent_cents"]),
                         federal=money(research["federal"]["this_year_cents"]),
                         california=money(research["california"]["this_year_cents"]),

@@ -173,7 +173,8 @@ def test_packet_csv_includes_a_planned_purchase(client, demo):
     _, rows = packet_csv_rows(client, demo)
     planned = next(row for row in rows if row["section"] == "Planned purchase (not bought)")
     assert (planned["federal"], planned["california"]) == ("8697.00", "6600.00")
-    assert "2097.00 over later years" in planned["what"]
+    assert "$2,097.00 over later years" in planned["what"]
+    assert "in use by Dec 10, 2026" in planned["what"]
 
 
 def test_receipt_images_are_served(client):
@@ -247,3 +248,29 @@ def test_money_for_the_csv():
     assert money(5) == "0.05"
     assert money(-250) == "-2.50"
     assert money(None) == ""
+
+
+def test_packet_pdf_downloads_as_a_file(client, demo):
+    response = client.get(f"/workspaces/{demo}/packet.pdf")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "application/pdf"
+    assert 'filename="tidewell-labs-accountant-packet-2026-11-19.pdf"' in response.headers["content-disposition"]
+    assert response.content.startswith(b"%PDF")
+
+
+def test_pdf_text_keeps_to_characters_the_pdf_font_has():
+    from app.packet_pdf import plain
+    assert plain("Expenses – Nonconformity") == "Expenses - Nonconformity"
+    assert plain("California’s date") == "California's date"
+    assert plain("R&TC 17255 §") == "R&TC 17255 §"
+
+
+def test_packet_exports_work_for_an_empty_company(client):
+    profile = {"name": "My Co, Inc.", "expected_net_income_cents": 5000000}
+    workspace = client.post("/workspaces", json=profile).json()["workspace_id"]
+    csv_response = client.get(f"/workspaces/{workspace}/packet.csv")
+    assert csv_response.status_code == 200
+    assert 'filename="my-co-inc-accountant-packet-' in csv_response.headers["content-disposition"]
+    _, rows = packet_csv_rows(client, workspace)
+    assert not [row for row in rows if row["section"] in ("Open item", "Transaction")]
+    assert client.get(f"/workspaces/{workspace}/packet.pdf").content.startswith(b"%PDF")

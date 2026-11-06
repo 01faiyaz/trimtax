@@ -26,6 +26,7 @@ from ai.pipeline import process_receipt
 from app import store
 from app.convert import data_to_workspace, workspace_to_data
 from app.packet_export import packet_csv
+from app.packet_pdf import packet_pdf
 from engine.categories import CATEGORIES, is_category, label
 from engine.compare import compare_years
 from engine.equipment import all_in_price, check_purchase
@@ -384,7 +385,8 @@ def get_packet(workspace_id: str, year: int = 2026):
 
 
 def packet_file_name(packet, extension):
-    company = "".join(ch if ch.isalnum() else "-" for ch in packet["company"]).strip("-").lower()
+    words = "".join(ch if ch.isalnum() else " " for ch in packet["company"]).split()
+    company = "-".join(words).lower() or "company"
     return f"{company}-accountant-packet-{packet['as_of']}.{extension}"
 
 
@@ -396,6 +398,15 @@ def get_packet_csv(workspace_id: str, year: int = 2026):
     text = packet_csv(packet, workspace, ruleset)
     headers = {"Content-Disposition": f'attachment; filename="{packet_file_name(packet, "csv")}"'}
     return Response(content=text, media_type="text/csv; charset=utf-8", headers=headers)
+
+
+@app.get("/workspaces/{workspace_id}/packet.pdf")
+def get_packet_pdf(workspace_id: str, year: int = 2026):
+    workspace, _ = get_workspace(workspace_id)
+    ruleset = get_rules(year)
+    packet = jsonable_encoder(build_packet(workspace, workspace_id, ruleset))
+    headers = {"Content-Disposition": f'attachment; filename="{packet_file_name(packet, "pdf")}"'}
+    return Response(content=packet_pdf(packet, workspace, ruleset), media_type="application/pdf", headers=headers)
 
 
 # ------------------------------------------------------------------
