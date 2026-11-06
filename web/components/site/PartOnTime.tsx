@@ -4,6 +4,7 @@
 // packet that ends up with the accountant.
 
 import { useEffect, useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useSeen } from "./useSeen";
 
@@ -214,8 +215,8 @@ export default function PartOnTime() {
           <h2 id="ontime-title" className="reveal" style={{ "--d": ".1s", margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "26ch" } as React.CSSProperties}>
             It watches the calendar for you. <span className="muted" style={{ fontWeight: 600 }}>A nudge before each line, a packet at the end.</span>
           </h2>
-          <div className="reveal" style={{ "--d": ".25s", minHeight: 560, marginTop: 44, display: "flex", justifyContent: "center" } as React.CSSProperties}>
-            {seen && <OnTime />}
+          <div className="reveal" style={{ "--d": ".25s", marginTop: 44 } as React.CSSProperties}>
+            <Fit width={1080} height={560}>{seen && <OnTime />}</Fit>
           </div>
         </div>
       </section>

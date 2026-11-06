@@ -3,6 +3,7 @@
 // Part II, "The AI reads, the code counts": the receipt scan, the three states every
 // purchase ends in, and the receipt with hidden text that gets ignored.
 
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import ReceiptScan from "./ReceiptScan";
 import { useSeen } from "./useSeen";
@@ -29,8 +30,8 @@ export default function PartAI() {
           <h2 id="ai-title" className="reveal" style={{ ...delay(".1s"), margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "26ch" }}>
             The AI reads. The code counts. <span className="muted" style={{ fontWeight: 600 }}>Claude never does the tax math.</span>
           </h2>
-          <div className="reveal" style={{ ...delay(".25s"), minHeight: 520, marginTop: 44, display: "flex", justifyContent: "center" }}>
-            {seen && <ReceiptScan />}
+          <div className="reveal" style={{ ...delay(".25s"), marginTop: 44 }}>
+            <Fit width={1080} height={520}>{seen && <ReceiptScan />}</Fit>
           </div>
 
           <p className="reveal" style={{ ...delay(".35s"), margin: "44px 0 14px", fontSize: 15, fontWeight: 700 }}>Every purchase ends in one of three states</p>

@@ -89,6 +89,7 @@
 .site {
   background: var(--desk); color: var(--ink); font: 16px/26px var(--sans);
   font-variant-numeric: tabular-nums; padding-bottom: 40px;
+  overflow-x: clip; /* the soft glows behind each page reach past the edge; don't let them add a sideways scroll */
 }
 .site a { color: var(--pencil); }
 .site a:hover { color: var(--pencil-dark); }

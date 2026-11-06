@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useDrift } from "./useDrift";
 import { useSeen } from "./useSeen";
@@ -96,8 +97,8 @@ export default function PartEnd() {
         <section aria-label="Closing" className="paper" style={{ overflow: "hidden" }}>
           <Holes />
           <PartHead part="Part VII" name="Sign here" page={8} />
-          <div style={{ display: "flex", justifyContent: "center", minHeight: 540, padding: "12px 0 20px" }}>
-            {seen && <EndScene />}
+          <div style={{ padding: "12px 0 20px" }}>
+            <Fit width={1150} height={540}>{seen && <EndScene />}</Fit>
           </div>
         </section>
       </div>

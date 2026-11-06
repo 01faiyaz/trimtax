@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AppWindow from "./AppWindow";
+import Fit from "./Fit";
 import { Holes } from "./Paper";
 import { useSeen } from "./useSeen";
 import YearRing from "./YearRing";
@@ -135,10 +136,10 @@ export function ProductShot() {
   return (
     <div ref={ref} style={{ position: "relative", zIndex: 2, marginTop: -190, display: "flex", justifyContent: "center" }}>
       <div aria-hidden="true" className="blob" style={{ left: "10%", top: "8%", width: "70%", height: "90%", background: "radial-gradient(closest-side, rgba(44,91,160,.16), rgba(44,91,160,0))", animationDuration: "26s" }} />
-      <div className={standing ? "shot shot-in" : "shot"} style={{ position: "relative", width: 950, height: 528 }}>
-        <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 600, transform: "scale(.88)", transformOrigin: "0 0" }}>
+      <div className={standing ? "shot shot-in" : "shot"} style={{ position: "relative", width: "100%", maxWidth: 950 }}>
+        <Fit width={1080} height={600} max={0.88}>
           <AppWindow />
-        </div>
+        </Fit>
       </div>
 
       <div aria-hidden="true" className="bob" style={{ "--tilt": "-4deg", position: "absolute", left: 0, top: 300, width: 190, padding: "12px 14px", background: "linear-gradient(180deg, #ffffff, #f7f8f7)", border: "1px solid #d6d9db", boxShadow: "0 18px 36px rgba(38,41,44,.16)", fontSize: 12, lineHeight: "16px", animation: "site-bob 6s ease-in-out infinite" } as React.CSSProperties}>

@@ -6,6 +6,7 @@
 // and the test scores are the real ones from the README.
 
 import { useState } from "react";
+import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useDrift } from "./useDrift";
 import { useSeen } from "./useSeen";
@@ -142,11 +143,11 @@ export default function PartBuilt() {
           <h2 id="built-title" className="reveal" style={{ ...reveal(".1s"), margin: 0, fontSize: 42, lineHeight: "48px", fontWeight: 700, letterSpacing: "-0.03em", maxWidth: "28ch" }}>
             Every number links back to where it came from. <span className="muted" style={{ fontWeight: 600 }}>Click any dot.</span>
           </h2>
-          <div className="reveal" style={{ ...reveal(".25s"), marginTop: 36, minHeight: 562, border: "1px solid #e3e5e6", overflow: "hidden" }}>
-            {seen && <GraphView />}
+          <div className="reveal" style={{ ...reveal(".25s"), marginTop: 36, border: "1px solid #e3e5e6", overflow: "hidden" }}>
+            <Fit width={1080} height={560}>{seen && <GraphView />}</Fit>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 32, marginTop: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: 32, marginTop: 40 }}>
             {[
               ["The AI reads and asks", "Claude reads receipts and sorts each purchase into a fixed list of categories. If the answer would change a number, it asks you one question."],
               ["Plain code does the math", "Limits and write-offs come from tested Python and versioned rule files, never from the AI."],
@@ -159,7 +160,7 @@ export default function PartBuilt() {
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 24, marginTop: 48 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))", gap: 24, marginTop: 48 }}>
             <div className="reveal" style={{ ...reveal(".3s"), padding: "24px 26px", background: "#ffffff", border: "1px solid #d6d9db", boxShadow: "0 16px 34px rgba(38,41,44,.08)" }}>
               <p style={{ margin: 0, fontSize: 20, lineHeight: "28px", fontWeight: 700 }}>How we test it</p>
               <p style={{ margin: "4px 0 0", fontSize: 14, color: "#61666b" }}>100 labeled purchases we tuned on, and a held-out set of 29 we never tuned on.</p>
