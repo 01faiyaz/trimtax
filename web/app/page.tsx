@@ -3,6 +3,7 @@ import PartAI from "@/components/site/PartAI";
 import PartFile from "@/components/site/PartFile";
 import PartFlow from "@/components/site/PartFlow";
 import PartNumbers from "@/components/site/PartNumbers";
+import PartOnTime from "@/components/site/PartOnTime";
 import "./site.css";
 
 // The story site. Each part of it is its own component in components/site.
@@ -17,6 +18,7 @@ export default function Home() {
         <PartAI />
         <PartNumbers />
         <PartFile />
+        <PartOnTime />
       </main>
     </div>
   );
