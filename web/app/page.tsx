@@ -1,22 +1,29 @@
-import Link from "next/link";
+import { CoverPage, ProductShot, SiteHeader } from "@/components/site/Cover";
+import PartAI from "@/components/site/PartAI";
+import PartBuilt from "@/components/site/PartBuilt";
+import PartEnd from "@/components/site/PartEnd";
+import PartFile from "@/components/site/PartFile";
+import PartFlow from "@/components/site/PartFlow";
+import PartNumbers from "@/components/site/PartNumbers";
+import PartOnTime from "@/components/site/PartOnTime";
+import "./site.css";
 
-// Placeholder home page. The full story site from the design canvas replaces this.
+// The story site. Each part of it is its own component in components/site.
 export default function Home() {
   return (
-    <main className="desk">
-      <div className="sheet">
-        <h1 className="page-title">
-          See your taxes while you can still change them.
-        </h1>
-        <p className="lead">
-          TrimTax files every purchase into your tax file as it happens. The AI reads receipts and asks when it isn&apos;t
-          sure. Plain code does the math. You decide.
-        </p>
-        <p style={{ marginTop: 24 }}>
-          <Link className="button" href="/app" style={{ textDecoration: "none" }}>Open the demo</Link>
-        </p>
-        <p className="footer-note">Synthetic demo data. Federal and California only. TrimTax never files anything.</p>
-      </div>
-    </main>
+    <div className="site">
+      <SiteHeader />
+      <main className="column">
+        <CoverPage />
+        <ProductShot />
+        <PartFlow />
+        <PartAI />
+        <PartNumbers />
+        <PartFile />
+        <PartOnTime />
+        <PartBuilt />
+        <PartEnd />
+      </main>
+    </div>
   );
 }

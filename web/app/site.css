@@ -1,0 +1,111 @@
+/* Story site on "/". Ported from the design canvas. Every rule is scoped to .site so it
+   never reaches the demo app, and animation names start with site-. */
+
+@keyframes site-tick-in{from{opacity:0}to{opacity:1}}
+@keyframes site-pencil{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes site-float-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes site-march{from{background-position:0 0}to{background-position:24px 0}}
+@keyframes site-rise-a{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes site-rise-b{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes site-grow{from{transform:scaleX(0)}}
+@keyframes site-stamp-in{0%{opacity:0;transform:scale(1.8) rotate(-18deg)}60%{opacity:.95;transform:scale(.95) rotate(-7deg)}100%{opacity:.9;transform:scale(1) rotate(-8deg)}}
+@keyframes site-arc-a{0%{opacity:0;transform:translateY(0) rotate(-6deg)}8%{opacity:1}50%{transform:translateY(34px) rotate(5deg)}100%{opacity:1;transform:translateY(0) rotate(-3deg) scale(.62)}}
+@keyframes site-arc-b{0%{opacity:0;transform:translateY(0) rotate(-6deg)}8%{opacity:1}50%{transform:translateY(34px) rotate(5deg)}100%{opacity:1;transform:translateY(0) rotate(-3deg) scale(.62)}}
+@keyframes site-drop{0%{opacity:0;transform:none}10%{opacity:1}100%{opacity:.75;transform:translateY(128px) rotate(9deg) scale(.8)}}
+@keyframes site-bump-a{0%,100%{transform:none}35%{transform:scale(1.06)}}
+@keyframes site-bump-b{0%,100%{transform:none}35%{transform:scale(1.06)}}
+@keyframes site-file-a{0%{opacity:0;transform:translateY(-30px) rotate(-8deg)}18%{opacity:1}100%{opacity:1;transform:translateY(150px) rotate(-1deg)}}
+@keyframes site-file-b{0%{opacity:0;transform:translateY(-30px) rotate(-8deg)}18%{opacity:1}100%{opacity:1;transform:translateY(150px) rotate(-1deg)}}
+@keyframes site-bob{0%,100%{transform:translateY(0) rotate(var(--tilt))}50%{transform:translateY(-10px) rotate(var(--tilt))}}
+@keyframes site-pulse{0%,100%{box-shadow:0 0 0 0 rgba(44,91,160,.3)}50%{box-shadow:0 0 0 7px rgba(44,91,160,0)}}
+@keyframes site-edge-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes site-pop{from{transform:scale(0)}to{transform:none}}
+.site .page{opacity:0;transform:translateY(32px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1)}
+.site .page-in{opacity:1;transform:none}
+.site .tick{animation:site-tick-in .25s ease-out both}
+.site .bracket{stroke-dasharray:1;stroke-dashoffset:1;animation:site-pencil .8s cubic-bezier(.22,1,.36,1) 1.3s forwards}
+.site .note-in{animation:site-float-in .7s cubic-bezier(.22,1,.36,1) 2.2s both}
+.site .live{animation:site-pulse 1.8s ease-in-out infinite}
+.site .wire{background:repeating-linear-gradient(90deg,#b4b8bc 0 6px,transparent 6px 12px)}
+.site .wire-on{background:repeating-linear-gradient(90deg,#2c5ba0 0 6px,transparent 6px 12px);animation:site-march .7s linear infinite}
+.site .sheet-a{animation:site-rise-a .65s cubic-bezier(.22,1,.36,1) both}
+.site .sheet-b{animation:site-rise-b .65s cubic-bezier(.22,1,.36,1) both}
+.site .grow{transform-origin:left center;animation:site-grow 1s cubic-bezier(.22,1,.36,1) .15s both}
+.site .stamp{animation:site-stamp-in .55s cubic-bezier(.22,1,.36,1) both}
+.site .front{transition:transform .95s cubic-bezier(.22,1,.36,1)}
+.site .smooth{transition:transform .8s cubic-bezier(.22,1,.36,1),background-color .4s ease,color .4s ease,border-color .4s ease,opacity .4s ease,box-shadow .6s ease}
+.site .carrier{position:absolute;left:0;top:0;width:100%;height:0}
+.site .carrier-go{transform:translateX(100%);transition:transform 1.7s cubic-bezier(.65,0,.35,1)}
+.site .fly-a{animation:site-arc-a 1.7s cubic-bezier(.65,0,.35,1) both}
+.site .fly-b{animation:site-arc-b 1.7s cubic-bezier(.65,0,.35,1) both}
+.site .drop{animation:site-drop 1s cubic-bezier(.55,0,.45,1) both}
+.site .bump-a{animation:site-bump-a .6s cubic-bezier(.22,1,.36,1)}
+.site .bump-b{animation:site-bump-b .6s cubic-bezier(.22,1,.36,1)}
+.site .file-a{animation:site-file-a 1.3s cubic-bezier(.65,0,.35,1) both}
+.site .file-b{animation:site-file-b 1.3s cubic-bezier(.65,0,.35,1) both}
+.site .fan{transition:transform .8s cubic-bezier(.22,1,.36,1)}
+.site .edge{stroke-dasharray:1;stroke-dashoffset:1;animation:site-edge-draw .9s cubic-bezier(.22,1,.36,1) both}
+.site .node-pop{transform-box:fill-box;transform-origin:center;animation:site-pop .6s cubic-bezier(.22,1,.36,1) both}
+@keyframes site-link-flow{to{stroke-dashoffset:-20}}
+@keyframes site-link-in{from{opacity:0}to{opacity:1}}
+@keyframes site-card-in{from{opacity:0;transform:translate(-50%,-50%) scale(.85)}to{opacity:1;transform:translate(-50%,-50%)}}
+.site .link{stroke-dasharray:4 6;animation:site-link-flow 1.4s linear infinite,site-link-in .8s ease-out both}
+.site .card-in{animation:site-card-in .7s cubic-bezier(.22,1,.36,1) both}
+@keyframes site-ribbon-in{from{opacity:0;transform:translateY(40px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes site-glint{from{stroke-dashoffset:1}to{stroke-dashoffset:-1}}
+.site .ribbon-in{animation:site-ribbon-in 1.6s cubic-bezier(.22,1,.36,1) .2s both}
+.site .glint{stroke-dasharray:.12 .88;animation:site-glint 7s linear infinite}
+@keyframes site-intro{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes site-dial-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.site .intro{animation:site-intro 1s cubic-bezier(.22,1,.36,1) both}
+.site .dial-in{animation:site-dial-in 1.2s cubic-bezier(.22,1,.36,1) .25s both}
+.site .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform 1.1s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0s)}
+.site .page-in .reveal{opacity:1;transform:none}
+@keyframes site-drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.1)}}
+@keyframes site-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.site .blob{position:absolute;border-radius:50%;pointer-events:none;animation:site-drift 22s ease-in-out infinite}
+.site .shot{transform-origin:50% 100%;transform:perspective(1800px) rotateX(20deg) translateY(30px) scale(.94);opacity:.75;transition:transform 1.8s cubic-bezier(.22,1,.36,1),opacity 1.2s ease}
+.site .shot-in{transform:none;opacity:1}
+.site .strike{position:absolute;left:-4px;right:-4px;top:52%;height:2px;background:#2c5ba0;border-radius:1px;transform-origin:left center;transform:scaleX(0);transition:transform .7s cubic-bezier(.22,1,.36,1) .7s}
+.site .page-in .strike{transform:scaleX(1)}
+.site .progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#2c5ba0;transform-origin:left center;transform:scaleX(0)}
+@supports (animation-timeline: scroll()){
+.site .progress{animation:site-progress linear both;animation-timeline:scroll()}
+}
+@media (prefers-reduced-motion: reduce){
+.site .page{opacity:1;transform:none;transition:none}
+.site .intro,.site .dial-in,.site .ribbon-in,.site .glint,.site .tick,.site .note-in,.site .sheet-a,.site .sheet-b,.site .grow,.site .stamp,.site .fly-a,.site .fly-b,.site .drop,.site .bump-a,.site .bump-b,.site .file-a,.site .file-b,.site .node-pop,.site .link,.site .card-in,.site .blob{animation:none}
+.site .shot{transform:none;opacity:1;transition:none}
+.site .reveal{opacity:1;transform:none;transition:none}
+.site .strike{transform:scaleX(1);transition:none}
+.site .bracket,.site .edge{animation:none;stroke-dashoffset:0}
+.site .glint{opacity:0}
+.site .wire-on,.site .live{animation:none}
+.site .front,.site .smooth,.site .carrier-go,.site .fan{transition:none}
+.site .bob{animation:none!important}
+}
+
+/* Shared pieces of the site, used instead of repeating the same inline styles. */
+.site {
+  background: var(--desk); color: var(--ink); font: 16px/26px var(--sans);
+  font-variant-numeric: tabular-nums; padding-bottom: 40px;
+}
+.site a { color: var(--pencil); }
+.site a:hover { color: var(--pencil-dark); }
+.site .column { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; display: flex; flex-direction: column; gap: 40px; }
+.site .paper {
+  position: relative; background: linear-gradient(180deg, #fefefd, #fafbfa);
+  border: 1px solid var(--page-edge); box-shadow: var(--shadow-page);
+}
+.site .under { position: absolute; left: 12px; right: 12px; bottom: -8px; height: 40px; background: var(--page-under); border: 1px solid var(--page-edge); }
+.site .holes {
+  position: absolute; left: 10px; top: 0; bottom: 0; z-index: 1; display: flex; flex-direction: column;
+  justify-content: space-around; padding: 90px 0; pointer-events: none;
+}
+.site .hole { width: 13px; height: 13px; border-radius: 50%; background: #e4e6e5; box-shadow: inset 0 1px 3px rgba(38,41,44,.28), 0 1px 0 rgba(255,255,255,.9); }
+.site .part-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 32px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.site .part { display: flex; gap: 10px; align-items: center; }
+.site .part-name { font-weight: 600; }
+.site .part-chip { padding: 1px 8px; background: var(--ink); color: var(--page); font-weight: 700; }
+.site .mono { font-family: var(--mono); }
+.site .muted { color: var(--ink-muted); }
