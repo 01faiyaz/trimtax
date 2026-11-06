@@ -32,6 +32,8 @@ Below the rules is the update log. Every change in it was proposed by the AI fro
 
 **Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
 
+**Start fresh.** Try it with your own company instead. Fill in a short profile (name, expected income, whether you make the small-item election) and you get an empty tax file that uses today's date. Then import a transactions CSV with `date`, `merchant` and `amount` columns, plus `category` and `payee` if you have them, or upload receipts. Rows without a category show up as questions for you to sort. There's a sample file to download if you want to see it work. You can switch back to the demo any time.
+
 Two receipts get refused on purpose. One from a print shop has faint hidden text telling the AI to mark it 100% deductible. It's treated as plain data, flagged and logged, and nothing is counted. The other is a blurry photo with an unreadable total, and TrimTax says "Can't determine" instead of guessing a number.
 
 ## How it works
@@ -167,7 +169,7 @@ pip install -r api/requirements.txt
 python -m pytest
 ```
 
-That runs 178 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
+That runs 188 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
 
 The API, from `api/`:
 
