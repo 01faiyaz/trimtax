@@ -38,6 +38,12 @@ export default function DemoApp() {
   const [toast, setToast] = useState("");
   const [error, setError] = useState("");
   const [starting, setStarting] = useState(false); // showing the "Start fresh" form
+  const [slow, setSlow] = useState(false); // the first load is taking a while (the server may be waking up)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setSlow(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const loadOverview = useCallback(async (id: string) => {
     const data = await get<OverviewData>(`/workspaces/${id}/overview`);
@@ -148,6 +154,11 @@ export default function DemoApp() {
 
       <main className="desk">
         {error && <p className="error">{error}</p>}
+        {!overview && !error && slow && (
+          <p className="muted" style={{ textAlign: "center", marginTop: 80 }}>
+            Starting the server. After a quiet spell the first visit can take up to a minute.
+          </p>
+        )}
         {!error && (!overview || !workspaceId) && <p className="muted">Opening your tax file…</p>}
         {starting && (
           <StartFresh onDone={(id) => openWorkspace(id, "Your tax file is ready. Add your transactions to fill it in.")} onCancel={() => setStarting(false)} />
