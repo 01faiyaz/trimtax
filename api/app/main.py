@@ -67,10 +67,11 @@ async def lifespan(app):
 
 app = FastAPI(title="TrimTax API", lifespan=lifespan)
 
-allowed = os.environ.get("ALLOWED_ORIGINS", "http://localhost:3000")
+# Comma-separated. Spaces and a trailing slash are trimmed, since the browser sends neither.
+allowed = [origin.strip().rstrip("/") for origin in os.environ.get("ALLOWED_ORIGINS", "http://localhost:3000").split(",")]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed.split(","),
+    allow_origins=[origin for origin in allowed if origin],
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
