@@ -129,7 +129,7 @@ export default function DemoApp() {
             {tab === "questions" && (
               <Questions workspaceId={workspaceId} flagged={overview.flagged} refresh={refresh} notify={setToast} />
             )}
-            {tab === "rules" && <Rules workspaceId={workspaceId} />}
+            {tab === "rules" && <Rules workspaceId={workspaceId} refresh={refresh} notify={setToast} />}
             {tab === "packet" && <Packet workspaceId={workspaceId} />}
             <p className="footer-note" style={{ textAlign: "center", marginTop: 24 }}>
               Federal and California only. Estimates from ruleset {overview.ruleset_version}. Not covered: your total tax bill,

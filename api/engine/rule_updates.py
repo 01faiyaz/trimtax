@@ -5,6 +5,7 @@ that change (the value, the source, who approved it and when, and the ruleset ve
 and leaves everything else exactly as it was. Text in, text out; no files are read here.
 """
 
+import copy
 import re
 
 import yaml
@@ -92,3 +93,25 @@ def approve_update(rules_text, update, approver, day):
             lines[number] = f"ruleset_version: {quoted(next_version(ruleset.version))}"
             break
     return "\n".join(lines), "changed"
+
+
+def with_demo_changes(ruleset, changes):
+    """The ruleset with one demo copy's approved changes on top. The rules files are never touched.
+
+    Each change is a proposal someone approved in that demo copy. The version shows it, like
+    "2026.1+demo.1", so every result made with these rules says they aren't the real ruleset.
+    """
+    if not changes:
+        return ruleset
+    data = copy.deepcopy(ruleset.data)
+    rules = {rule["id"]: rule for rule in data["rules"]}
+    for change in changes:
+        rule = rules[change["rule_id"]]
+        rule[change["field"]] = change["to"]
+        rule["source"] = {"cite": change["source"]["cite"], "url": change["source"]["url"]}
+        rule["check_status"] = "checked"
+        rule["approved_by"] = change["decided_by"]
+        rule["approved_on"] = change["decided_on"]
+        rule["demo_change"] = f"{show_value(change['field'], change['from'])} \u2192 {show_value(change['field'], change['to'])}"
+    data["ruleset_version"] = f"{ruleset.version}+demo.{len(changes)}"
+    return Ruleset(data)

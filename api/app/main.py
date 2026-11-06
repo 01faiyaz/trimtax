@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field
 
 from ai import model as ai_model
 from ai.pipeline import process_receipt
+from ai.rule_updates import propose_rule_update
 from app import store
 from app.convert import data_to_workspace, workspace_to_data
 from app.packet_export import packet_csv
@@ -35,7 +36,7 @@ from engine.meals import MEAL_RULES, meal_outcomes
 from engine.overview import overview
 from engine.records import Company, Workspace, load_workspace
 from engine.review import flagged_documents, open_items
-from engine.rule_updates import show_value
+from engine.rule_updates import show_value, with_demo_changes
 from engine.rules import load_ruleset
 
 RULES = {2025: load_ruleset(2025), 2026: load_ruleset(2026)}
@@ -48,6 +49,9 @@ MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 MAX_UPLOADS_PER_WORKSPACE = 10
 # Reset demo starts a workspace's count over, so there's also a cap for the whole server.
 MAX_UPLOADS_PER_DAY = int(os.environ.get("TRIMTAX_MAX_UPLOADS_PER_DAY", "300"))
+MAX_PROPOSALS_PER_WORKSPACE = 10
+MAX_PROPOSALS_PER_DAY = int(os.environ.get("TRIMTAX_MAX_PROPOSALS_PER_DAY", "200"))
+MAX_PASTED_TEXT = 8000
 
 # Tests replace this with a fake model; in production it's the Claude API.
 make_model = None
@@ -84,7 +88,7 @@ def get_workspace(workspace_id):
 
 def empty_extras():
     """Things the person did that aren't tax data: W-9 requests, purchases added to the packet."""
-    return {"w9_requested": [], "packet_purchases": [], "uploads": 0}
+    return {"w9_requested": [], "packet_purchases": [], "uploads": 0, "rule_proposals": [], "rule_changes": []}
 
 
 def get_extras(workspace_id):
@@ -111,6 +115,12 @@ def get_rules(year):
     if year not in RULES:
         raise HTTPException(status_code=404, detail=f"No ruleset for {year}.")
     return RULES[year]
+
+
+def rules_for(workspace_id, year):
+    """This workspace's rules: the real ruleset plus any change approved in this demo copy."""
+    changes = [change for change in get_extras(workspace_id)["rule_changes"] if change["year"] == year]
+    return with_demo_changes(get_rules(year), changes)
 
 
 def as_of_for(workspace):
@@ -206,7 +216,7 @@ def reset_demo(workspace_id: str):
 def get_overview(workspace_id: str, year: int = 2026):
     workspace, is_demo = get_workspace(workspace_id)
     extras = get_extras(workspace_id)
-    result = overview(workspace, get_rules(year), as_of_for(workspace))
+    result = overview(workspace, rules_for(workspace_id, year), as_of_for(workspace))
     result["is_demo"] = is_demo
     result["open_items"] = mark_w9_requests(result["open_items"], extras)
     result["packet_purchases"] = extras["packet_purchases"]
@@ -226,7 +236,7 @@ class PurchaseCheck(BaseModel):
 @app.post("/workspaces/{workspace_id}/check-purchase")
 def post_check_purchase(workspace_id: str, purchase: PurchaseCheck):
     workspace, _ = get_workspace(workspace_id)
-    ruleset = get_rules(purchase.year)
+    ruleset = rules_for(workspace_id, purchase.year)
     try:
         price = all_in_price(purchase.price_each_cents, purchase.sales_tax_percent,
                              purchase.shipping_each_cents)
@@ -297,10 +307,132 @@ def get_rule_updates(year: int):
     return jsonable_encoder(entries)
 
 
+# ------------------------------------------------------------------
+# Try it: propose a rule change from pasted text, approve it for this demo copy only
+# ------------------------------------------------------------------
+
+class PastedText(BaseModel):
+    text: str = Field(min_length=20, max_length=MAX_PASTED_TEXT)
+    cite: str = Field(default="", max_length=200)
+    url: str = Field(default="", max_length=500)
+    year: int = 2026
+
+
+class Decision(BaseModel):
+    name: str = Field(min_length=1, max_length=80)
+
+
+@app.get("/workspaces/{workspace_id}/rules/{year}")
+def get_workspace_rules(workspace_id: str, year: int):
+    """The rules this demo copy uses, with any change approved in it."""
+    get_workspace(workspace_id)
+    ruleset = rules_for(workspace_id, year)
+    changes = [c for c in get_extras(workspace_id)["rule_changes"] if c["year"] == year]
+    return jsonable_encoder({"version": ruleset.version, "tax_year": ruleset.tax_year,
+                             "rules": list(ruleset.rules.values()), "demo_changes": changes})
+
+
+@app.post("/workspaces/{workspace_id}/rule-proposals")
+def propose_from_text(workspace_id: str, pasted: PastedText):
+    """The AI reads the pasted text and proposes changes. Nothing changes until someone approves."""
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+    if len(extras["rule_proposals"]) >= MAX_PROPOSALS_PER_WORKSPACE:
+        raise HTTPException(status_code=429, detail="This demo has reached its limit for rule proposals.")
+    a_day_ago = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+    if store.skill_calls_since(a_day_ago, "propose_rule_update") >= MAX_PROPOSALS_PER_DAY:
+        raise HTTPException(status_code=429, detail="Rule proposals are busy today. Try again tomorrow.")
+
+    model = get_model()
+    traces = []
+    ruleset = rules_for(workspace_id, pasted.year)
+    result = propose_rule_update(model, pasted.text, ruleset, traces)
+    for trace in traces:
+        store.add_trace(workspace_id, trace)
+
+    source = {"cite": pasted.cite.strip() or "Text pasted in this demo", "url": pasted.url.strip() or None}
+    for proposal in result["proposals"]:
+        proposal.update({
+            "id": f"dp_{len(extras['rule_proposals']) + 1}",
+            "year": pasted.year,
+            "source": source,
+            "proposed_on": as_of_for(workspace).isoformat(),
+            "status": "proposed",
+            "decided_by": None,
+            "decided_on": None,
+            "from_text": show_value(proposal["field"], proposal["from"]),
+            "to_text": show_value(proposal["field"], proposal["to"]),
+            "plain_words": ruleset.rule(proposal["rule_id"])["plain_words"],
+        })
+        extras["rule_proposals"].append(proposal)
+    save_workspace(workspace_id, workspace, extras)
+    return result
+
+
+def find_proposal(extras, proposal_id):
+    for proposal in extras["rule_proposals"]:
+        if proposal["id"] == proposal_id:
+            if proposal["status"] != "proposed":
+                raise HTTPException(status_code=409, detail=f"This proposal is already {proposal['status']}.")
+            return proposal
+    raise HTTPException(status_code=404, detail="No such proposal.")
+
+
+@app.post("/workspaces/{workspace_id}/rule-proposals/{proposal_id}/approve")
+def approve_proposal(workspace_id: str, proposal_id: str, decision: Decision):
+    """Approve a proposal for this demo copy only. The real rules files never change here."""
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+    proposal = find_proposal(extras, proposal_id)
+    current = rules_for(workspace_id, proposal["year"]).value(proposal["rule_id"], proposal["field"])
+    if current not in (proposal["from"], proposal["to"]):
+        raise HTTPException(status_code=409, detail="This rule changed since the proposal. Ask the AI again.")
+
+    proposal["status"] = "approved"
+    proposal["decided_by"] = decision.name.strip()
+    proposal["decided_on"] = as_of_for(workspace).isoformat()
+    proposal["outcome"] = "already_matches" if current == proposal["to"] else "changed"
+    if proposal["outcome"] == "changed":
+        extras["rule_changes"].append(dict(proposal))
+    save_workspace(workspace_id, workspace, extras)
+    return proposal
+
+
+@app.post("/workspaces/{workspace_id}/rule-proposals/{proposal_id}/reject")
+def reject_proposal(workspace_id: str, proposal_id: str, decision: Decision):
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+    proposal = find_proposal(extras, proposal_id)
+    proposal["status"] = "rejected"
+    proposal["decided_by"] = decision.name.strip()
+    proposal["decided_on"] = as_of_for(workspace).isoformat()
+    save_workspace(workspace_id, workspace, extras)
+    return proposal
+
+
+@app.get("/workspaces/{workspace_id}/rule-proposals")
+def list_proposals(workspace_id: str):
+    get_workspace(workspace_id)
+    return get_extras(workspace_id)["rule_proposals"]
+
+
+@app.post("/workspaces/{workspace_id}/rule-changes/clear")
+def clear_demo_rule_changes(workspace_id: str):
+    """Undo every rule change approved in this demo copy."""
+    workspace, _ = get_workspace(workspace_id)
+    extras = get_extras(workspace_id)
+    extras["rule_changes"] = []
+    for proposal in extras["rule_proposals"]:
+        if proposal["status"] == "approved":
+            proposal["status"] = "undone"
+    save_workspace(workspace_id, workspace, extras)
+    return {"ok": True}
+
+
 @app.get("/workspaces/{workspace_id}/compare")
 def get_compare(workspace_id: str, from_year: int = 2025, to_year: int = 2026):
     workspace, _ = get_workspace(workspace_id)
-    return compare_years(workspace, get_rules(from_year), get_rules(to_year))
+    return compare_years(workspace, rules_for(workspace_id, from_year), rules_for(workspace_id, to_year))
 
 
 @app.get("/categories")
@@ -339,7 +471,7 @@ def question_view(workspace, t, ruleset):
 def get_questions(workspace_id: str, year: int = 2026):
     """Open questions, plus ones already answered (so they can be undone)."""
     workspace, _ = get_workspace(workspace_id)
-    ruleset = get_rules(year)
+    ruleset = rules_for(workspace_id, year)
     questions = []
     for t in workspace.transactions:
         if t.question:
@@ -361,7 +493,7 @@ def answer_question(workspace_id: str, transaction_id: str, answer: Answer):
     t.category = answer.category
     t.status = "confirmed"
     save_workspace(workspace_id, workspace, get_extras(workspace_id))
-    return question_view(workspace, t, get_rules(2026))
+    return question_view(workspace, t, rules_for(workspace_id, 2026))
 
 
 @app.post("/workspaces/{workspace_id}/questions/{transaction_id}/undo")
@@ -373,7 +505,7 @@ def undo_answer(workspace_id: str, transaction_id: str):
     t.category = ""
     t.status = "needs_answer"
     save_workspace(workspace_id, workspace, get_extras(workspace_id))
-    return question_view(workspace, t, get_rules(2026))
+    return question_view(workspace, t, rules_for(workspace_id, 2026))
 
 
 # ------------------------------------------------------------------
@@ -399,7 +531,7 @@ def build_packet(workspace, workspace_id, ruleset):
 @app.get("/workspaces/{workspace_id}/packet")
 def get_packet(workspace_id: str, year: int = 2026):
     workspace, _ = get_workspace(workspace_id)
-    return build_packet(workspace, workspace_id, get_rules(year))
+    return build_packet(workspace, workspace_id, rules_for(workspace_id, year))
 
 
 def packet_file_name(packet, extension):
@@ -411,7 +543,7 @@ def packet_file_name(packet, extension):
 @app.get("/workspaces/{workspace_id}/packet.csv")
 def get_packet_csv(workspace_id: str, year: int = 2026):
     workspace, _ = get_workspace(workspace_id)
-    ruleset = get_rules(year)
+    ruleset = rules_for(workspace_id, year)
     packet = jsonable_encoder(build_packet(workspace, workspace_id, ruleset))
     text = packet_csv(packet, workspace, ruleset)
     headers = {"Content-Disposition": f'attachment; filename="{packet_file_name(packet, "csv")}"'}
@@ -421,7 +553,7 @@ def get_packet_csv(workspace_id: str, year: int = 2026):
 @app.get("/workspaces/{workspace_id}/packet.pdf")
 def get_packet_pdf(workspace_id: str, year: int = 2026):
     workspace, _ = get_workspace(workspace_id)
-    ruleset = get_rules(year)
+    ruleset = rules_for(workspace_id, year)
     packet = jsonable_encoder(build_packet(workspace, workspace_id, ruleset))
     headers = {"Content-Disposition": f'attachment; filename="{packet_file_name(packet, "pdf")}"'}
     return Response(content=packet_pdf(packet, workspace, ruleset), media_type="application/pdf", headers=headers)
@@ -458,7 +590,7 @@ async def upload_receipt(workspace_id: str, file: UploadFile = File(...)):
     model = get_model()
     file_base64 = base64.b64encode(contents).decode("ascii")
     upload_id = store.save_upload(workspace_id, file.content_type, file_base64)
-    ruleset = get_rules(2026)
+    ruleset = rules_for(workspace_id, 2026)
 
     transaction, receipt, summary, traces = process_receipt(
         model, file_base64, file.content_type, upload_id, as_of_for(workspace), ruleset)

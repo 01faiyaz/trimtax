@@ -118,6 +118,7 @@ export type Rule = {
   per_item_limit_cents?: number;
   treatment?: string;
   years?: number;
+  demo_change?: string;  // like "$25,000 → $30,000", only on a rule changed in this demo
   deadline?: string;
 };
 
@@ -156,4 +157,36 @@ export type RuleUpdate = {
   decided_on: string | null;
   outcome: "changed" | "already_matches" | null;
   ruleset_version: string | null;
+};
+
+export type DemoProposal = {
+  id: string;
+  rule_id: string;
+  field: string;
+  plain_words: string;
+  from_text: string;
+  to_text: string;
+  figure: string;
+  quote: string;
+  reason: string;
+  source: { cite: string; url: string | null };
+  status: "proposed" | "approved" | "rejected" | "undone";
+  decided_by: string | null;
+  decided_on: string | null;
+  outcome?: "changed" | "already_matches";
+};
+
+export type ProposalResult = {
+  proposals: DemoProposal[];
+  rejected: { rule_id: string; field: string; figure: string; why: string }[];
+  note: string;
+  instructions_found: boolean;
+  failed: boolean;
+};
+
+export type WorkspaceRules = {
+  version: string;
+  tax_year: number;
+  rules: Rule[];
+  demo_changes: DemoProposal[];
 };
