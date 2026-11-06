@@ -26,7 +26,7 @@ Each visitor gets their own copy of the workspace, so two people trying it at on
 
 **Rules.** Every rule TrimTax uses, with its source, its value and who approved it. Switch between 2025 and 2026 to see what changed: the 1099 line moved from $600 to $2,000, which drops Tidewell from 13 forms to 4, and office team meals went from 50% to 0% federally.
 
-**Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number.
+**Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
 
 Two receipts get refused on purpose. One from a print shop has faint hidden text telling the AI to mark it 100% deductible. It's treated as plain data, flagged and logged, and nothing is counted. The other is a blurry photo with an unreadable total, and TrimTax says "Can't determine" instead of guessing a number.
 
