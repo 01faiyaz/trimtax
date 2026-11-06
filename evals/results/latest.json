@@ -1,61 +1,37 @@
 {
-  "when": "2026-11-06 00:58 UTC",
+  "when": "2026-11-06 03:00 UTC",
   "model": "claude-sonnet-5-5",
   "summary": {
     "clear": {
       "total": 75,
-      "correct": 75,
-      "asked_instead": 0,
+      "correct": 74,
+      "asked_instead": 1,
       "wrong": 0,
-      "failed": 0,
-      "misses": []
-    },
-    "ambiguous": {
-      "total": 20,
-      "asked": 11,
-      "good_options": 10,
-      "guessed": 9,
       "failed": 0,
       "misses": [
         [
-          "a08",
-          "guessed office_supplies",
-          "should ask: equipment/office_supplies"
-        ],
+          "c70",
+          "asked",
+          "contractor"
+        ]
+      ]
+    },
+    "ambiguous": {
+      "total": 20,
+      "failed": 0,
+      "handled_right": 17,
+      "changes_a_number": 18,
+      "asked": 17,
+      "good_options": 15,
+      "guessed": 1,
+      "changes_nothing": 2,
+      "settled_without_asking": 2,
+      "asked_anyway": 0,
+      "misses": [
         [
           "a09",
-          "guessed contractor",
-          "should ask: contractor/research_offshore"
-        ],
-        [
-          "a10",
-          "guessed contractor",
-          "should ask: contractor/research_us"
-        ],
-        [
-          "a13",
-          "guessed rent_utilities",
-          "should ask: rent_utilities/travel"
-        ],
-        [
-          "a14",
-          "guessed software",
-          "should ask: software/advertising"
-        ],
-        [
-          "a15",
-          "guessed other",
-          "should ask: travel/advertising/other"
-        ],
-        [
-          "a17",
-          "guessed advertising",
-          "should ask: advertising/client_entertainment"
-        ],
-        [
-          "a18",
-          "guessed office_supplies",
-          "should ask: office_supplies/equipment/rent_utilities/other"
+          "asked, but options contractor/research_us",
+          "contractor/research_offshore"
         ],
         [
           "a19",
@@ -83,17 +59,17 @@
       "misses": []
     },
     "questions": {
-      "questions_shown": 11,
+      "questions_shown": 18,
       "ungrounded_shown": 0,
       "template_fallbacks": 0
     },
     "costs": {
       "cases": 140,
-      "model_calls": 151,
+      "model_calls": 158,
       "failed_calls": 0,
-      "median_seconds_per_case": 1.78,
-      "median_cost_per_case_usd": 0.004,
-      "total_cost_usd": 0.6425
+      "median_seconds_per_case": 1.52,
+      "median_cost_per_case_usd": 0.0035,
+      "total_cost_usd": 0.623
     }
   },
   "results": {
@@ -104,19 +80,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1288,
-            "output_tokens": 83,
-            "cost_nanodollars": 3406000,
-            "latency_ms": 2421
+            "input_tokens": 1441,
+            "output_tokens": 63,
+            "cost_nanodollars": 3512000,
+            "latency_ms": 1672
           }
         ]
       },
@@ -126,19 +103,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1283,
-            "output_tokens": 81,
-            "cost_nanodollars": 3376000,
-            "latency_ms": 1719
+            "input_tokens": 1436,
+            "output_tokens": 69,
+            "cost_nanodollars": 3562000,
+            "latency_ms": 1250
           }
         ]
       },
@@ -148,19 +126,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1289,
-            "output_tokens": 89,
-            "cost_nanodollars": 3468000,
-            "latency_ms": 1531
+            "input_tokens": 1442,
+            "output_tokens": 59,
+            "cost_nanodollars": 3474000,
+            "latency_ms": 1266
           }
         ]
       },
@@ -170,19 +149,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1278,
-            "output_tokens": 301,
-            "cost_nanodollars": 5566000,
-            "latency_ms": 3297
+            "input_tokens": 1431,
+            "output_tokens": 62,
+            "cost_nanodollars": 3482000,
+            "latency_ms": 1125
           }
         ]
       },
@@ -192,19 +172,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1286,
-            "output_tokens": 91,
-            "cost_nanodollars": 3482000,
-            "latency_ms": 1766
+            "input_tokens": 1439,
+            "output_tokens": 63,
+            "cost_nanodollars": 3508000,
+            "latency_ms": 1312
           }
         ]
       },
@@ -214,19 +195,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1287,
-            "output_tokens": 94,
-            "cost_nanodollars": 3514000,
-            "latency_ms": 1391
+            "input_tokens": 1440,
+            "output_tokens": 65,
+            "cost_nanodollars": 3530000,
+            "latency_ms": 1188
           }
         ]
       },
@@ -236,19 +218,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1279,
-            "output_tokens": 74,
-            "cost_nanodollars": 3298000,
-            "latency_ms": 1250
+            "input_tokens": 1432,
+            "output_tokens": 55,
+            "cost_nanodollars": 3414000,
+            "latency_ms": 1000
           }
         ]
       },
@@ -258,19 +241,20 @@
           "category": "equipment"
         },
         "category": "equipment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1283,
-            "output_tokens": 93,
-            "cost_nanodollars": 3496000,
-            "latency_ms": 1890
+            "input_tokens": 1436,
+            "output_tokens": 69,
+            "cost_nanodollars": 3562000,
+            "latency_ms": 1093
           }
         ]
       },
@@ -280,19 +264,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1290,
-            "output_tokens": 83,
-            "cost_nanodollars": 3410000,
-            "latency_ms": 1688
+            "input_tokens": 1443,
+            "output_tokens": 47,
+            "cost_nanodollars": 3356000,
+            "latency_ms": 954
           }
         ]
       },
@@ -302,19 +287,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1294,
-            "output_tokens": 86,
-            "cost_nanodollars": 3448000,
-            "latency_ms": 1656
+            "input_tokens": 1447,
+            "output_tokens": 65,
+            "cost_nanodollars": 3544000,
+            "latency_ms": 1359
           }
         ]
       },
@@ -324,19 +310,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 80,
-            "cost_nanodollars": 3360000,
-            "latency_ms": 1797
+            "input_tokens": 1433,
+            "output_tokens": 65,
+            "cost_nanodollars": 3516000,
+            "latency_ms": 1531
           }
         ]
       },
@@ -346,19 +333,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 86,
-            "cost_nanodollars": 3430000,
-            "latency_ms": 1187
+            "input_tokens": 1438,
+            "output_tokens": 62,
+            "cost_nanodollars": 3496000,
+            "latency_ms": 1297
           }
         ]
       },
@@ -368,19 +356,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1293,
-            "output_tokens": 89,
-            "cost_nanodollars": 3476000,
-            "latency_ms": 1438
+            "input_tokens": 1446,
+            "output_tokens": 60,
+            "cost_nanodollars": 3492000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -390,19 +379,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1279,
-            "output_tokens": 81,
-            "cost_nanodollars": 3368000,
-            "latency_ms": 1765
+            "input_tokens": 1432,
+            "output_tokens": 68,
+            "cost_nanodollars": 3544000,
+            "latency_ms": 1188
           }
         ]
       },
@@ -412,19 +402,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 85,
-            "cost_nanodollars": 3410000,
-            "latency_ms": 1797
+            "input_tokens": 1433,
+            "output_tokens": 61,
+            "cost_nanodollars": 3476000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -434,19 +425,20 @@
           "category": "office_supplies"
         },
         "category": "office_supplies",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 84,
-            "cost_nanodollars": 3404000,
-            "latency_ms": 1578
+            "input_tokens": 1435,
+            "output_tokens": 65,
+            "cost_nanodollars": 3520000,
+            "latency_ms": 1015
           }
         ]
       },
@@ -456,19 +448,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1287,
-            "output_tokens": 57,
-            "cost_nanodollars": 3144000,
-            "latency_ms": 1563
+            "input_tokens": 1440,
+            "output_tokens": 44,
+            "cost_nanodollars": 3320000,
+            "latency_ms": 1391
           }
         ]
       },
@@ -478,19 +471,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1281,
-            "output_tokens": 64,
-            "cost_nanodollars": 3202000,
-            "latency_ms": 1672
+            "input_tokens": 1434,
+            "output_tokens": 43,
+            "cost_nanodollars": 3298000,
+            "latency_ms": 1016
           }
         ]
       },
@@ -500,18 +494,19 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 67,
-            "cost_nanodollars": 3234000,
+            "input_tokens": 1435,
+            "output_tokens": 57,
+            "cost_nanodollars": 3440000,
             "latency_ms": 1156
           }
         ]
@@ -522,19 +517,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 50,
-            "cost_nanodollars": 3060000,
-            "latency_ms": 1063
+            "input_tokens": 1433,
+            "output_tokens": 41,
+            "cost_nanodollars": 3276000,
+            "latency_ms": 1047
           }
         ]
       },
@@ -544,19 +540,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1279,
-            "output_tokens": 41,
-            "cost_nanodollars": 2968000,
-            "latency_ms": 1843
+            "input_tokens": 1432,
+            "output_tokens": 39,
+            "cost_nanodollars": 3254000,
+            "latency_ms": 828
           }
         ]
       },
@@ -566,19 +563,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1289,
-            "output_tokens": 56,
-            "cost_nanodollars": 3138000,
-            "latency_ms": 1625
+            "input_tokens": 1442,
+            "output_tokens": 42,
+            "cost_nanodollars": 3304000,
+            "latency_ms": 953
           }
         ]
       },
@@ -588,19 +586,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 53,
-            "cost_nanodollars": 3100000,
-            "latency_ms": 1547
+            "input_tokens": 1438,
+            "output_tokens": 43,
+            "cost_nanodollars": 3306000,
+            "latency_ms": 1094
           }
         ]
       },
@@ -610,19 +609,20 @@
           "category": "software"
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 54,
-            "cost_nanodollars": 3100000,
-            "latency_ms": 1485
+            "input_tokens": 1433,
+            "output_tokens": 41,
+            "cost_nanodollars": 3276000,
+            "latency_ms": 1000
           }
         ]
       },
@@ -632,19 +632,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 58,
-            "cost_nanodollars": 3150000,
-            "latency_ms": 953
+            "input_tokens": 1438,
+            "output_tokens": 43,
+            "cost_nanodollars": 3306000,
+            "latency_ms": 1187
           }
         ]
       },
@@ -654,19 +655,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1286,
-            "output_tokens": 58,
-            "cost_nanodollars": 3152000,
-            "latency_ms": 1500
+            "input_tokens": 1439,
+            "output_tokens": 49,
+            "cost_nanodollars": 3368000,
+            "latency_ms": 1125
           }
         ]
       },
@@ -676,19 +678,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1279,
-            "output_tokens": 69,
-            "cost_nanodollars": 3248000,
-            "latency_ms": 1547
+            "input_tokens": 1432,
+            "output_tokens": 46,
+            "cost_nanodollars": 3324000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -698,19 +701,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 69,
-            "cost_nanodollars": 3254000,
-            "latency_ms": 1234
+            "input_tokens": 1435,
+            "output_tokens": 47,
+            "cost_nanodollars": 3340000,
+            "latency_ms": 1032
           }
         ]
       },
@@ -720,19 +724,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1286,
-            "output_tokens": 68,
-            "cost_nanodollars": 3252000,
-            "latency_ms": 1125
+            "input_tokens": 1439,
+            "output_tokens": 48,
+            "cost_nanodollars": 3358000,
+            "latency_ms": 984
           }
         ]
       },
@@ -742,19 +747,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 65,
-            "cost_nanodollars": 3214000,
-            "latency_ms": 1609
+            "input_tokens": 1435,
+            "output_tokens": 50,
+            "cost_nanodollars": 3370000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -764,19 +770,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 77,
-            "cost_nanodollars": 3340000,
-            "latency_ms": 1594
+            "input_tokens": 1438,
+            "output_tokens": 37,
+            "cost_nanodollars": 3246000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -786,19 +793,20 @@
           "category": "travel"
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 54,
-            "cost_nanodollars": 3100000,
-            "latency_ms": 1531
+            "input_tokens": 1433,
+            "output_tokens": 51,
+            "cost_nanodollars": 3376000,
+            "latency_ms": 1016
           }
         ]
       },
@@ -808,18 +816,19 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1279,
-            "output_tokens": 49,
-            "cost_nanodollars": 3048000,
+            "input_tokens": 1432,
+            "output_tokens": 41,
+            "cost_nanodollars": 3274000,
             "latency_ms": 1125
           }
         ]
@@ -830,19 +839,20 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 61,
-            "cost_nanodollars": 3180000,
-            "latency_ms": 1016
+            "input_tokens": 1438,
+            "output_tokens": 46,
+            "cost_nanodollars": 3336000,
+            "latency_ms": 984
           }
         ]
       },
@@ -852,19 +862,20 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 64,
-            "cost_nanodollars": 3204000,
-            "latency_ms": 1047
+            "input_tokens": 1435,
+            "output_tokens": 43,
+            "cost_nanodollars": 3300000,
+            "latency_ms": 1157
           }
         ]
       },
@@ -874,19 +885,20 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 64,
-            "cost_nanodollars": 3210000,
-            "latency_ms": 1078
+            "input_tokens": 1438,
+            "output_tokens": 50,
+            "cost_nanodollars": 3376000,
+            "latency_ms": 984
           }
         ]
       },
@@ -896,19 +908,20 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 59,
-            "cost_nanodollars": 3160000,
-            "latency_ms": 1031
+            "input_tokens": 1438,
+            "output_tokens": 42,
+            "cost_nanodollars": 3296000,
+            "latency_ms": 1000
           }
         ]
       },
@@ -918,19 +931,20 @@
           "category": "advertising"
         },
         "category": "advertising",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1293,
-            "output_tokens": 76,
-            "cost_nanodollars": 3346000,
-            "latency_ms": 1297
+            "input_tokens": 1446,
+            "output_tokens": 56,
+            "cost_nanodollars": 3452000,
+            "latency_ms": 2437
           }
         ]
       },
@@ -940,19 +954,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 71,
-            "cost_nanodollars": 3274000,
-            "latency_ms": 1391
+            "input_tokens": 1435,
+            "output_tokens": 51,
+            "cost_nanodollars": 3380000,
+            "latency_ms": 1063
           }
         ]
       },
@@ -962,19 +977,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1277,
-            "output_tokens": 69,
-            "cost_nanodollars": 3244000,
-            "latency_ms": 1047
+            "input_tokens": 1430,
+            "output_tokens": 44,
+            "cost_nanodollars": 3300000,
+            "latency_ms": 1016
           }
         ]
       },
@@ -984,19 +1000,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 71,
-            "cost_nanodollars": 3270000,
-            "latency_ms": 1437
+            "input_tokens": 1433,
+            "output_tokens": 46,
+            "cost_nanodollars": 3326000,
+            "latency_ms": 1031
           }
         ]
       },
@@ -1006,19 +1023,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1283,
-            "output_tokens": 73,
-            "cost_nanodollars": 3296000,
-            "latency_ms": 1578
+            "input_tokens": 1436,
+            "output_tokens": 45,
+            "cost_nanodollars": 3322000,
+            "latency_ms": 1094
           }
         ]
       },
@@ -1028,19 +1046,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 101,
-            "cost_nanodollars": 3570000,
-            "latency_ms": 1875
+            "input_tokens": 1433,
+            "output_tokens": 51,
+            "cost_nanodollars": 3376000,
+            "latency_ms": 1500
           }
         ]
       },
@@ -1050,19 +1069,20 @@
           "category": "rent_utilities"
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1284,
-            "output_tokens": 73,
-            "cost_nanodollars": 3298000,
-            "latency_ms": 1188
+            "input_tokens": 1437,
+            "output_tokens": 43,
+            "cost_nanodollars": 3304000,
+            "latency_ms": 953
           }
         ]
       },
@@ -1072,19 +1092,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1308,
-            "output_tokens": 107,
-            "cost_nanodollars": 3686000,
-            "latency_ms": 1812
+            "input_tokens": 1461,
+            "output_tokens": 60,
+            "cost_nanodollars": 3522000,
+            "latency_ms": 1015
           }
         ]
       },
@@ -1094,19 +1115,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1298,
-            "output_tokens": 90,
-            "cost_nanodollars": 3496000,
-            "latency_ms": 1250
+            "input_tokens": 1451,
+            "output_tokens": 56,
+            "cost_nanodollars": 3462000,
+            "latency_ms": 1157
           }
         ]
       },
@@ -1116,19 +1138,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1299,
-            "output_tokens": 98,
-            "cost_nanodollars": 3578000,
-            "latency_ms": 1719
+            "input_tokens": 1452,
+            "output_tokens": 60,
+            "cost_nanodollars": 3504000,
+            "latency_ms": 1312
           }
         ]
       },
@@ -1138,19 +1161,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1310,
-            "output_tokens": 102,
-            "cost_nanodollars": 3640000,
-            "latency_ms": 1750
+            "input_tokens": 1463,
+            "output_tokens": 56,
+            "cost_nanodollars": 3486000,
+            "latency_ms": 1250
           }
         ]
       },
@@ -1160,19 +1184,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1304,
-            "output_tokens": 91,
-            "cost_nanodollars": 3518000,
-            "latency_ms": 1703
+            "input_tokens": 1457,
+            "output_tokens": 62,
+            "cost_nanodollars": 3534000,
+            "latency_ms": 1172
           }
         ]
       },
@@ -1182,19 +1207,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1305,
-            "output_tokens": 97,
-            "cost_nanodollars": 3580000,
-            "latency_ms": 1672
+            "input_tokens": 1458,
+            "output_tokens": 63,
+            "cost_nanodollars": 3546000,
+            "latency_ms": 1125
           }
         ]
       },
@@ -1204,19 +1230,20 @@
           "category": "client_meal"
         },
         "category": "client_meal",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1298,
-            "output_tokens": 79,
-            "cost_nanodollars": 3386000,
-            "latency_ms": 1297
+            "input_tokens": 1451,
+            "output_tokens": 61,
+            "cost_nanodollars": 3512000,
+            "latency_ms": 1656
           }
         ]
       },
@@ -1226,19 +1253,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1318,
-            "output_tokens": 76,
-            "cost_nanodollars": 3396000,
-            "latency_ms": 1562
+            "input_tokens": 1471,
+            "output_tokens": 56,
+            "cost_nanodollars": 3502000,
+            "latency_ms": 1000
           }
         ]
       },
@@ -1248,19 +1276,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1313,
-            "output_tokens": 78,
-            "cost_nanodollars": 3406000,
-            "latency_ms": 1438
+            "input_tokens": 1466,
+            "output_tokens": 58,
+            "cost_nanodollars": 3512000,
+            "latency_ms": 1860
           }
         ]
       },
@@ -1270,19 +1299,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1309,
-            "output_tokens": 79,
-            "cost_nanodollars": 3408000,
-            "latency_ms": 1156
+            "input_tokens": 1462,
+            "output_tokens": 50,
+            "cost_nanodollars": 3424000,
+            "latency_ms": 1062
           }
         ]
       },
@@ -1292,19 +1322,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1305,
-            "output_tokens": 190,
-            "cost_nanodollars": 4510000,
-            "latency_ms": 2203
+            "input_tokens": 1458,
+            "output_tokens": 51,
+            "cost_nanodollars": 3426000,
+            "latency_ms": 1047
           }
         ]
       },
@@ -1314,19 +1345,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1311,
-            "output_tokens": 142,
-            "cost_nanodollars": 4042000,
-            "latency_ms": 1625
+            "input_tokens": 1464,
+            "output_tokens": 62,
+            "cost_nanodollars": 3548000,
+            "latency_ms": 1094
           }
         ]
       },
@@ -1336,19 +1368,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1309,
-            "output_tokens": 79,
-            "cost_nanodollars": 3408000,
-            "latency_ms": 1219
+            "input_tokens": 1462,
+            "output_tokens": 61,
+            "cost_nanodollars": 3534000,
+            "latency_ms": 1109
           }
         ]
       },
@@ -1358,19 +1391,20 @@
           "category": "team_meal_office"
         },
         "category": "team_meal_office",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1304,
-            "output_tokens": 73,
-            "cost_nanodollars": 3338000,
-            "latency_ms": 1125
+            "input_tokens": 1457,
+            "output_tokens": 50,
+            "cost_nanodollars": 3414000,
+            "latency_ms": 1031
           }
         ]
       },
@@ -1380,19 +1414,20 @@
           "category": "snacks_coffee"
         },
         "category": "snacks_coffee",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1296,
-            "output_tokens": 97,
-            "cost_nanodollars": 3562000,
-            "latency_ms": 1719
+            "input_tokens": 1449,
+            "output_tokens": 61,
+            "cost_nanodollars": 3508000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -1402,19 +1437,20 @@
           "category": "snacks_coffee"
         },
         "category": "snacks_coffee",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1297,
-            "output_tokens": 98,
-            "cost_nanodollars": 3574000,
-            "latency_ms": 1375
+            "input_tokens": 1450,
+            "output_tokens": 65,
+            "cost_nanodollars": 3550000,
+            "latency_ms": 1172
           }
         ]
       },
@@ -1424,19 +1460,20 @@
           "category": "snacks_coffee"
         },
         "category": "snacks_coffee",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1281,
-            "output_tokens": 278,
-            "cost_nanodollars": 5342000,
-            "latency_ms": 2718
+            "input_tokens": 1434,
+            "output_tokens": 70,
+            "cost_nanodollars": 3568000,
+            "latency_ms": 1313
           }
         ]
       },
@@ -1446,19 +1483,20 @@
           "category": "snacks_coffee"
         },
         "category": "snacks_coffee",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1296,
-            "output_tokens": 140,
-            "cost_nanodollars": 3992000,
-            "latency_ms": 2313
+            "input_tokens": 1449,
+            "output_tokens": 60,
+            "cost_nanodollars": 3498000,
+            "latency_ms": 1094
           }
         ]
       },
@@ -1468,19 +1506,20 @@
           "category": "snacks_coffee"
         },
         "category": "snacks_coffee",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1285,
-            "output_tokens": 95,
-            "cost_nanodollars": 3520000,
-            "latency_ms": 1781
+            "input_tokens": 1438,
+            "output_tokens": 52,
+            "cost_nanodollars": 3396000,
+            "latency_ms": 1390
           }
         ]
       },
@@ -1490,19 +1529,20 @@
           "category": "client_entertainment"
         },
         "category": "client_entertainment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1303,
-            "output_tokens": 104,
-            "cost_nanodollars": 3646000,
-            "latency_ms": 1844
+            "input_tokens": 1456,
+            "output_tokens": 71,
+            "cost_nanodollars": 3622000,
+            "latency_ms": 1375
           }
         ]
       },
@@ -1512,19 +1552,20 @@
           "category": "client_entertainment"
         },
         "category": "client_entertainment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1294,
-            "output_tokens": 80,
-            "cost_nanodollars": 3388000,
-            "latency_ms": 1187
+            "input_tokens": 1447,
+            "output_tokens": 53,
+            "cost_nanodollars": 3424000,
+            "latency_ms": 1375
           }
         ]
       },
@@ -1534,19 +1575,20 @@
           "category": "client_entertainment"
         },
         "category": "client_entertainment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1300,
-            "output_tokens": 99,
-            "cost_nanodollars": 3590000,
-            "latency_ms": 1329
+            "input_tokens": 1453,
+            "output_tokens": 64,
+            "cost_nanodollars": 3546000,
+            "latency_ms": 1063
           }
         ]
       },
@@ -1556,19 +1598,20 @@
           "category": "client_entertainment"
         },
         "category": "client_entertainment",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1292,
-            "output_tokens": 94,
-            "cost_nanodollars": 3524000,
-            "latency_ms": 1296
+            "input_tokens": 1445,
+            "output_tokens": 51,
+            "cost_nanodollars": 3400000,
+            "latency_ms": 984
           }
         ]
       },
@@ -1578,19 +1621,20 @@
           "category": "contractor"
         },
         "category": "contractor",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1291,
-            "output_tokens": 202,
-            "cost_nanodollars": 4602000,
-            "latency_ms": 2094
+            "input_tokens": 1444,
+            "output_tokens": 62,
+            "cost_nanodollars": 3508000,
+            "latency_ms": 1109
           }
         ]
       },
@@ -1600,19 +1644,20 @@
           "category": "contractor"
         },
         "category": "contractor",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1291,
-            "output_tokens": 88,
-            "cost_nanodollars": 3462000,
-            "latency_ms": 1125
+            "input_tokens": 1444,
+            "output_tokens": 58,
+            "cost_nanodollars": 3468000,
+            "latency_ms": 1110
           }
         ]
       },
@@ -1621,22 +1666,40 @@
         "expected": {
           "category": "contractor"
         },
-        "category": "contractor",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "contractor",
+          "research_us"
+        ],
+        "question": "Should this $1,300.00 payment to Priya Raman for UX research interviews be recorded as a contractor payment or as US research?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1288,
-            "output_tokens": 162,
-            "cost_nanodollars": 4196000,
-            "latency_ms": 2188
+            "input_tokens": 1441,
+            "output_tokens": 81,
+            "cost_nanodollars": 3692000,
+            "latency_ms": 1094
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 392,
+            "output_tokens": 51,
+            "cost_nanodollars": 1294000,
+            "latency_ms": 1093,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "c71",
@@ -1644,18 +1707,19 @@
           "category": "research_us"
         },
         "category": "research_us",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1295,
-            "output_tokens": 83,
-            "cost_nanodollars": 3420000,
+            "input_tokens": 1448,
+            "output_tokens": 63,
+            "cost_nanodollars": 3526000,
             "latency_ms": 1203
           }
         ]
@@ -1666,19 +1730,20 @@
           "category": "research_offshore"
         },
         "category": "research_offshore",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1299,
-            "output_tokens": 84,
-            "cost_nanodollars": 3438000,
-            "latency_ms": 1797
+            "input_tokens": 1452,
+            "output_tokens": 65,
+            "cost_nanodollars": 3554000,
+            "latency_ms": 1047
           }
         ]
       },
@@ -1688,19 +1753,20 @@
           "category": "other"
         },
         "category": "other",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1284,
-            "output_tokens": 79,
-            "cost_nanodollars": 3358000,
-            "latency_ms": 1375
+            "input_tokens": 1437,
+            "output_tokens": 56,
+            "cost_nanodollars": 3434000,
+            "latency_ms": 1547
           }
         ]
       },
@@ -1710,19 +1776,20 @@
           "category": "other"
         },
         "category": "other",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1281,
-            "output_tokens": 77,
-            "cost_nanodollars": 3332000,
-            "latency_ms": 1718
+            "input_tokens": 1434,
+            "output_tokens": 55,
+            "cost_nanodollars": 3418000,
+            "latency_ms": 1078
           }
         ]
       },
@@ -1732,19 +1799,20 @@
           "category": "other"
         },
         "category": "other",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1275,
-            "output_tokens": 67,
-            "cost_nanodollars": 3220000,
-            "latency_ms": 2063
+            "input_tokens": 1428,
+            "output_tokens": 40,
+            "cost_nanodollars": 3256000,
+            "latency_ms": 985
           }
         ]
       }
@@ -1760,6 +1828,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "team_meal_office",
           "client_meal"
@@ -1769,13 +1838,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1296,
-            "output_tokens": 87,
-            "cost_nanodollars": 3462000,
-            "latency_ms": 1141
+            "input_tokens": 1449,
+            "output_tokens": 66,
+            "cost_nanodollars": 3558000,
+            "latency_ms": 1172
           },
           {
             "skill": "ask_clarifying_question",
@@ -1786,7 +1855,7 @@
             "input_tokens": 403,
             "output_tokens": 42,
             "cost_nanodollars": 1226000,
-            "latency_ms": 1343,
+            "latency_ms": 1031,
             "used_template": false
           }
         ],
@@ -1803,6 +1872,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "team_meal_office",
           "client_meal"
@@ -1812,13 +1882,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1308,
-            "output_tokens": 121,
-            "cost_nanodollars": 3826000,
-            "latency_ms": 1938
+            "input_tokens": 1461,
+            "output_tokens": 66,
+            "cost_nanodollars": 3582000,
+            "latency_ms": 1484
           },
           {
             "skill": "ask_clarifying_question",
@@ -1829,7 +1899,7 @@
             "input_tokens": 415,
             "output_tokens": 40,
             "cost_nanodollars": 1230000,
-            "latency_ms": 1031,
+            "latency_ms": 953,
             "used_template": false
           }
         ],
@@ -1847,22 +1917,23 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "client_meal",
           "team_meal_office"
         ],
-        "question": "Was this $420.00 dinner at Zuni Cafe a meal with a client or a team meal at the office?",
+        "question": "Was your $420.00 dinner at Zuni Cafe a meal with a client or a team meal at the office?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1284,
-            "output_tokens": 101,
-            "cost_nanodollars": 3578000,
-            "latency_ms": 1766
+            "input_tokens": 1437,
+            "output_tokens": 84,
+            "cost_nanodollars": 3714000,
+            "latency_ms": 1172
           },
           {
             "skill": "ask_clarifying_question",
@@ -1873,7 +1944,7 @@
             "input_tokens": 391,
             "output_tokens": 44,
             "cost_nanodollars": 1222000,
-            "latency_ms": 1375,
+            "latency_ms": 1391,
             "used_template": false
           }
         ],
@@ -1890,6 +1961,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "team_meal_office",
           "client_meal"
@@ -1899,13 +1971,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1293,
-            "output_tokens": 92,
-            "cost_nanodollars": 3506000,
-            "latency_ms": 1687
+            "input_tokens": 1446,
+            "output_tokens": 63,
+            "cost_nanodollars": 3522000,
+            "latency_ms": 1109
           },
           {
             "skill": "ask_clarifying_question",
@@ -1916,7 +1988,7 @@
             "input_tokens": 400,
             "output_tokens": 38,
             "cost_nanodollars": 1180000,
-            "latency_ms": 1250,
+            "latency_ms": 906,
             "used_template": false
           }
         ],
@@ -1933,22 +2005,23 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
-          "office_supplies",
-          "snacks_coffee"
+          "snacks_coffee",
+          "office_supplies"
         ],
-        "question": "For your $214.60 Costco purchase on October 15, was this mainly office supplies or office snacks and coffee?",
+        "question": "Was this $214.60 Costco purchase mainly for office snacks and coffee, or for office supplies?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1291,
-            "output_tokens": 397,
-            "cost_nanodollars": 6552000,
-            "latency_ms": 3875
+            "input_tokens": 1444,
+            "output_tokens": 90,
+            "cost_nanodollars": 3788000,
+            "latency_ms": 1422
           },
           {
             "skill": "ask_clarifying_question",
@@ -1957,9 +2030,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 399,
-            "output_tokens": 46,
-            "cost_nanodollars": 1258000,
-            "latency_ms": 1531,
+            "output_tokens": 43,
+            "cost_nanodollars": 1228000,
+            "latency_ms": 1016,
             "used_template": false
           }
         ],
@@ -1976,22 +2049,23 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "office_supplies",
           "snacks_coffee"
         ],
-        "question": "For your $132.48 Amazon Business purchase on Oct 15 that included a webcam and a snack variety pack, should this be filed as office supplies or as office snacks and coffee?",
+        "question": "Was this $132.48 Amazon Business purchase for office supplies or for office snacks and coffee?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1294,
-            "output_tokens": 356,
-            "cost_nanodollars": 6148000,
-            "latency_ms": 3641
+            "input_tokens": 1447,
+            "output_tokens": 109,
+            "cost_nanodollars": 3984000,
+            "latency_ms": 1500
           },
           {
             "skill": "ask_clarifying_question",
@@ -2000,9 +2074,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 402,
-            "output_tokens": 68,
-            "cost_nanodollars": 1484000,
-            "latency_ms": 1547,
+            "output_tokens": 42,
+            "cost_nanodollars": 1224000,
+            "latency_ms": 1343,
             "used_template": false
           }
         ],
@@ -2019,6 +2093,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "client_entertainment",
           "other"
@@ -2028,13 +2103,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1286,
-            "output_tokens": 362,
-            "cost_nanodollars": 6192000,
-            "latency_ms": 3375
+            "input_tokens": 1439,
+            "output_tokens": 71,
+            "cost_nanodollars": 3588000,
+            "latency_ms": 1719
           },
           {
             "skill": "ask_clarifying_question",
@@ -2045,7 +2120,7 @@
             "input_tokens": 388,
             "output_tokens": 45,
             "cost_nanodollars": 1226000,
-            "latency_ms": 1391,
+            "latency_ms": 1469,
             "used_template": false
           }
         ],
@@ -2061,22 +2136,40 @@
             "office_supplies"
           ]
         },
-        "category": "office_supplies",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "office_supplies",
+          "equipment"
+        ],
+        "question": "Should your $2,860.00 purchase from B&H Photo (lighting kit, microphone, and stands) be filed as office supplies or equipment?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1290,
-            "output_tokens": 511,
-            "cost_nanodollars": 7690000,
-            "latency_ms": 4218
+            "input_tokens": 1443,
+            "output_tokens": 92,
+            "cost_nanodollars": 3806000,
+            "latency_ms": 1797
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 393,
+            "output_tokens": 57,
+            "cost_nanodollars": 1356000,
+            "latency_ms": 1531,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a09",
@@ -2087,22 +2180,40 @@
             "research_offshore"
           ]
         },
-        "category": "contractor",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "contractor",
+          "research_us"
+        ],
+        "question": "Was this $1,600.00 Upwork payment to Mateusz K. for 40 hours of mobile app work a contractor payment or research in the US?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1294,
-            "output_tokens": 210,
-            "cost_nanodollars": 4688000,
-            "latency_ms": 2219
+            "input_tokens": 1447,
+            "output_tokens": 85,
+            "cost_nanodollars": 3744000,
+            "latency_ms": 1625
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 398,
+            "output_tokens": 57,
+            "cost_nanodollars": 1366000,
+            "latency_ms": 1062,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a10",
@@ -2113,22 +2224,40 @@
             "research_us"
           ]
         },
-        "category": "contractor",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "contractor",
+          "research_us"
+        ],
+        "question": "Was this $2,400.00 payment to Riley Tran for October development work a contractor payment or US research?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1282,
-            "output_tokens": 322,
-            "cost_nanodollars": 5784000,
-            "latency_ms": 3563
+            "input_tokens": 1435,
+            "output_tokens": 78,
+            "cost_nanodollars": 3650000,
+            "latency_ms": 1329
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 386,
+            "output_tokens": 42,
+            "cost_nanodollars": 1192000,
+            "latency_ms": 1015,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a11",
@@ -2140,6 +2269,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "travel",
           "client_meal"
@@ -2149,13 +2279,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1302,
-            "output_tokens": 363,
-            "cost_nanodollars": 6234000,
-            "latency_ms": 3796
+            "input_tokens": 1455,
+            "output_tokens": 69,
+            "cost_nanodollars": 3600000,
+            "latency_ms": 1125
           },
           {
             "skill": "ask_clarifying_question",
@@ -2166,7 +2296,7 @@
             "input_tokens": 405,
             "output_tokens": 47,
             "cost_nanodollars": 1280000,
-            "latency_ms": 1454,
+            "latency_ms": 1078,
             "used_template": false
           }
         ],
@@ -2184,22 +2314,23 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
-          "team_meal_office",
-          "client_meal"
+          "snacks_coffee",
+          "team_meal_office"
         ],
-        "question": "Was this $86.40 purchase at Blue Bottle Coffee a team meal at the office or a meal with a client?",
+        "question": "Was this $86.40 Blue Bottle Coffee purchase for office snacks and coffee, or for a team meal at the office?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1289,
-            "output_tokens": 336,
-            "cost_nanodollars": 5938000,
-            "latency_ms": 3265
+            "input_tokens": 1442,
+            "output_tokens": 89,
+            "cost_nanodollars": 3774000,
+            "latency_ms": 1266
           },
           {
             "skill": "ask_clarifying_question",
@@ -2207,10 +2338,10 @@
             "prompt_version": "ask_clarifying_question.v1",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 396,
-            "output_tokens": 47,
-            "cost_nanodollars": 1262000,
-            "latency_ms": 969,
+            "input_tokens": 399,
+            "output_tokens": 51,
+            "cost_nanodollars": 1308000,
+            "latency_ms": 953,
             "used_template": false
           }
         ],
@@ -2227,19 +2358,20 @@
           ]
         },
         "category": "rent_utilities",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1280,
-            "output_tokens": 177,
-            "cost_nanodollars": 4330000,
-            "latency_ms": 2156
+            "input_tokens": 1433,
+            "output_tokens": 47,
+            "cost_nanodollars": 3336000,
+            "latency_ms": 1000
           }
         ]
       },
@@ -2253,19 +2385,20 @@
           ]
         },
         "category": "software",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1281,
-            "output_tokens": 103,
-            "cost_nanodollars": 3592000,
-            "latency_ms": 1328
+            "input_tokens": 1434,
+            "output_tokens": 43,
+            "cost_nanodollars": 3298000,
+            "latency_ms": 1172
           }
         ]
       },
@@ -2279,22 +2412,40 @@
             "other"
           ]
         },
-        "category": "other",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "other",
+          "travel"
+        ],
+        "question": "Was the $1,998.00 SaaStr Annual 2026 purchase for 2 passes Travel or Other?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1289,
-            "output_tokens": 261,
-            "cost_nanodollars": 5188000,
-            "latency_ms": 3078
+            "input_tokens": 1442,
+            "output_tokens": 84,
+            "cost_nanodollars": 3724000,
+            "latency_ms": 1281
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 388,
+            "output_tokens": 47,
+            "cost_nanodollars": 1246000,
+            "latency_ms": 1172,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a16",
@@ -2306,22 +2457,23 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "advertising",
           "other"
         ],
-        "question": "Was this $540.00 Custom Ink purchase of 30 logo t-shirts for Advertising or Other?",
+        "question": "Was the $540.00 Custom Ink purchase of 30 logo t-shirts for Advertising or Other?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1283,
-            "output_tokens": 305,
-            "cost_nanodollars": 5616000,
-            "latency_ms": 2938
+            "input_tokens": 1436,
+            "output_tokens": 65,
+            "cost_nanodollars": 3522000,
+            "latency_ms": 1078
           },
           {
             "skill": "ask_clarifying_question",
@@ -2332,7 +2484,7 @@
             "input_tokens": 383,
             "output_tokens": 46,
             "cost_nanodollars": 1226000,
-            "latency_ms": 1031,
+            "latency_ms": 938,
             "used_template": false
           }
         ],
@@ -2348,22 +2500,40 @@
             "client_entertainment"
           ]
         },
-        "category": "advertising",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "advertising",
+          "client_entertainment"
+        ],
+        "question": "Was the $750.00 Eventbrite sponsor table for the SF Founders Mixer mainly to advertise your business or to entertain clients?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1288,
-            "output_tokens": 181,
-            "cost_nanodollars": 4386000,
-            "latency_ms": 2172
+            "input_tokens": 1441,
+            "output_tokens": 75,
+            "cost_nanodollars": 3632000,
+            "latency_ms": 1500
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 392,
+            "output_tokens": 56,
+            "cost_nanodollars": 1344000,
+            "latency_ms": 968,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a18",
@@ -2376,22 +2546,40 @@
             "other"
           ]
         },
-        "category": "office_supplies",
-        "options": [],
-        "question": null,
+        "category": null,
+        "same_as": [],
+        "options": [
+          "office_supplies",
+          "equipment"
+        ],
+        "question": "Was your $612.75 purchase at Home Depot for office supplies or equipment?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1289,
-            "output_tokens": 231,
-            "cost_nanodollars": 4888000,
-            "latency_ms": 2672
+            "input_tokens": 1442,
+            "output_tokens": 102,
+            "cost_nanodollars": 3904000,
+            "latency_ms": 1485
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 392,
+            "output_tokens": 36,
+            "cost_nanodollars": 1144000,
+            "latency_ms": 890,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a19",
@@ -2404,6 +2592,7 @@
           ]
         },
         "category": null,
+        "same_as": [],
         "options": [
           "team_meal_office",
           "client_meal"
@@ -2413,13 +2602,13 @@
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1292,
-            "output_tokens": 116,
-            "cost_nanodollars": 3744000,
-            "latency_ms": 1484
+            "input_tokens": 1445,
+            "output_tokens": 89,
+            "cost_nanodollars": 3780000,
+            "latency_ms": 1454
           },
           {
             "skill": "ask_clarifying_question",
@@ -2430,7 +2619,7 @@
             "input_tokens": 399,
             "output_tokens": 40,
             "cost_nanodollars": 1198000,
-            "latency_ms": 969,
+            "latency_ms": 796,
             "used_template": false
           }
         ],
@@ -2447,19 +2636,20 @@
           ]
         },
         "category": "travel",
+        "same_as": [],
         "options": [],
         "question": null,
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
-            "prompt_version": "classify_transaction.v3",
+            "prompt_version": "classify_transaction.v4",
             "ruleset_version": "2026.1",
             "ok": true,
-            "input_tokens": 1292,
-            "output_tokens": 154,
-            "cost_nanodollars": 4124000,
-            "latency_ms": 2125
+            "input_tokens": 1445,
+            "output_tokens": 151,
+            "cost_nanodollars": 4400000,
+            "latency_ms": 2047
           }
         ]
       }
@@ -2487,7 +2677,7 @@
             "input_tokens": 2003,
             "output_tokens": 248,
             "cost_nanodollars": 6486000,
-            "latency_ms": 2094
+            "latency_ms": 2407
           }
         ]
       },
@@ -2511,8 +2701,8 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2028,
-            "output_tokens": 265,
-            "cost_nanodollars": 6706000,
+            "output_tokens": 260,
+            "cost_nanodollars": 6656000,
             "latency_ms": 2250
           }
         ]
@@ -2539,7 +2729,7 @@
             "input_tokens": 2003,
             "output_tokens": 225,
             "cost_nanodollars": 6256000,
-            "latency_ms": 3000
+            "latency_ms": 3015
           }
         ]
       },
@@ -2565,7 +2755,7 @@
             "input_tokens": 2078,
             "output_tokens": 237,
             "cost_nanodollars": 6526000,
-            "latency_ms": 3062
+            "latency_ms": 3047
           }
         ]
       },
@@ -2591,7 +2781,7 @@
             "input_tokens": 2053,
             "output_tokens": 284,
             "cost_nanodollars": 6946000,
-            "latency_ms": 2047
+            "latency_ms": 2703
           }
         ]
       }
@@ -2617,7 +2807,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 1766
+            "latency_ms": 1797
           }
         ]
       },
@@ -2641,7 +2831,7 @@
             "input_tokens": 1978,
             "output_tokens": 205,
             "cost_nanodollars": 6006000,
-            "latency_ms": 2156
+            "latency_ms": 2891
           }
         ]
       },
@@ -2665,7 +2855,7 @@
             "input_tokens": 2003,
             "output_tokens": 194,
             "cost_nanodollars": 5946000,
-            "latency_ms": 1656
+            "latency_ms": 1703
           }
         ]
       },
@@ -2713,7 +2903,7 @@
             "input_tokens": 2003,
             "output_tokens": 197,
             "cost_nanodollars": 5976000,
-            "latency_ms": 2531
+            "latency_ms": 1875
           }
         ]
       },
@@ -2737,7 +2927,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 2141
+            "latency_ms": 1703
           }
         ]
       },
@@ -2761,7 +2951,7 @@
             "input_tokens": 1953,
             "output_tokens": 196,
             "cost_nanodollars": 5866000,
-            "latency_ms": 1781
+            "latency_ms": 1844
           }
         ]
       },
@@ -2785,7 +2975,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 2078
+            "latency_ms": 1688
           }
         ]
       },
@@ -2807,9 +2997,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 200,
-            "cost_nanodollars": 5956000,
-            "latency_ms": 2266
+            "output_tokens": 205,
+            "cost_nanodollars": 6006000,
+            "latency_ms": 2219
           }
         ]
       },
@@ -2833,7 +3023,7 @@
             "input_tokens": 1978,
             "output_tokens": 191,
             "cost_nanodollars": 5866000,
-            "latency_ms": 2109
+            "latency_ms": 2421
           }
         ]
       },
@@ -2857,7 +3047,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 1907
+            "latency_ms": 2047
           }
         ]
       },
@@ -2881,7 +3071,7 @@
             "input_tokens": 1978,
             "output_tokens": 192,
             "cost_nanodollars": 5876000,
-            "latency_ms": 2031
+            "latency_ms": 2125
           }
         ]
       },
@@ -2905,7 +3095,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 1641
+            "latency_ms": 1610
           }
         ]
       },
@@ -2929,7 +3119,7 @@
             "input_tokens": 1978,
             "output_tokens": 178,
             "cost_nanodollars": 5736000,
-            "latency_ms": 2188
+            "latency_ms": 1593
           }
         ]
       },
@@ -2953,7 +3143,7 @@
             "input_tokens": 2003,
             "output_tokens": 195,
             "cost_nanodollars": 5956000,
-            "latency_ms": 1578
+            "latency_ms": 1672
           }
         ]
       },
@@ -2966,7 +3156,7 @@
         },
         "total_cents": 36400,
         "date": "2026-05-21",
-        "merchant": "Zuni Cafe",
+        "merchant": "ZUNI CAFE",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -2975,9 +3165,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2003,
-            "output_tokens": 191,
-            "cost_nanodollars": 5916000,
-            "latency_ms": 2062
+            "output_tokens": 187,
+            "cost_nanodollars": 5876000,
+            "latency_ms": 1797
           }
         ]
       },
@@ -3001,7 +3191,7 @@
             "input_tokens": 1953,
             "output_tokens": 175,
             "cost_nanodollars": 5656000,
-            "latency_ms": 2016
+            "latency_ms": 2094
           }
         ]
       },
@@ -3025,7 +3215,7 @@
             "input_tokens": 1978,
             "output_tokens": 178,
             "cost_nanodollars": 5736000,
-            "latency_ms": 1609
+            "latency_ms": 2796
           }
         ]
       },
@@ -3049,7 +3239,7 @@
             "input_tokens": 1978,
             "output_tokens": 205,
             "cost_nanodollars": 6006000,
-            "latency_ms": 1813
+            "latency_ms": 1985
           }
         ]
       },
@@ -3073,7 +3263,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 2140
+            "latency_ms": 2250
           }
         ]
       },
@@ -3097,7 +3287,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 1922
+            "latency_ms": 2187
           }
         ]
       },
@@ -3121,7 +3311,7 @@
             "input_tokens": 1953,
             "output_tokens": 185,
             "cost_nanodollars": 5756000,
-            "latency_ms": 1844
+            "latency_ms": 1625
           }
         ]
       },
@@ -3145,7 +3335,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 1844
+            "latency_ms": 1750
           }
         ]
       },
@@ -3169,7 +3359,7 @@
             "input_tokens": 1978,
             "output_tokens": 180,
             "cost_nanodollars": 5756000,
-            "latency_ms": 1656
+            "latency_ms": 1750
           }
         ]
       },
@@ -3193,7 +3383,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 2078
+            "latency_ms": 2047
           }
         ]
       },
@@ -3217,7 +3407,7 @@
             "input_tokens": 1978,
             "output_tokens": 180,
             "cost_nanodollars": 5756000,
-            "latency_ms": 1703
+            "latency_ms": 1688
           }
         ]
       },
@@ -3241,7 +3431,7 @@
             "input_tokens": 2003,
             "output_tokens": 199,
             "cost_nanodollars": 5996000,
-            "latency_ms": 2344
+            "latency_ms": 2234
           }
         ]
       },
@@ -3265,7 +3455,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 1734
+            "latency_ms": 1828
           }
         ]
       },
@@ -3289,7 +3479,7 @@
             "input_tokens": 1953,
             "output_tokens": 177,
             "cost_nanodollars": 5676000,
-            "latency_ms": 2094
+            "latency_ms": 2656
           }
         ]
       },
@@ -3313,7 +3503,7 @@
             "input_tokens": 1978,
             "output_tokens": 198,
             "cost_nanodollars": 5936000,
-            "latency_ms": 2203
+            "latency_ms": 2422
           }
         ]
       },
@@ -3326,7 +3516,7 @@
         },
         "total_cents": 98606,
         "date": "2026-09-17",
-        "merchant": "LinkedIn Ads",
+        "merchant": "LINKEDIN ADS",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3335,9 +3525,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 190,
-            "cost_nanodollars": 5856000,
-            "latency_ms": 2172
+            "output_tokens": 191,
+            "cost_nanodollars": 5866000,
+            "latency_ms": 2500
           }
         ]
       },
@@ -3350,7 +3540,7 @@
         },
         "total_cents": 43200,
         "date": "2026-09-17",
-        "merchant": "Pho Garden Catering",
+        "merchant": "PHO GARDEN CATERING",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3359,9 +3549,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 197,
-            "cost_nanodollars": 5926000,
-            "latency_ms": 2187
+            "output_tokens": 205,
+            "cost_nanodollars": 6006000,
+            "latency_ms": 1828
           }
         ]
       },
@@ -3385,7 +3575,7 @@
             "input_tokens": 2003,
             "output_tokens": 194,
             "cost_nanodollars": 5946000,
-            "latency_ms": 1563
+            "latency_ms": 1938
           }
         ]
       },
@@ -3433,7 +3623,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 2110
+            "latency_ms": 2422
           }
         ]
       },
@@ -3457,7 +3647,7 @@
             "input_tokens": 1978,
             "output_tokens": 181,
             "cost_nanodollars": 5766000,
-            "latency_ms": 2078
+            "latency_ms": 2266
           }
         ]
       },
@@ -3470,7 +3660,7 @@
         },
         "total_cents": 3820,
         "date": "2026-11-03",
-        "merchant": "UBER",
+        "merchant": "Uber",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3481,7 +3671,7 @@
             "input_tokens": 1953,
             "output_tokens": 174,
             "cost_nanodollars": 5646000,
-            "latency_ms": 1594
+            "latency_ms": 1766
           }
         ]
       },
@@ -3494,7 +3684,7 @@
         },
         "total_cents": 64000,
         "date": "2026-11-06",
-        "merchant": "Pinecrest Print Shop",
+        "merchant": "PINECREST PRINT SHOP",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3503,9 +3693,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2003,
-            "output_tokens": 248,
-            "cost_nanodollars": 6486000,
-            "latency_ms": 2031
+            "output_tokens": 250,
+            "cost_nanodollars": 6506000,
+            "latency_ms": 2187
           }
         ]
       },
@@ -3529,7 +3719,7 @@
             "input_tokens": 2078,
             "output_tokens": 206,
             "cost_nanodollars": 6216000,
-            "latency_ms": 1844
+            "latency_ms": 1782
           }
         ]
       },
@@ -3553,7 +3743,7 @@
             "input_tokens": 2128,
             "output_tokens": 251,
             "cost_nanodollars": 6766000,
-            "latency_ms": 2468
+            "latency_ms": 3078
           }
         ]
       }
