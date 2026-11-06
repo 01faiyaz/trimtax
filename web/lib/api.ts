@@ -3,6 +3,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 const WORKSPACE_KEY = "trimtax.workspace";
+const OWN_KEY = "trimtax.own-workspace"; // a "Start fresh" company, kept so you can switch back to it
 
 export class NotFound extends Error {}
 
@@ -77,5 +78,32 @@ export function saveWorkspaceId(id: string) {
 export async function newDemoWorkspace(): Promise<string> {
   const result = await post<{ workspace_id: string }>("/workspaces/demo");
   saveWorkspaceId(result.workspace_id);
+  return result.workspace_id;
+}
+
+export function savedOwnWorkspaceId(): string | null {
+  try {
+    return window.localStorage.getItem(OWN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export type StartFreshProfile = {
+  name: string;
+  expected_net_income_cents: number;
+  small_item_election: boolean;
+  has_audited_financials: boolean;
+};
+
+// Makes an empty workspace for the visitor's own company and switches to it.
+export async function startFresh(profile: StartFreshProfile): Promise<string> {
+  const result = await post<{ workspace_id: string }>("/workspaces", profile);
+  saveWorkspaceId(result.workspace_id);
+  try {
+    window.localStorage.setItem(OWN_KEY, result.workspace_id);
+  } catch {
+    // Private mode: the company just won't survive a reload.
+  }
   return result.workspace_id;
 }

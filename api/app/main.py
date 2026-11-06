@@ -26,6 +26,7 @@ from ai.pipeline import process_receipt
 from ai.rule_updates import propose_rule_update
 from app import store
 from app.convert import data_to_workspace, workspace_to_data
+from app.csv_import import BadFile, import_transactions
 from app.packet_export import packet_csv
 from app.packet_pdf import packet_pdf
 from app.rule_log import updates_for_year
@@ -47,6 +48,7 @@ PACKET_NOTE = "Prepared for your accountant to review. This is not a tax filing.
 UPLOAD_TYPES = {"image/png", "image/jpeg", "image/webp", "application/pdf"}
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 MAX_UPLOADS_PER_WORKSPACE = 10
+MAX_CSV_BYTES = 1024 * 1024
 # Reset demo starts a workspace's count over, so there's also a cap for the whole server.
 MAX_UPLOADS_PER_DAY = int(os.environ.get("TRIMTAX_MAX_UPLOADS_PER_DAY", "300"))
 MAX_PROPOSALS_PER_WORKSPACE = 10
@@ -197,6 +199,27 @@ def new_empty_workspace(profile: StartFresh):
     )
     workspace = Workspace(company=company, contractors=[], transactions=[], receipts=[])
     return {"workspace_id": store.create(workspace_to_data(workspace), is_demo=False)}
+
+
+@app.post("/workspaces/{workspace_id}/transactions")
+async def import_transactions_csv(workspace_id: str, file: UploadFile = File(...)):
+    """Adds a transactions CSV to a "Start fresh" company. The demo company's data stays as it is."""
+    workspace, is_demo = get_workspace(workspace_id)
+    if is_demo:
+        raise HTTPException(status_code=400, detail="Start fresh with your own company to import transactions.")
+    contents = await file.read(MAX_CSV_BYTES + 1)
+    if len(contents) > MAX_CSV_BYTES:
+        raise HTTPException(status_code=413, detail="That file is over 1 MB. Split it and import it in parts.")
+    try:
+        text = contents.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        raise HTTPException(status_code=400, detail="Save the file as CSV (UTF-8) and try again.")
+    try:
+        result = import_transactions(text, workspace, as_of_for(workspace))
+    except BadFile as problem:
+        raise HTTPException(status_code=400, detail=str(problem))
+    save_workspace(workspace_id, workspace, get_extras(workspace_id))
+    return result
 
 
 @app.post("/workspaces/{workspace_id}/reset")

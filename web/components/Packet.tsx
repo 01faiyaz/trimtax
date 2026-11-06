@@ -83,6 +83,7 @@ export default function Packet({ workspaceId }: { workspaceId: string }) {
 
       <div style={{ marginTop: 32 }}>
         <p className="section-label"><span className="chip">{packet.purchases.length > 0 ? 3 : 2}</span> Flagged, nothing counted</p>
+        {packet.flagged.length === 0 && <p className="small muted">Nothing flagged.</p>}
         <ul className="rows">
           {packet.flagged.map((item, index) => (
             <li key={index}>
@@ -118,7 +119,7 @@ export default function Packet({ workspaceId }: { workspaceId: string }) {
         <span><strong className="mark">Σ</strong> added up from transactions</span>
         <span><strong className="mark">Δ</strong> waiting on your answer</span>
       </div>
-      <p className="footer-note">Synthetic data. Estimates only. Your accountant confirms the final numbers. TrimTax never files anything.</p>
+      <p className="footer-note">Estimates only. Your accountant confirms the final numbers. TrimTax never files anything.</p>
     </div>
   );
 }

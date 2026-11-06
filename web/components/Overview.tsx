@@ -4,6 +4,7 @@ import { post } from "@/lib/api";
 import { dollars, shortDate } from "@/lib/format";
 import type { OpenItem, Overview as OverviewData } from "@/lib/types";
 import YearClock from "./YearClock";
+import ImportTransactions from "./ImportTransactions";
 
 type Props = {
   workspaceId: string;
@@ -46,6 +47,8 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
       <h1 className="page-title">
         You can still change your {data.clock.tax_year} taxes. <span>{data.clock.days_left} days left.</span>
       </h1>
+
+      {!data.is_demo && <ImportTransactions workspaceId={workspaceId} refresh={refresh} notify={notify} goTo={goTo} />}
 
       <div className="grid-2">
         <div>
