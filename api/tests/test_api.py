@@ -126,6 +126,56 @@ def test_packet_says_it_is_not_a_filing(client, demo):
     assert len(packet["flagged"]) == 2
 
 
+def packet_csv_rows(client, workspace_id):
+    import csv
+    import io
+    text = client.get(f"/workspaces/{workspace_id}/packet.csv").text
+    first_line, rest = text.split("\n", 1)
+    return first_line, list(csv.DictReader(io.StringIO(rest)))
+
+
+def test_packet_csv_says_it_is_not_a_filing_and_downloads_as_a_file(client, demo):
+    response = client.get(f"/workspaces/{demo}/packet.csv")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/csv")
+    assert 'filename="tidewell-labs-accountant-packet-2026-11-19.csv"' in response.headers["content-disposition"]
+    first_line, _ = packet_csv_rows(client, demo)
+    assert "This is not a tax filing" in first_line
+
+
+def test_packet_csv_has_the_same_numbers_as_the_packet(client, demo):
+    _, rows = packet_csv_rows(client, demo)
+    sections = [row["section"] for row in rows]
+    assert sections.count("Open item") == 3
+    assert sections.count("Flagged, nothing counted") == 2
+    assert sections.count("Transaction") == 400
+
+    by_what = {row["what"]: row for row in rows if row["section"] == "Where things stand"}
+    assert by_what["California equipment room left"]["california"] == "6600.00"
+    team = by_what["Team meals at the office"]
+    assert (team["amount"], team["federal"], team["california"]) == ("4180.00", "0.00", "4180.00")
+    assert "IRC 274(o)" in team["rule"]
+    assert team["source"].startswith("https://")
+
+
+def test_packet_csv_links_receipts_and_asks_the_stored_question(client, demo):
+    _, rows = packet_csv_rows(client, demo)
+    question = next(row for row in rows if row["merchant"] == "Sweetgreen" and row["section"] == "Open item")
+    assert question["what"] == "Was this lunch for your team at the office, or a client?"
+    assert question["receipt"].startswith("rcp_")
+    flagged = [row["receipt"] for row in rows if row["section"] == "Flagged, nothing counted"]
+    assert all(receipt.startswith("rcp_") for receipt in flagged)
+
+
+def test_packet_csv_includes_a_planned_purchase(client, demo):
+    body = {"price_each_cents": 289900, "quantity": 3, "in_use_by": "2026-12-10"}
+    client.post(f"/workspaces/{demo}/packet/purchases", json=body)
+    _, rows = packet_csv_rows(client, demo)
+    planned = next(row for row in rows if row["section"] == "Planned purchase (not bought)")
+    assert (planned["federal"], planned["california"]) == ("8697.00", "6600.00")
+    assert "2097.00 over later years" in planned["what"]
+
+
 def test_receipt_images_are_served(client):
     response = client.get("/receipt-images/rcp_140.png")
     assert response.status_code == 200
@@ -189,3 +239,11 @@ def test_questions_and_flagged_items_point_to_their_receipt_images(client, demo)
     assert images == ["receipt-images/rcp_137.png", "receipt-images/rcp_139.png"]
     for name in images:
         assert client.get(f"/{name}").status_code == 200
+
+
+def test_money_for_the_csv():
+    from app.packet_export import money
+    assert money(123450) == "1234.50"
+    assert money(5) == "0.05"
+    assert money(-250) == "-2.50"
+    assert money(None) == ""

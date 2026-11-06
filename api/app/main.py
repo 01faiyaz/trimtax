@@ -25,6 +25,7 @@ from ai import model as ai_model
 from ai.pipeline import process_receipt
 from app import store
 from app.convert import data_to_workspace, workspace_to_data
+from app.packet_export import packet_csv
 from engine.categories import CATEGORIES, is_category, label
 from engine.compare import compare_years
 from engine.equipment import all_in_price, check_purchase
@@ -360,11 +361,9 @@ def undo_answer(workspace_id: str, transaction_id: str):
 # Accountant packet
 # ------------------------------------------------------------------
 
-@app.get("/workspaces/{workspace_id}/packet")
-def get_packet(workspace_id: str, year: int = 2026):
-    workspace, _ = get_workspace(workspace_id)
+def build_packet(workspace, workspace_id, ruleset):
+    """Everything in the accountant packet. The screen and both exports use this."""
     extras = get_extras(workspace_id)
-    ruleset = get_rules(year)
     as_of = as_of_for(workspace)
     return {
         "note": PACKET_NOTE,
@@ -376,6 +375,27 @@ def get_packet(workspace_id: str, year: int = 2026):
         "purchases": extras["packet_purchases"],
         "summary": overview(workspace, ruleset, as_of),
     }
+
+
+@app.get("/workspaces/{workspace_id}/packet")
+def get_packet(workspace_id: str, year: int = 2026):
+    workspace, _ = get_workspace(workspace_id)
+    return build_packet(workspace, workspace_id, get_rules(year))
+
+
+def packet_file_name(packet, extension):
+    company = "".join(ch if ch.isalnum() else "-" for ch in packet["company"]).strip("-").lower()
+    return f"{company}-accountant-packet-{packet['as_of']}.{extension}"
+
+
+@app.get("/workspaces/{workspace_id}/packet.csv")
+def get_packet_csv(workspace_id: str, year: int = 2026):
+    workspace, _ = get_workspace(workspace_id)
+    ruleset = get_rules(year)
+    packet = jsonable_encoder(build_packet(workspace, workspace_id, ruleset))
+    text = packet_csv(packet, workspace, ruleset)
+    headers = {"Content-Disposition": f'attachment; filename="{packet_file_name(packet, "csv")}"'}
+    return Response(content=text, media_type="text/csv; charset=utf-8", headers=headers)
 
 
 # ------------------------------------------------------------------
