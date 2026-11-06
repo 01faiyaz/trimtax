@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { get } from "@/lib/api";
+import { API_URL, get } from "@/lib/api";
 import { dollars, longDate, plural, shortDate } from "@/lib/format";
 import type { Flagged, OpenItem, Overview, PurchaseInput, PurchaseResult } from "@/lib/types";
 
@@ -43,6 +43,10 @@ export default function Packet({ workspaceId }: { workspaceId: string }) {
         As of {longDate(packet.as_of)} · {summary.receipts_filed} receipts, each linked · ruleset {packet.ruleset_version}, sources cited ·{" "}
         {plural(packet.open_items.length, "open item")}
       </p>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
+        <a className="button" style={{ textDecoration: "none" }} href={`${API_URL}/workspaces/${workspaceId}/packet.pdf`}>Download PDF</a>
+        <a className="button light" style={{ textDecoration: "none" }} href={`${API_URL}/workspaces/${workspaceId}/packet.csv`}>Download CSV (every transaction)</a>
+      </div>
 
       <div style={{ marginTop: 32 }}>
         <p className="section-label"><span className="chip">1</span> Open items</p>
