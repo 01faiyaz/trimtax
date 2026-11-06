@@ -22,7 +22,7 @@ updates:
   source:
     cite: Rev. Proc. 2025-32 sec. 4.24
     url: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
-    file: rules\sources\rev_proc_2025_32.txt
+    file: rules/sources/rev_proc_2025_32.txt
   base_version: '2025.1'
   proposed_by: propose_rule_update.v2 on claude-sonnet-5-5
   proposed_on: 2026-11-05
@@ -45,7 +45,7 @@ updates:
   source:
     cite: Rev. Proc. 2025-32 sec. 4.24
     url: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf
-    file: rules\sources\rev_proc_2025_32.txt
+    file: rules/sources/rev_proc_2025_32.txt
   base_version: '2025.1'
   proposed_by: propose_rule_update.v2 on claude-sonnet-5-5
   proposed_on: 2026-11-05
@@ -67,7 +67,7 @@ updates:
   source:
     cite: OBBBA (Pub. L. 119-21) sec. 70433(a)
     url: https://www.congress.gov/bill/119th-congress/house-bill/1/text
-    file: rules\sources\obbba_70433.txt
+    file: rules/sources/obbba_70433.txt
   base_version: '2025.1'
   proposed_by: propose_rule_update.v3 on claude-sonnet-5-5
   proposed_on: 2026-11-05
@@ -89,7 +89,7 @@ updates:
   source:
     cite: IRC 274(o); Pub. L. 115-97 sec. 13304(e)(2)
     url: https://www.law.cornell.edu/uscode/text/26/274
-    file: rules\sources\irc_274o.txt
+    file: rules/sources/irc_274o.txt
   base_version: '2025.1'
   proposed_by: propose_rule_update.v3 on claude-sonnet-5-5
   proposed_on: 2026-11-05
