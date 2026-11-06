@@ -18,6 +18,8 @@ Each visitor gets their own copy of the workspace, so two people trying it at on
 
 ## What you can try
 
+The home page walks through TrimTax in eight short pages. The working demo is at `/app`, and it has five tabs.
+
 **Overview.** How many days are left in the tax year, what has to happen before Dec 31, the next deadlines, and where the company stands on each limit.
 
 **Check a purchase.** Say you're about to buy 3 laptops. At $2,899 each, federal lets you write off all $8,697 this year, but California caps equipment write-offs at $25,000 a year. Tidewell has already used $18,400 of that, so California takes $6,600 now and spreads the other $2,097 over later years. At $2,399 each, they fall under the $2,500 small-item line and all $7,197 is written off now on both returns. Same purchase, different answers, and you see that before you buy instead of after.
@@ -26,7 +28,11 @@ Each visitor gets their own copy of the workspace, so two people trying it at on
 
 **Rules.** Every rule TrimTax uses, with its source, its value and who approved it. Switch between 2025 and 2026 to see what changed: the 1099 line moved from $600 to $2,000, which drops Tidewell from 13 forms to 4, and office team meals went from 50% to 0% federally.
 
+Below the rules is the update log. Every change in it was proposed by the AI from official text, shows the sentence it quoted, and names the person who approved it. You can try this yourself: paste a passage (or use the sample, which is made up and says so), and the AI proposes a change. Approve it and your copy of the demo recomputes. With the sample, California's equipment cap goes from $25,000 to $30,000, and Tidewell's room on the Overview goes from $6,600 to $11,600. Undo puts it back. The real rules never change.
+
 **Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
+
+**Start fresh.** Try it with your own company instead. Fill in a short profile (name, expected income, whether you make the small-item election) and you get an empty tax file that uses today's date. Then import a transactions CSV with `date`, `merchant` and `amount` columns, plus `category` and `payee` if you have them, or upload receipts. Rows without a category show up as questions for you to sort. There's a sample file to download if you want to see it work. You can switch back to the demo any time.
 
 Two receipts get refused on purpose. One from a print shop has faint hidden text telling the AI to mark it 100% deductible. It's treated as plain data, flagged and logged, and nothing is counted. The other is a blurry photo with an unreadable total, and TrimTax says "Can't determine" instead of guessing a number.
 
@@ -56,6 +62,22 @@ engine                   Plain Python computes every number from the
 
 The AI never does arithmetic and never decides a tax rule. It picks from a fixed list of 14 categories, and the engine does the rest.
 
+Rule updates go through the same kind of path:
+
+```
+official text            An IRS notice, a revenue procedure, a new law.
+   |
+   v
+propose_rule_update      AI compares the text to the current rules and
+   |                     proposes changes, quoting the sentence it used.
+   v
+plain code               Is the quote really in the text? Is the new
+   |                     number really in the quote? If not, it's dropped.
+   v
+a person                 Approves or rejects it. Only then does the
+                         rules file change.
+```
+
 Every result is in one of three states: **Confirmed**, **Needs one answer**, or **Can't determine**. That last one shows no number at all.
 
 ## Why we built it this way
@@ -66,7 +88,9 @@ Every result is in one of three states: **Confirmed**, **Needs one answer**, or 
 
 **Code decides when to ask.** Our first versions let the model decide when it was unsure. It was inconsistent: across runs it asked on anywhere from 8 to 12 of the same 20 unclear purchases. Now the model just lists what a purchase could be, and the engine checks whether those categories are taxed differently. Software versus advertising? Both are deducted in full, so there's nothing to ask. Equipment versus office supplies? That changes how much California equipment room is left, so it asks. This change, plus the prompt rewrite that went with it, took us from 10 to 17 out of 20 on the unclear cases (18 after we fixed one label that was wrong).
 
-**One agent, a few narrow skills.** Three skills today: reading a receipt, sorting it, and writing the question. Small skills with fixed outputs are easier to test and easier to trust than one big prompt or a swarm of agents.
+**One agent, a few narrow skills.** Four of them: reading a receipt, sorting it, writing the question, and proposing rule updates. Small skills with fixed outputs are easier to test and easier to trust than one big prompt or a swarm of agents.
+
+**The AI proposes rule changes. It never makes them.** Tax rules change every year, and keeping a rules file current by hand is slow, easy-to-miss work. So the AI reads the official text and proposes updates, but it can't edit a rule. Code checks that the sentence it quotes is really in the text and that the new number is really in that sentence, and a person approves each change. We ran it on the real 2026 sources: Rev. Proc. 2025-32 for the Section 179 limits, section 70433 of the 2025 budget law (OBBBA) for the 1099 line, and IRC 274(o) for office meals. It proposed the four changes we expected, and each one matched what we'd already entered by hand. It also got two things right by refusing. On the first run nobody had told it which year we were updating, so it compared the 1099 law to the 2025 rules and correctly proposed nothing. And it wouldn't touch 274(o) until the passage included the date the change takes effect. The whole log cost about 5 cents. It's all in [`rules/updates.yaml`](rules/updates.yaml), next to the source text it read.
 
 **Receipts are untrusted.** Text on a receipt is data. The model is told to ignore instructions inside it, plain code scans for them too, and the output has a fixed schema. Five hidden-instruction receipts are in the main test set, and two more with new wording are in the held-out set.
 
@@ -110,6 +134,7 @@ Model: `claude-sonnet-5-5`, sorting prompt v4, ruleset 2026.1. Full results, inc
 - Every receipt is one we drew ourselves, clean and straight. Real phone photos will score lower, and we haven't measured how much.
 - The held-out set is small. 8 out of 10 is encouraging, not proof.
 - Each purchase gets exactly one category. In real life, a payment to a freelance developer can be both a 1099 contractor payment and research spending.
+- There's no test set for rule updates yet. Four real updates that came out right is a good sign, not a measurement.
 
 We changed a label only when the label itself was wrong, never because the model disagreed with it. Every change and the reason for it is in [`evals/LABEL_CHANGES.md`](evals/LABEL_CHANGES.md).
 
@@ -144,7 +169,7 @@ pip install -r api/requirements.txt
 python -m pytest
 ```
 
-That runs 138 tests across the data, the engine, the API, the AI pipeline (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
+That runs 188 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
 
 The API, from `api/`:
 
@@ -152,7 +177,7 @@ The API, from `api/`:
 uvicorn app.main:app --reload
 ```
 
-Then open http://localhost:8000/docs. Without `DATABASE_URL` it saves to a local SQLite file. With it, Postgres. Receipt uploads need `ANTHROPIC_API_KEY`. Everything else works without one.
+Then open http://localhost:8000/docs. Without `DATABASE_URL` it saves to a local SQLite file. With it, Postgres. Receipt uploads and the try-a-rule-change box need `ANTHROPIC_API_KEY`. Everything else works without one.
 
 The web app, from `web/`:
 
@@ -161,7 +186,7 @@ npm install
 npm run dev
 ```
 
-Then open http://localhost:3000/app. It talks to the API at `NEXT_PUBLIC_API_URL` (default http://localhost:8000).
+Then open http://localhost:3000 for the site and http://localhost:3000/app for the app. The app talks to the API at `NEXT_PUBLIC_API_URL` (default http://localhost:8000).
 
 The evals, from the repo root (these call the real model, so they need the key):
 
@@ -171,11 +196,20 @@ python evals/run_evals.py --set holdout    # held-out set, about $0.12
 python evals/rescore.py                    # re-score a saved run after a label fix, free
 ```
 
+Rule updates, from the repo root. Proposing needs the key. Reviewing doesn't.
+
+```
+python api/scripts/propose_rule_update.py rules/sources/<file>.txt --cite "..." --url "..." --base 2025 --year 2026
+python api/scripts/review_rule_update.py list
+python api/scripts/review_rule_update.py approve <id> --by "Your Name"
+python api/scripts/review_rule_update.py reject <id> --by "Your Name" --why "..."
+```
+
 Environment variables:
 
 | Name | Where | What it's for |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | API | Reading and sorting receipts |
+| `ANTHROPIC_API_KEY` | API | Reading and sorting receipts, proposing rule updates |
 | `DATABASE_URL` | API | Postgres. Leave it out to use SQLite. |
 | `ALLOWED_ORIGINS` | API | The web app's address, for CORS |
 | `TRIMTAX_MODEL` | API | Optional. Defaults to `claude-sonnet-5-5`. |
@@ -185,13 +219,15 @@ Environment variables:
 
 ```
 api/engine/   The tax math. Plain functions, one file per topic, no AI.
-api/ai/       The three AI skills, the checks around them, and call logging.
+api/ai/       The four AI skills, the checks around them, and call logging.
+api/scripts/  Command-line tools for proposing and reviewing rule updates.
 api/app/      FastAPI routes and storage. No tax math in here.
-rules/        The 2025 and 2026 rulesets as YAML, with sources and approvals.
+rules/        The 2025 and 2026 rulesets as YAML, with sources and approvals,
+              plus the update log and the official text it was built from.
 data/         Tidewell Labs: the generator, the receipt images, and tests that
               fail if any demo number is off by a cent.
 evals/        Both test sets, the runner, the scoring, and every run's results.
-web/          The Next.js app.
+web/          The Next.js app (/app) and the story site (/).
 ```
 
 Stack: Next.js and TypeScript for the web app, FastAPI and Python for the API, Postgres (Neon) or SQLite for storage, and Anthropic's API with structured outputs for the AI steps.
