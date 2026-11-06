@@ -30,9 +30,9 @@ def show(update):
 
 def approve(update, approver):
     rules_path = RULES_DIR / f"{update['year']}.yaml"
-    new_text, outcome = approve_update(rules_path.read_text(), update, approver, date.today())
+    new_text, outcome = approve_update(rules_path.read_text(encoding="utf-8"), update, approver, date.today())
     if outcome == "changed":
-        rules_path.write_text(new_text)
+        rules_path.write_text(new_text, encoding="utf-8")
     update["status"] = "approved"
     update["decided_by"] = approver
     update["decided_on"] = date.today()

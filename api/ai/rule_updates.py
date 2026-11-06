@@ -13,7 +13,7 @@ from ai.model import traced_call
 from ai.skills import INJECTION_PATTERN
 from engine.rule_updates import show_value
 
-PROPOSE_VERSION = "propose_rule_update.v1"
+PROPOSE_VERSION = "propose_rule_update.v2"
 
 # The rule fields a proposal may change. All are whole numbers.
 NUMBER_FIELDS = ("percent", "threshold_cents", "limit_cents", "phaseout_start_cents",
@@ -27,7 +27,8 @@ rules TrimTax uses now. Find each listed rule whose value this passage changes o
 For each one:
 - rule_id and field: from the list. Only a field listed for that rule.
 - figure: the new value copied exactly as the passage writes it, like "$2,000", "100 percent"
-  or "15-year". Don't convert, round or work anything out.
+  or "15-year". If the passage says no deduction is allowed, the figure is "No deduction"
+  (field percent). Don't convert, round or work anything out.
 - quote: the sentence or clause from the passage that states it, copied exactly.
 - reason: one short sentence.
 
@@ -74,6 +75,7 @@ def rule_list(ruleset):
 def same_text(text):
     """Compare text ignoring spacing, curly quotes and dash styles."""
     text = text.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
+    text = text.replace("''", '"').replace("``", '"')  # congress.gov closes "$600" with two apostrophes
     text = text.replace("–", "-").replace("—", "-")
     return re.sub(r"\s+", " ", text).strip().lower()
 
@@ -89,6 +91,8 @@ def figure_to_value(field, figure):
         except InvalidOperation:
             return None
     if field == "percent":
+        if re.fullmatch(r"no deduction( shall be allowed)?", figure.strip(), re.IGNORECASE):
+            return 0
         found = re.fullmatch(r"(\d+)\s*(?:percent|%)", figure.strip(), re.IGNORECASE)
         return int(found.group(1)) if found else None
     if field == "years":

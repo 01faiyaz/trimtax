@@ -50,5 +50,5 @@ class Ruleset:
 
 def load_ruleset(year, rules_dir=RULES_DIR):
     path = Path(rules_dir) / f"{year}.yaml"
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return Ruleset(yaml.safe_load(f))

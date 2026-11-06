@@ -28,13 +28,13 @@ def load_log(path=None):
     path = Path(path or LOG_PATH)
     if not path.exists():
         return []
-    data = yaml.safe_load(path.read_text()) or {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     return data.get("updates", [])
 
 
 def save_log(updates, path=None):
     text = yaml.safe_dump({"updates": updates}, sort_keys=False, allow_unicode=True, width=100)
-    Path(path or LOG_PATH).write_text(HEADER + text)
+    Path(path or LOG_PATH).write_text(HEADER + text, encoding="utf-8")
 
 
 def next_id(updates):

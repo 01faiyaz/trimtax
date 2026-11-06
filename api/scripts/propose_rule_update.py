@@ -37,7 +37,7 @@ def main():
     args = parser.parse_args()
 
     text_file = Path(args.text_file).resolve()
-    source_text = text_file.read_text()
+    source_text = text_file.read_text(encoding="utf-8")
     base = load_ruleset(args.base)
     model = ClaudeModel()
     traces = []
