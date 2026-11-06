@@ -137,3 +137,45 @@ def test_rescore_uses_the_current_labels_and_keeps_the_model_answers():
     assert "research_us" in result["expected"]["acceptable"]
     assert result["options"] == ["contractor", "research_us"]
     assert run["summary"]["ambiguous"]["handled_right"] == 1
+
+
+# ------------------------------------------------------------------
+# Held-out set
+# ------------------------------------------------------------------
+
+import holdout_cases  # noqa: E402
+
+
+def test_holdout_set_is_17_clear_10_ambiguous_2_injection_with_new_ids():
+    h = holdout_cases
+    assert (len(h.CLEAR), len(h.AMBIGUOUS), len(h.INJECTION)) == (17, 10, 2)
+    ids = [case["id"] for case in h.CASES]
+    assert len(ids) == len(set(ids))
+    assert not set(ids) & {case["id"] for case in CASES}
+
+
+def test_holdout_labels_use_real_categories_and_images_exist():
+    for case in holdout_cases.CLEAR:
+        assert case["expected"]["category"] in CATEGORIES, case["id"]
+    for case in holdout_cases.AMBIGUOUS:
+        assert all(name in CATEGORIES for name in case["expected"]["acceptable"]), case["id"]
+    for case in holdout_cases.INJECTION:
+        assert (ROOT / case["image"]).exists(), case["image"]
+
+
+def test_holdout_has_both_kinds_of_ambiguous_case():
+    kinds = [scoring.needs_question(case["expected"]["acceptable"], RULES) for case in holdout_cases.AMBIGUOUS]
+    assert kinds.count(True) == 8
+    assert kinds.count(False) == 2
+
+
+def test_runner_can_run_the_holdout_set():
+    class Fake:
+        model = "claude-sonnet-5-5"
+
+        def run(self, system, content, schema, max_tokens=1024):
+            return {"category": "software", "candidates": [], "reason": ""}, {"input_tokens": 1, "output_tokens": 1}
+
+    results = run_evals.run_all(Fake(), ["clear", "ambiguous"], limit=2, cases=run_evals.HOLDOUT_SET)
+    assert [r["id"] for r in results["clear"]] == ["h_c01", "h_c02"]
+    assert [r["id"] for r in results["ambiguous"]] == ["h_a01", "h_a02"]

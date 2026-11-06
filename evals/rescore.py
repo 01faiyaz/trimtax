@@ -15,12 +15,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "evals"))
 
+import holdout_cases  # noqa: E402
 from cases import CASES  # noqa: E402
 from run_evals import results_markdown, summarize  # noqa: E402
 
 
 def rescore(run):
-    labels = {case["id"]: case["expected"] for case in CASES}
+    labels = {case["id"]: case["expected"] for case in CASES + holdout_cases.CASES}
     for group in ("clear", "ambiguous"):
         for result in run["results"].get(group, []):
             result["expected"] = labels[result["id"]]

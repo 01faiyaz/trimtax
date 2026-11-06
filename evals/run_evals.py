@@ -25,6 +25,7 @@ from ai.model import DEFAULT_MODEL, ClaudeModel  # noqa: E402
 from ai.pipeline import process_receipt, sort_purchase  # noqa: E402
 from ai.skills import CLASSIFY_VERSION, EXTRACT_VERSION, QUESTION_VERSION, extract_receipt  # noqa: E402
 from engine.rules import load_ruleset  # noqa: E402
+import holdout_cases  # noqa: E402
 from cases import AMBIGUOUS, CLEAR, INJECTION  # noqa: E402
 import scoring  # noqa: E402
 
@@ -85,14 +86,18 @@ def run_extraction_case(model, case):
             "date": facts.get("date"), "merchant": facts.get("merchant"), "traces": traces}
 
 
-def run_all(model, parts, limit=None):
+MAIN_SET = {"clear": CLEAR, "ambiguous": AMBIGUOUS, "injection": INJECTION}
+HOLDOUT_SET = {"clear": holdout_cases.CLEAR, "ambiguous": holdout_cases.AMBIGUOUS, "injection": holdout_cases.INJECTION}
+
+
+def run_all(model, parts, limit=None, cases=MAIN_SET):
     results = {}
     if "clear" in parts:
-        results["clear"] = [run_sorting_case(model, c) for c in CLEAR[:limit]]
+        results["clear"] = [run_sorting_case(model, c) for c in cases["clear"][:limit]]
     if "ambiguous" in parts:
-        results["ambiguous"] = [run_sorting_case(model, c) for c in AMBIGUOUS[:limit]]
+        results["ambiguous"] = [run_sorting_case(model, c) for c in cases["ambiguous"][:limit]]
     if "injection" in parts:
-        results["injection"] = [run_injection_case(model, c) for c in INJECTION[:limit]]
+        results["injection"] = [run_injection_case(model, c) for c in cases["injection"][:limit]]
     if "extraction" in parts:
         results["extraction"] = [run_extraction_case(model, c) for c in extraction_cases()[:limit]]
     return results
@@ -121,9 +126,9 @@ def pct(part, whole):
     return f"{part}/{whole} ({round(100 * part / whole)}%)" if whole else "—"
 
 
-def results_markdown(summary, model_name, when):
+def results_markdown(summary, model_name, when, title="Eval results"):
     lines = [
-        "# Eval results",
+        f"# {title}",
         "",
         f"Run {when} on `{model_name}`, ruleset {RULES.version}. Prompts: {EXTRACT_VERSION}, "
         f"{CLASSIFY_VERSION}, {QUESTION_VERSION}. Every case is included, failures too.",
@@ -177,20 +182,27 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", choices=["clear", "ambiguous", "injection", "extraction"])
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--set", choices=["main", "holdout"], default="main",
+                        help="holdout: the held-out cases, saved to their own files")
     args = parser.parse_args()
-    parts = [args.only] if args.only else ["clear", "ambiguous", "injection", "extraction"]
+    holdout = args.set == "holdout"
+    parts = ["clear", "ambiguous", "injection"] if holdout else ["clear", "ambiguous", "injection", "extraction"]
+    if args.only:
+        parts = [args.only]
 
     model = ClaudeModel(DEFAULT_MODEL)
-    results = run_all(model, parts, args.limit)
+    results = run_all(model, parts, args.limit, HOLDOUT_SET if holdout else MAIN_SET)
     summary = summarize(results)
     when = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    title = "Held-out eval results" if holdout else "Eval results"
+    report = results_markdown(summary, model.model, when, title)
 
     out = ROOT / "evals" / "results"
     out.mkdir(exist_ok=True)
-    (out / "latest.json").write_text(json.dumps({"when": when, "model": model.model, "summary": summary,
-                                                 "results": results}, indent=2))
-    (ROOT / "evals" / "RESULTS.md").write_text(results_markdown(summary, model.model, when))
-    print(results_markdown(summary, model.model, when))
+    saved = {"when": when, "model": model.model, "summary": summary, "results": results}
+    (out / ("holdout_latest.json" if holdout else "latest.json")).write_text(json.dumps(saved, indent=2))
+    (ROOT / "evals" / ("HOLDOUT_RESULTS.md" if holdout else "RESULTS.md")).write_text(report)
+    print(report)
 
 
 if __name__ == "__main__":
