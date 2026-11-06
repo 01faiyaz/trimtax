@@ -1,5 +1,5 @@
 {
-  "when": "2026-11-06 00:13 UTC",
+  "when": "2026-11-06 00:58 UTC",
   "model": "claude-sonnet-5-5",
   "summary": {
     "clear": {
@@ -12,24 +12,14 @@
     },
     "ambiguous": {
       "total": 20,
-      "asked": 8,
-      "good_options": 7,
+      "asked": 11,
+      "good_options": 10,
       "guessed": 9,
-      "failed": 3,
+      "failed": 0,
       "misses": [
         [
-          "a03",
-          "a failed model call",
-          "should ask: team_meal_office/client_meal/other"
-        ],
-        [
-          "a07",
-          "guessed client_entertainment",
-          "should ask: client_entertainment/other"
-        ],
-        [
           "a08",
-          "a failed model call",
+          "guessed office_supplies",
           "should ask: equipment/office_supplies"
         ],
         [
@@ -41,11 +31,6 @@
           "a10",
           "guessed contractor",
           "should ask: contractor/research_us"
-        ],
-        [
-          "a11",
-          "a failed model call",
-          "should ask: travel/client_meal"
         ],
         [
           "a13",
@@ -98,17 +83,17 @@
       "misses": []
     },
     "questions": {
-      "questions_shown": 8,
+      "questions_shown": 11,
       "ungrounded_shown": 0,
       "template_fallbacks": 0
     },
     "costs": {
       "cases": 140,
-      "model_calls": 148,
-      "failed_calls": 3,
-      "median_seconds_per_case": 1.71,
-      "median_cost_per_case_usd": 0.0036,
-      "total_cost_usd": 0.6185
+      "model_calls": 151,
+      "failed_calls": 0,
+      "median_seconds_per_case": 1.78,
+      "median_cost_per_case_usd": 0.004,
+      "total_cost_usd": 0.6425
     }
   },
   "results": {
@@ -129,9 +114,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1288,
-            "output_tokens": 80,
-            "cost_nanodollars": 3376000,
-            "latency_ms": 2406
+            "output_tokens": 83,
+            "cost_nanodollars": 3406000,
+            "latency_ms": 2421
           }
         ]
       },
@@ -151,8 +136,8 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1283,
-            "output_tokens": 82,
-            "cost_nanodollars": 3386000,
+            "output_tokens": 81,
+            "cost_nanodollars": 3376000,
             "latency_ms": 1719
           }
         ]
@@ -175,7 +160,7 @@
             "input_tokens": 1289,
             "output_tokens": 89,
             "cost_nanodollars": 3468000,
-            "latency_ms": 1312
+            "latency_ms": 1531
           }
         ]
       },
@@ -195,9 +180,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1278,
-            "output_tokens": 231,
-            "cost_nanodollars": 4866000,
-            "latency_ms": 2422
+            "output_tokens": 301,
+            "cost_nanodollars": 5566000,
+            "latency_ms": 3297
           }
         ]
       },
@@ -217,9 +202,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1286,
-            "output_tokens": 92,
-            "cost_nanodollars": 3492000,
-            "latency_ms": 1313
+            "output_tokens": 91,
+            "cost_nanodollars": 3482000,
+            "latency_ms": 1766
           }
         ]
       },
@@ -239,9 +224,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1287,
-            "output_tokens": 82,
-            "cost_nanodollars": 3394000,
-            "latency_ms": 1312
+            "output_tokens": 94,
+            "cost_nanodollars": 3514000,
+            "latency_ms": 1391
           }
         ]
       },
@@ -261,9 +246,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1279,
-            "output_tokens": 86,
-            "cost_nanodollars": 3418000,
-            "latency_ms": 1688
+            "output_tokens": 74,
+            "cost_nanodollars": 3298000,
+            "latency_ms": 1250
           }
         ]
       },
@@ -283,9 +268,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1283,
-            "output_tokens": 90,
-            "cost_nanodollars": 3466000,
-            "latency_ms": 1515
+            "output_tokens": 93,
+            "cost_nanodollars": 3496000,
+            "latency_ms": 1890
           }
         ]
       },
@@ -305,9 +290,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1290,
-            "output_tokens": 78,
-            "cost_nanodollars": 3360000,
-            "latency_ms": 1282
+            "output_tokens": 83,
+            "cost_nanodollars": 3410000,
+            "latency_ms": 1688
           }
         ]
       },
@@ -327,9 +312,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1294,
-            "output_tokens": 80,
-            "cost_nanodollars": 3388000,
-            "latency_ms": 1750
+            "output_tokens": 86,
+            "cost_nanodollars": 3448000,
+            "latency_ms": 1656
           }
         ]
       },
@@ -349,9 +334,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 83,
-            "cost_nanodollars": 3390000,
-            "latency_ms": 1656
+            "output_tokens": 80,
+            "cost_nanodollars": 3360000,
+            "latency_ms": 1797
           }
         ]
       },
@@ -371,9 +356,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 83,
-            "cost_nanodollars": 3400000,
-            "latency_ms": 1422
+            "output_tokens": 86,
+            "cost_nanodollars": 3430000,
+            "latency_ms": 1187
           }
         ]
       },
@@ -393,9 +378,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1293,
-            "output_tokens": 88,
-            "cost_nanodollars": 3466000,
-            "latency_ms": 1172
+            "output_tokens": 89,
+            "cost_nanodollars": 3476000,
+            "latency_ms": 1438
           }
         ]
       },
@@ -415,9 +400,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1279,
-            "output_tokens": 84,
-            "cost_nanodollars": 3398000,
-            "latency_ms": 1265
+            "output_tokens": 81,
+            "cost_nanodollars": 3368000,
+            "latency_ms": 1765
           }
         ]
       },
@@ -437,9 +422,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 78,
-            "cost_nanodollars": 3340000,
-            "latency_ms": 1328
+            "output_tokens": 85,
+            "cost_nanodollars": 3410000,
+            "latency_ms": 1797
           }
         ]
       },
@@ -461,7 +446,7 @@
             "input_tokens": 1282,
             "output_tokens": 84,
             "cost_nanodollars": 3404000,
-            "latency_ms": 1235
+            "latency_ms": 1578
           }
         ]
       },
@@ -483,7 +468,7 @@
             "input_tokens": 1287,
             "output_tokens": 57,
             "cost_nanodollars": 3144000,
-            "latency_ms": 1094
+            "latency_ms": 1563
           }
         ]
       },
@@ -503,9 +488,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1281,
-            "output_tokens": 50,
-            "cost_nanodollars": 3062000,
-            "latency_ms": 1078
+            "output_tokens": 64,
+            "cost_nanodollars": 3202000,
+            "latency_ms": 1672
           }
         ]
       },
@@ -525,9 +510,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1282,
-            "output_tokens": 62,
-            "cost_nanodollars": 3184000,
-            "latency_ms": 1468
+            "output_tokens": 67,
+            "cost_nanodollars": 3234000,
+            "latency_ms": 1156
           }
         ]
       },
@@ -547,9 +532,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 59,
-            "cost_nanodollars": 3150000,
-            "latency_ms": 1125
+            "output_tokens": 50,
+            "cost_nanodollars": 3060000,
+            "latency_ms": 1063
           }
         ]
       },
@@ -569,9 +554,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1279,
-            "output_tokens": 56,
-            "cost_nanodollars": 3118000,
-            "latency_ms": 1219
+            "output_tokens": 41,
+            "cost_nanodollars": 2968000,
+            "latency_ms": 1843
           }
         ]
       },
@@ -593,7 +578,7 @@
             "input_tokens": 1289,
             "output_tokens": 56,
             "cost_nanodollars": 3138000,
-            "latency_ms": 1141
+            "latency_ms": 1625
           }
         ]
       },
@@ -613,9 +598,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 52,
-            "cost_nanodollars": 3090000,
-            "latency_ms": 1094
+            "output_tokens": 53,
+            "cost_nanodollars": 3100000,
+            "latency_ms": 1547
           }
         ]
       },
@@ -635,9 +620,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 71,
-            "cost_nanodollars": 3270000,
-            "latency_ms": 1281
+            "output_tokens": 54,
+            "cost_nanodollars": 3100000,
+            "latency_ms": 1485
           }
         ]
       },
@@ -659,7 +644,7 @@
             "input_tokens": 1285,
             "output_tokens": 58,
             "cost_nanodollars": 3150000,
-            "latency_ms": 1094
+            "latency_ms": 953
           }
         ]
       },
@@ -679,9 +664,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1286,
-            "output_tokens": 78,
-            "cost_nanodollars": 3352000,
-            "latency_ms": 1296
+            "output_tokens": 58,
+            "cost_nanodollars": 3152000,
+            "latency_ms": 1500
           }
         ]
       },
@@ -701,9 +686,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1279,
-            "output_tokens": 50,
-            "cost_nanodollars": 3058000,
-            "latency_ms": 1032
+            "output_tokens": 69,
+            "cost_nanodollars": 3248000,
+            "latency_ms": 1547
           }
         ]
       },
@@ -723,9 +708,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1282,
-            "output_tokens": 50,
-            "cost_nanodollars": 3064000,
-            "latency_ms": 1093
+            "output_tokens": 69,
+            "cost_nanodollars": 3254000,
+            "latency_ms": 1234
           }
         ]
       },
@@ -747,7 +732,7 @@
             "input_tokens": 1286,
             "output_tokens": 68,
             "cost_nanodollars": 3252000,
-            "latency_ms": 1219
+            "latency_ms": 1125
           }
         ]
       },
@@ -769,7 +754,7 @@
             "input_tokens": 1282,
             "output_tokens": 65,
             "cost_nanodollars": 3214000,
-            "latency_ms": 1203
+            "latency_ms": 1609
           }
         ]
       },
@@ -789,9 +774,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 60,
-            "cost_nanodollars": 3170000,
-            "latency_ms": 1110
+            "output_tokens": 77,
+            "cost_nanodollars": 3340000,
+            "latency_ms": 1594
           }
         ]
       },
@@ -811,9 +796,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 58,
-            "cost_nanodollars": 3140000,
-            "latency_ms": 1218
+            "output_tokens": 54,
+            "cost_nanodollars": 3100000,
+            "latency_ms": 1531
           }
         ]
       },
@@ -835,7 +820,7 @@
             "input_tokens": 1279,
             "output_tokens": 49,
             "cost_nanodollars": 3048000,
-            "latency_ms": 1250
+            "latency_ms": 1125
           }
         ]
       },
@@ -855,9 +840,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 51,
-            "cost_nanodollars": 3080000,
-            "latency_ms": 954
+            "output_tokens": 61,
+            "cost_nanodollars": 3180000,
+            "latency_ms": 1016
           }
         ]
       },
@@ -877,9 +862,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1282,
-            "output_tokens": 59,
-            "cost_nanodollars": 3154000,
-            "latency_ms": 1203
+            "output_tokens": 64,
+            "cost_nanodollars": 3204000,
+            "latency_ms": 1047
           }
         ]
       },
@@ -901,7 +886,7 @@
             "input_tokens": 1285,
             "output_tokens": 64,
             "cost_nanodollars": 3210000,
-            "latency_ms": 1062
+            "latency_ms": 1078
           }
         ]
       },
@@ -921,9 +906,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 61,
-            "cost_nanodollars": 3180000,
-            "latency_ms": 1094
+            "output_tokens": 59,
+            "cost_nanodollars": 3160000,
+            "latency_ms": 1031
           }
         ]
       },
@@ -943,9 +928,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1293,
-            "output_tokens": 70,
-            "cost_nanodollars": 3286000,
-            "latency_ms": 1422
+            "output_tokens": 76,
+            "cost_nanodollars": 3346000,
+            "latency_ms": 1297
           }
         ]
       },
@@ -965,9 +950,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1282,
-            "output_tokens": 80,
-            "cost_nanodollars": 3364000,
-            "latency_ms": 1750
+            "output_tokens": 71,
+            "cost_nanodollars": 3274000,
+            "latency_ms": 1391
           }
         ]
       },
@@ -987,9 +972,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1277,
-            "output_tokens": 70,
-            "cost_nanodollars": 3254000,
-            "latency_ms": 1234
+            "output_tokens": 69,
+            "cost_nanodollars": 3244000,
+            "latency_ms": 1047
           }
         ]
       },
@@ -1009,9 +994,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 70,
-            "cost_nanodollars": 3260000,
-            "latency_ms": 1641
+            "output_tokens": 71,
+            "cost_nanodollars": 3270000,
+            "latency_ms": 1437
           }
         ]
       },
@@ -1031,9 +1016,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1283,
-            "output_tokens": 76,
-            "cost_nanodollars": 3326000,
-            "latency_ms": 1625
+            "output_tokens": 73,
+            "cost_nanodollars": 3296000,
+            "latency_ms": 1578
           }
         ]
       },
@@ -1053,9 +1038,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 91,
-            "cost_nanodollars": 3470000,
-            "latency_ms": 1656
+            "output_tokens": 101,
+            "cost_nanodollars": 3570000,
+            "latency_ms": 1875
           }
         ]
       },
@@ -1075,9 +1060,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1284,
-            "output_tokens": 71,
-            "cost_nanodollars": 3278000,
-            "latency_ms": 1172
+            "output_tokens": 73,
+            "cost_nanodollars": 3298000,
+            "latency_ms": 1188
           }
         ]
       },
@@ -1097,9 +1082,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1308,
-            "output_tokens": 102,
-            "cost_nanodollars": 3636000,
-            "latency_ms": 1344
+            "output_tokens": 107,
+            "cost_nanodollars": 3686000,
+            "latency_ms": 1812
           }
         ]
       },
@@ -1119,9 +1104,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1298,
-            "output_tokens": 81,
-            "cost_nanodollars": 3406000,
-            "latency_ms": 1468
+            "output_tokens": 90,
+            "cost_nanodollars": 3496000,
+            "latency_ms": 1250
           }
         ]
       },
@@ -1141,9 +1126,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1299,
-            "output_tokens": 97,
-            "cost_nanodollars": 3568000,
-            "latency_ms": 1360
+            "output_tokens": 98,
+            "cost_nanodollars": 3578000,
+            "latency_ms": 1719
           }
         ]
       },
@@ -1165,7 +1150,7 @@
             "input_tokens": 1310,
             "output_tokens": 102,
             "cost_nanodollars": 3640000,
-            "latency_ms": 1344
+            "latency_ms": 1750
           }
         ]
       },
@@ -1185,9 +1170,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1304,
-            "output_tokens": 98,
-            "cost_nanodollars": 3588000,
-            "latency_ms": 1375
+            "output_tokens": 91,
+            "cost_nanodollars": 3518000,
+            "latency_ms": 1703
           }
         ]
       },
@@ -1207,9 +1192,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1305,
-            "output_tokens": 98,
-            "cost_nanodollars": 3590000,
-            "latency_ms": 1312
+            "output_tokens": 97,
+            "cost_nanodollars": 3580000,
+            "latency_ms": 1672
           }
         ]
       },
@@ -1229,9 +1214,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1298,
-            "output_tokens": 84,
-            "cost_nanodollars": 3436000,
-            "latency_ms": 1391
+            "output_tokens": 79,
+            "cost_nanodollars": 3386000,
+            "latency_ms": 1297
           }
         ]
       },
@@ -1253,7 +1238,7 @@
             "input_tokens": 1318,
             "output_tokens": 76,
             "cost_nanodollars": 3396000,
-            "latency_ms": 1203
+            "latency_ms": 1562
           }
         ]
       },
@@ -1273,9 +1258,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1313,
-            "output_tokens": 81,
-            "cost_nanodollars": 3436000,
-            "latency_ms": 1297
+            "output_tokens": 78,
+            "cost_nanodollars": 3406000,
+            "latency_ms": 1438
           }
         ]
       },
@@ -1295,8 +1280,8 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1309,
-            "output_tokens": 75,
-            "cost_nanodollars": 3368000,
+            "output_tokens": 79,
+            "cost_nanodollars": 3408000,
             "latency_ms": 1156
           }
         ]
@@ -1317,9 +1302,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1305,
-            "output_tokens": 208,
-            "cost_nanodollars": 4690000,
-            "latency_ms": 2828
+            "output_tokens": 190,
+            "cost_nanodollars": 4510000,
+            "latency_ms": 2203
           }
         ]
       },
@@ -1339,9 +1324,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1311,
-            "output_tokens": 188,
-            "cost_nanodollars": 4502000,
-            "latency_ms": 2047
+            "output_tokens": 142,
+            "cost_nanodollars": 4042000,
+            "latency_ms": 1625
           }
         ]
       },
@@ -1361,9 +1346,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1309,
-            "output_tokens": 85,
-            "cost_nanodollars": 3468000,
-            "latency_ms": 1531
+            "output_tokens": 79,
+            "cost_nanodollars": 3408000,
+            "latency_ms": 1219
           }
         ]
       },
@@ -1383,9 +1368,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1304,
-            "output_tokens": 77,
-            "cost_nanodollars": 3378000,
-            "latency_ms": 1328
+            "output_tokens": 73,
+            "cost_nanodollars": 3338000,
+            "latency_ms": 1125
           }
         ]
       },
@@ -1405,9 +1390,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1296,
-            "output_tokens": 105,
-            "cost_nanodollars": 3642000,
-            "latency_ms": 1938
+            "output_tokens": 97,
+            "cost_nanodollars": 3562000,
+            "latency_ms": 1719
           }
         ]
       },
@@ -1427,9 +1412,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1297,
-            "output_tokens": 103,
-            "cost_nanodollars": 3624000,
-            "latency_ms": 1406
+            "output_tokens": 98,
+            "cost_nanodollars": 3574000,
+            "latency_ms": 1375
           }
         ]
       },
@@ -1449,9 +1434,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1281,
-            "output_tokens": 239,
-            "cost_nanodollars": 4952000,
-            "latency_ms": 2297
+            "output_tokens": 278,
+            "cost_nanodollars": 5342000,
+            "latency_ms": 2718
           }
         ]
       },
@@ -1471,9 +1456,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1296,
-            "output_tokens": 108,
-            "cost_nanodollars": 3672000,
-            "latency_ms": 1516
+            "output_tokens": 140,
+            "cost_nanodollars": 3992000,
+            "latency_ms": 2313
           }
         ]
       },
@@ -1493,9 +1478,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1285,
-            "output_tokens": 98,
-            "cost_nanodollars": 3550000,
-            "latency_ms": 1562
+            "output_tokens": 95,
+            "cost_nanodollars": 3520000,
+            "latency_ms": 1781
           }
         ]
       },
@@ -1515,9 +1500,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1303,
-            "output_tokens": 103,
-            "cost_nanodollars": 3636000,
-            "latency_ms": 1406
+            "output_tokens": 104,
+            "cost_nanodollars": 3646000,
+            "latency_ms": 1844
           }
         ]
       },
@@ -1537,9 +1522,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1294,
-            "output_tokens": 88,
-            "cost_nanodollars": 3468000,
-            "latency_ms": 1391
+            "output_tokens": 80,
+            "cost_nanodollars": 3388000,
+            "latency_ms": 1187
           }
         ]
       },
@@ -1559,9 +1544,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1300,
-            "output_tokens": 90,
-            "cost_nanodollars": 3500000,
-            "latency_ms": 1250
+            "output_tokens": 99,
+            "cost_nanodollars": 3590000,
+            "latency_ms": 1329
           }
         ]
       },
@@ -1581,9 +1566,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1292,
-            "output_tokens": 90,
-            "cost_nanodollars": 3484000,
-            "latency_ms": 1422
+            "output_tokens": 94,
+            "cost_nanodollars": 3524000,
+            "latency_ms": 1296
           }
         ]
       },
@@ -1603,9 +1588,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1291,
-            "output_tokens": 176,
-            "cost_nanodollars": 4342000,
-            "latency_ms": 1859
+            "output_tokens": 202,
+            "cost_nanodollars": 4602000,
+            "latency_ms": 2094
           }
         ]
       },
@@ -1625,9 +1610,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1291,
-            "output_tokens": 109,
-            "cost_nanodollars": 3672000,
-            "latency_ms": 1391
+            "output_tokens": 88,
+            "cost_nanodollars": 3462000,
+            "latency_ms": 1125
           }
         ]
       },
@@ -1647,9 +1632,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1288,
-            "output_tokens": 195,
-            "cost_nanodollars": 4526000,
-            "latency_ms": 2172
+            "output_tokens": 162,
+            "cost_nanodollars": 4196000,
+            "latency_ms": 2188
           }
         ]
       },
@@ -1671,7 +1656,7 @@
             "input_tokens": 1295,
             "output_tokens": 83,
             "cost_nanodollars": 3420000,
-            "latency_ms": 1187
+            "latency_ms": 1203
           }
         ]
       },
@@ -1691,9 +1676,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1299,
-            "output_tokens": 96,
-            "cost_nanodollars": 3558000,
-            "latency_ms": 1828
+            "output_tokens": 84,
+            "cost_nanodollars": 3438000,
+            "latency_ms": 1797
           }
         ]
       },
@@ -1713,8 +1698,8 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1284,
-            "output_tokens": 69,
-            "cost_nanodollars": 3258000,
+            "output_tokens": 79,
+            "cost_nanodollars": 3358000,
             "latency_ms": 1375
           }
         ]
@@ -1735,9 +1720,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1281,
-            "output_tokens": 67,
-            "cost_nanodollars": 3232000,
-            "latency_ms": 1125
+            "output_tokens": 77,
+            "cost_nanodollars": 3332000,
+            "latency_ms": 1718
           }
         ]
       },
@@ -1757,9 +1742,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1275,
-            "output_tokens": 80,
-            "cost_nanodollars": 3350000,
-            "latency_ms": 1188
+            "output_tokens": 67,
+            "cost_nanodollars": 3220000,
+            "latency_ms": 2063
           }
         ]
       }
@@ -1790,7 +1775,7 @@
             "input_tokens": 1296,
             "output_tokens": 87,
             "cost_nanodollars": 3462000,
-            "latency_ms": 1297
+            "latency_ms": 1141
           },
           {
             "skill": "ask_clarifying_question",
@@ -1801,7 +1786,7 @@
             "input_tokens": 403,
             "output_tokens": 42,
             "cost_nanodollars": 1226000,
-            "latency_ms": 1390,
+            "latency_ms": 1343,
             "used_template": false
           }
         ],
@@ -1831,9 +1816,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1308,
-            "output_tokens": 101,
-            "cost_nanodollars": 3626000,
-            "latency_ms": 1328
+            "output_tokens": 121,
+            "cost_nanodollars": 3826000,
+            "latency_ms": 1938
           },
           {
             "skill": "ask_clarifying_question",
@@ -1844,7 +1829,7 @@
             "input_tokens": 415,
             "output_tokens": 40,
             "cost_nanodollars": 1230000,
-            "latency_ms": 1141,
+            "latency_ms": 1031,
             "used_template": false
           }
         ],
@@ -1862,20 +1847,38 @@
           ]
         },
         "category": null,
-        "options": [],
-        "question": null,
+        "options": [
+          "client_meal",
+          "team_meal_office"
+        ],
+        "question": "Was this $420.00 dinner at Zuni Cafe a meal with a client or a team meal at the office?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
             "prompt_version": "classify_transaction.v3",
             "ruleset_version": "2026.1",
-            "ok": false,
-            "error": "JSONDecodeError",
-            "latency_ms": 3281
+            "ok": true,
+            "input_tokens": 1284,
+            "output_tokens": 101,
+            "cost_nanodollars": 3578000,
+            "latency_ms": 1766
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 391,
+            "output_tokens": 44,
+            "cost_nanodollars": 1222000,
+            "latency_ms": 1375,
+            "used_template": false
           }
         ],
-        "failed": true
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a04",
@@ -1900,9 +1903,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1293,
-            "output_tokens": 94,
-            "cost_nanodollars": 3526000,
-            "latency_ms": 1813
+            "output_tokens": 92,
+            "cost_nanodollars": 3506000,
+            "latency_ms": 1687
           },
           {
             "skill": "ask_clarifying_question",
@@ -1913,7 +1916,7 @@
             "input_tokens": 400,
             "output_tokens": 38,
             "cost_nanodollars": 1180000,
-            "latency_ms": 1031,
+            "latency_ms": 1250,
             "used_template": false
           }
         ],
@@ -1931,10 +1934,10 @@
         },
         "category": null,
         "options": [
-          "snacks_coffee",
-          "office_supplies"
+          "office_supplies",
+          "snacks_coffee"
         ],
-        "question": "Was this $214.60 Costco purchase mainly for office snacks and coffee, or for office supplies?",
+        "question": "For your $214.60 Costco purchase on October 15, was this mainly office supplies or office snacks and coffee?",
         "traces": [
           {
             "skill": "classify_transaction",
@@ -1943,9 +1946,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1291,
-            "output_tokens": 396,
-            "cost_nanodollars": 6542000,
-            "latency_ms": 3516
+            "output_tokens": 397,
+            "cost_nanodollars": 6552000,
+            "latency_ms": 3875
           },
           {
             "skill": "ask_clarifying_question",
@@ -1954,9 +1957,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 399,
-            "output_tokens": 43,
-            "cost_nanodollars": 1228000,
-            "latency_ms": 1156,
+            "output_tokens": 46,
+            "cost_nanodollars": 1258000,
+            "latency_ms": 1531,
             "used_template": false
           }
         ],
@@ -1977,7 +1980,7 @@
           "office_supplies",
           "snacks_coffee"
         ],
-        "question": "For your $132.48 Amazon Business purchase on October 15, should this be recorded as office supplies or as office snacks and coffee?",
+        "question": "For your $132.48 Amazon Business purchase on Oct 15 that included a webcam and a snack variety pack, should this be filed as office supplies or as office snacks and coffee?",
         "traces": [
           {
             "skill": "classify_transaction",
@@ -1986,9 +1989,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1294,
-            "output_tokens": 327,
-            "cost_nanodollars": 5858000,
-            "latency_ms": 3844
+            "output_tokens": 356,
+            "cost_nanodollars": 6148000,
+            "latency_ms": 3641
           },
           {
             "skill": "ask_clarifying_question",
@@ -1997,9 +2000,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 402,
-            "output_tokens": 52,
-            "cost_nanodollars": 1324000,
-            "latency_ms": 1515,
+            "output_tokens": 68,
+            "cost_nanodollars": 1484000,
+            "latency_ms": 1547,
             "used_template": false
           }
         ],
@@ -2015,9 +2018,12 @@
             "other"
           ]
         },
-        "category": "client_entertainment",
-        "options": [],
-        "question": null,
+        "category": null,
+        "options": [
+          "client_entertainment",
+          "other"
+        ],
+        "question": "Was this $720.00 Golden State Warriors ticket purchase for client entertainment, or was it for something else?",
         "traces": [
           {
             "skill": "classify_transaction",
@@ -2026,11 +2032,25 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1286,
-            "output_tokens": 115,
-            "cost_nanodollars": 3722000,
-            "latency_ms": 1532
+            "output_tokens": 362,
+            "cost_nanodollars": 6192000,
+            "latency_ms": 3375
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 388,
+            "output_tokens": 45,
+            "cost_nanodollars": 1226000,
+            "latency_ms": 1391,
+            "used_template": false
           }
-        ]
+        ],
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a08",
@@ -2041,7 +2061,7 @@
             "office_supplies"
           ]
         },
-        "category": null,
+        "category": "office_supplies",
         "options": [],
         "question": null,
         "traces": [
@@ -2050,12 +2070,13 @@
             "model": "claude-sonnet-5-5",
             "prompt_version": "classify_transaction.v3",
             "ruleset_version": "2026.1",
-            "ok": false,
-            "error": "JSONDecodeError",
-            "latency_ms": 4203
+            "ok": true,
+            "input_tokens": 1290,
+            "output_tokens": 511,
+            "cost_nanodollars": 7690000,
+            "latency_ms": 4218
           }
-        ],
-        "failed": true
+        ]
       },
       {
         "id": "a09",
@@ -2077,9 +2098,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1294,
-            "output_tokens": 218,
-            "cost_nanodollars": 4768000,
-            "latency_ms": 2328
+            "output_tokens": 210,
+            "cost_nanodollars": 4688000,
+            "latency_ms": 2219
           }
         ]
       },
@@ -2103,9 +2124,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1282,
-            "output_tokens": 289,
-            "cost_nanodollars": 5454000,
-            "latency_ms": 3547
+            "output_tokens": 322,
+            "cost_nanodollars": 5784000,
+            "latency_ms": 3563
           }
         ]
       },
@@ -2119,20 +2140,38 @@
           ]
         },
         "category": null,
-        "options": [],
-        "question": null,
+        "options": [
+          "travel",
+          "client_meal"
+        ],
+        "question": "Was this $1,890.00 Wynn Las Vegas purchase mainly for travel or for a meal with a client?",
         "traces": [
           {
             "skill": "classify_transaction",
             "model": "claude-sonnet-5-5",
             "prompt_version": "classify_transaction.v3",
             "ruleset_version": "2026.1",
-            "ok": false,
-            "error": "JSONDecodeError",
-            "latency_ms": 3703
+            "ok": true,
+            "input_tokens": 1302,
+            "output_tokens": 363,
+            "cost_nanodollars": 6234000,
+            "latency_ms": 3796
+          },
+          {
+            "skill": "ask_clarifying_question",
+            "model": "claude-sonnet-5-5",
+            "prompt_version": "ask_clarifying_question.v1",
+            "ruleset_version": "2026.1",
+            "ok": true,
+            "input_tokens": 405,
+            "output_tokens": 47,
+            "cost_nanodollars": 1280000,
+            "latency_ms": 1454,
+            "used_template": false
           }
         ],
-        "failed": true
+        "question_grounded": true,
+        "used_template": false
       },
       {
         "id": "a12",
@@ -2158,9 +2197,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1289,
-            "output_tokens": 391,
-            "cost_nanodollars": 6488000,
-            "latency_ms": 3140
+            "output_tokens": 336,
+            "cost_nanodollars": 5938000,
+            "latency_ms": 3265
           },
           {
             "skill": "ask_clarifying_question",
@@ -2171,7 +2210,7 @@
             "input_tokens": 396,
             "output_tokens": 47,
             "cost_nanodollars": 1262000,
-            "latency_ms": 1141,
+            "latency_ms": 969,
             "used_template": false
           }
         ],
@@ -2198,9 +2237,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1280,
-            "output_tokens": 174,
-            "cost_nanodollars": 4300000,
-            "latency_ms": 2063
+            "output_tokens": 177,
+            "cost_nanodollars": 4330000,
+            "latency_ms": 2156
           }
         ]
       },
@@ -2224,9 +2263,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1281,
-            "output_tokens": 179,
-            "cost_nanodollars": 4352000,
-            "latency_ms": 2296
+            "output_tokens": 103,
+            "cost_nanodollars": 3592000,
+            "latency_ms": 1328
           }
         ]
       },
@@ -2251,9 +2290,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1289,
-            "output_tokens": 284,
-            "cost_nanodollars": 5418000,
-            "latency_ms": 3297
+            "output_tokens": 261,
+            "cost_nanodollars": 5188000,
+            "latency_ms": 3078
           }
         ]
       },
@@ -2280,9 +2319,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1283,
-            "output_tokens": 297,
-            "cost_nanodollars": 5536000,
-            "latency_ms": 2875
+            "output_tokens": 305,
+            "cost_nanodollars": 5616000,
+            "latency_ms": 2938
           },
           {
             "skill": "ask_clarifying_question",
@@ -2293,7 +2332,7 @@
             "input_tokens": 383,
             "output_tokens": 46,
             "cost_nanodollars": 1226000,
-            "latency_ms": 938,
+            "latency_ms": 1031,
             "used_template": false
           }
         ],
@@ -2320,9 +2359,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1288,
-            "output_tokens": 93,
-            "cost_nanodollars": 3506000,
-            "latency_ms": 1781
+            "output_tokens": 181,
+            "cost_nanodollars": 4386000,
+            "latency_ms": 2172
           }
         ]
       },
@@ -2348,9 +2387,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1289,
-            "output_tokens": 328,
-            "cost_nanodollars": 5858000,
-            "latency_ms": 3234
+            "output_tokens": 231,
+            "cost_nanodollars": 4888000,
+            "latency_ms": 2672
           }
         ]
       },
@@ -2378,9 +2417,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1292,
-            "output_tokens": 115,
-            "cost_nanodollars": 3734000,
-            "latency_ms": 1782
+            "output_tokens": 116,
+            "cost_nanodollars": 3744000,
+            "latency_ms": 1484
           },
           {
             "skill": "ask_clarifying_question",
@@ -2391,7 +2430,7 @@
             "input_tokens": 399,
             "output_tokens": 40,
             "cost_nanodollars": 1198000,
-            "latency_ms": 890,
+            "latency_ms": 969,
             "used_template": false
           }
         ],
@@ -2418,9 +2457,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1292,
-            "output_tokens": 139,
-            "cost_nanodollars": 3974000,
-            "latency_ms": 2938
+            "output_tokens": 154,
+            "cost_nanodollars": 4124000,
+            "latency_ms": 2125
           }
         ]
       }
@@ -2448,7 +2487,7 @@
             "input_tokens": 2003,
             "output_tokens": 248,
             "cost_nanodollars": 6486000,
-            "latency_ms": 2563
+            "latency_ms": 2094
           }
         ]
       },
@@ -2474,7 +2513,7 @@
             "input_tokens": 2028,
             "output_tokens": 265,
             "cost_nanodollars": 6706000,
-            "latency_ms": 2000
+            "latency_ms": 2250
           }
         ]
       },
@@ -2500,7 +2539,7 @@
             "input_tokens": 2003,
             "output_tokens": 225,
             "cost_nanodollars": 6256000,
-            "latency_ms": 3125
+            "latency_ms": 3000
           }
         ]
       },
@@ -2526,7 +2565,7 @@
             "input_tokens": 2078,
             "output_tokens": 237,
             "cost_nanodollars": 6526000,
-            "latency_ms": 3203
+            "latency_ms": 3062
           }
         ]
       },
@@ -2552,7 +2591,7 @@
             "input_tokens": 2053,
             "output_tokens": 284,
             "cost_nanodollars": 6946000,
-            "latency_ms": 2657
+            "latency_ms": 2047
           }
         ]
       }
@@ -2578,7 +2617,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 1672
+            "latency_ms": 1766
           }
         ]
       },
@@ -2602,7 +2641,7 @@
             "input_tokens": 1978,
             "output_tokens": 205,
             "cost_nanodollars": 6006000,
-            "latency_ms": 2109
+            "latency_ms": 2156
           }
         ]
       },
@@ -2626,7 +2665,7 @@
             "input_tokens": 2003,
             "output_tokens": 194,
             "cost_nanodollars": 5946000,
-            "latency_ms": 1828
+            "latency_ms": 1656
           }
         ]
       },
@@ -2650,7 +2689,7 @@
             "input_tokens": 1978,
             "output_tokens": 192,
             "cost_nanodollars": 5876000,
-            "latency_ms": 2219
+            "latency_ms": 2282
           }
         ]
       },
@@ -2674,7 +2713,7 @@
             "input_tokens": 2003,
             "output_tokens": 197,
             "cost_nanodollars": 5976000,
-            "latency_ms": 2141
+            "latency_ms": 2531
           }
         ]
       },
@@ -2698,7 +2737,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 2125
+            "latency_ms": 2141
           }
         ]
       },
@@ -2711,7 +2750,7 @@
         },
         "total_cents": 27151,
         "date": "2026-03-04",
-        "merchant": "United Airlines",
+        "merchant": "UNITED AIRLINES",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -2720,9 +2759,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1953,
-            "output_tokens": 191,
-            "cost_nanodollars": 5816000,
-            "latency_ms": 2328
+            "output_tokens": 196,
+            "cost_nanodollars": 5866000,
+            "latency_ms": 1781
           }
         ]
       },
@@ -2746,7 +2785,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 1640
+            "latency_ms": 2078
           }
         ]
       },
@@ -2768,9 +2807,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 205,
-            "cost_nanodollars": 6006000,
-            "latency_ms": 2282
+            "output_tokens": 200,
+            "cost_nanodollars": 5956000,
+            "latency_ms": 2266
           }
         ]
       },
@@ -2794,7 +2833,7 @@
             "input_tokens": 1978,
             "output_tokens": 191,
             "cost_nanodollars": 5866000,
-            "latency_ms": 2110
+            "latency_ms": 2109
           }
         ]
       },
@@ -2818,7 +2857,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 1984
+            "latency_ms": 1907
           }
         ]
       },
@@ -2842,7 +2881,7 @@
             "input_tokens": 1978,
             "output_tokens": 192,
             "cost_nanodollars": 5876000,
-            "latency_ms": 2094
+            "latency_ms": 2031
           }
         ]
       },
@@ -2866,7 +2905,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 1718
+            "latency_ms": 1641
           }
         ]
       },
@@ -2888,9 +2927,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 173,
-            "cost_nanodollars": 5686000,
-            "latency_ms": 1563
+            "output_tokens": 178,
+            "cost_nanodollars": 5736000,
+            "latency_ms": 2188
           }
         ]
       },
@@ -2914,7 +2953,7 @@
             "input_tokens": 2003,
             "output_tokens": 195,
             "cost_nanodollars": 5956000,
-            "latency_ms": 1719
+            "latency_ms": 1578
           }
         ]
       },
@@ -2927,7 +2966,7 @@
         },
         "total_cents": 36400,
         "date": "2026-05-21",
-        "merchant": "ZUNI CAFE",
+        "merchant": "Zuni Cafe",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -2936,9 +2975,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2003,
-            "output_tokens": 192,
-            "cost_nanodollars": 5926000,
-            "latency_ms": 2031
+            "output_tokens": 191,
+            "cost_nanodollars": 5916000,
+            "latency_ms": 2062
           }
         ]
       },
@@ -2962,7 +3001,7 @@
             "input_tokens": 1953,
             "output_tokens": 175,
             "cost_nanodollars": 5656000,
-            "latency_ms": 1953
+            "latency_ms": 2016
           }
         ]
       },
@@ -2986,7 +3025,7 @@
             "input_tokens": 1978,
             "output_tokens": 178,
             "cost_nanodollars": 5736000,
-            "latency_ms": 1734
+            "latency_ms": 1609
           }
         ]
       },
@@ -3010,7 +3049,7 @@
             "input_tokens": 1978,
             "output_tokens": 205,
             "cost_nanodollars": 6006000,
-            "latency_ms": 1797
+            "latency_ms": 1813
           }
         ]
       },
@@ -3034,7 +3073,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 2250
+            "latency_ms": 2140
           }
         ]
       },
@@ -3058,7 +3097,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 1875
+            "latency_ms": 1922
           }
         ]
       },
@@ -3082,7 +3121,7 @@
             "input_tokens": 1953,
             "output_tokens": 185,
             "cost_nanodollars": 5756000,
-            "latency_ms": 2047
+            "latency_ms": 1844
           }
         ]
       },
@@ -3106,7 +3145,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 1813
+            "latency_ms": 1844
           }
         ]
       },
@@ -3130,7 +3169,7 @@
             "input_tokens": 1978,
             "output_tokens": 180,
             "cost_nanodollars": 5756000,
-            "latency_ms": 1735
+            "latency_ms": 1656
           }
         ]
       },
@@ -3154,7 +3193,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 2047
+            "latency_ms": 2078
           }
         ]
       },
@@ -3191,7 +3230,7 @@
         },
         "total_cents": 39600,
         "date": "2026-08-13",
-        "merchant": "Tartine Catering",
+        "merchant": "TARTINE CATERING",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3200,9 +3239,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2003,
-            "output_tokens": 197,
-            "cost_nanodollars": 5976000,
-            "latency_ms": 2188
+            "output_tokens": 199,
+            "cost_nanodollars": 5996000,
+            "latency_ms": 2344
           }
         ]
       },
@@ -3226,7 +3265,7 @@
             "input_tokens": 2003,
             "output_tokens": 184,
             "cost_nanodollars": 5846000,
-            "latency_ms": 1672
+            "latency_ms": 1734
           }
         ]
       },
@@ -3250,7 +3289,7 @@
             "input_tokens": 1953,
             "output_tokens": 177,
             "cost_nanodollars": 5676000,
-            "latency_ms": 1937
+            "latency_ms": 2094
           }
         ]
       },
@@ -3274,7 +3313,7 @@
             "input_tokens": 1978,
             "output_tokens": 198,
             "cost_nanodollars": 5936000,
-            "latency_ms": 2453
+            "latency_ms": 2203
           }
         ]
       },
@@ -3287,7 +3326,7 @@
         },
         "total_cents": 98606,
         "date": "2026-09-17",
-        "merchant": "LINKEDIN ADS",
+        "merchant": "LinkedIn Ads",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3296,9 +3335,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 191,
-            "cost_nanodollars": 5866000,
-            "latency_ms": 2125
+            "output_tokens": 190,
+            "cost_nanodollars": 5856000,
+            "latency_ms": 2172
           }
         ]
       },
@@ -3311,7 +3350,7 @@
         },
         "total_cents": 43200,
         "date": "2026-09-17",
-        "merchant": "PHO GARDEN CATERING",
+        "merchant": "Pho Garden Catering",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3320,9 +3359,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 1978,
-            "output_tokens": 205,
-            "cost_nanodollars": 6006000,
-            "latency_ms": 2078
+            "output_tokens": 197,
+            "cost_nanodollars": 5926000,
+            "latency_ms": 2187
           }
         ]
       },
@@ -3335,7 +3374,7 @@
         },
         "total_cents": 39100,
         "date": "2026-09-24",
-        "merchant": "Zuni Cafe",
+        "merchant": "ZUNI CAFE",
         "traces": [
           {
             "skill": "extract_receipt",
@@ -3344,9 +3383,9 @@
             "ruleset_version": "2026.1",
             "ok": true,
             "input_tokens": 2003,
-            "output_tokens": 193,
-            "cost_nanodollars": 5936000,
-            "latency_ms": 2140
+            "output_tokens": 194,
+            "cost_nanodollars": 5946000,
+            "latency_ms": 1563
           }
         ]
       },
@@ -3370,7 +3409,7 @@
             "input_tokens": 1978,
             "output_tokens": 187,
             "cost_nanodollars": 5826000,
-            "latency_ms": 2032
+            "latency_ms": 2015
           }
         ]
       },
@@ -3394,7 +3433,7 @@
             "input_tokens": 2003,
             "output_tokens": 188,
             "cost_nanodollars": 5886000,
-            "latency_ms": 2125
+            "latency_ms": 2110
           }
         ]
       },
@@ -3418,7 +3457,7 @@
             "input_tokens": 1978,
             "output_tokens": 181,
             "cost_nanodollars": 5766000,
-            "latency_ms": 2062
+            "latency_ms": 2078
           }
         ]
       },
@@ -3442,7 +3481,7 @@
             "input_tokens": 1953,
             "output_tokens": 174,
             "cost_nanodollars": 5646000,
-            "latency_ms": 1797
+            "latency_ms": 1594
           }
         ]
       },
@@ -3466,7 +3505,7 @@
             "input_tokens": 2003,
             "output_tokens": 248,
             "cost_nanodollars": 6486000,
-            "latency_ms": 2094
+            "latency_ms": 2031
           }
         ]
       },
@@ -3490,7 +3529,7 @@
             "input_tokens": 2078,
             "output_tokens": 206,
             "cost_nanodollars": 6216000,
-            "latency_ms": 1578
+            "latency_ms": 1844
           }
         ]
       },
@@ -3514,7 +3553,7 @@
             "input_tokens": 2128,
             "output_tokens": 251,
             "cost_nanodollars": 6766000,
-            "latency_ms": 2500
+            "latency_ms": 2468
           }
         ]
       }
