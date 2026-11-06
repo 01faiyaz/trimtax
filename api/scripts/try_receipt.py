@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from ai.model import ClaudeModel  # noqa: E402
 from ai.pipeline import process_receipt  # noqa: E402
+from engine.rules import load_ruleset  # noqa: E402
 
 MEDIA_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".pdf": "application/pdf"}
 
@@ -23,7 +24,7 @@ def main(path):
     file = Path(path)
     file_base64 = base64.b64encode(file.read_bytes()).decode("ascii")
     transaction, receipt, summary, traces = process_receipt(
-        ClaudeModel(), file_base64, MEDIA_TYPES[file.suffix.lower()], "up_try", date(2026, 11, 19), "2026.1")
+        ClaudeModel(), file_base64, MEDIA_TYPES[file.suffix.lower()], "up_try", date(2026, 11, 19), load_ruleset(2026))
     print("Result:", json.dumps(summary, indent=2))
     if transaction:
         print(f"Transaction: {transaction.merchant}, {transaction.amount_cents} cents, "
