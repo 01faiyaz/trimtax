@@ -1,5 +1,6 @@
 import { CoverPage, ProductShot, SiteHeader } from "@/components/site/Cover";
 import PartAI from "@/components/site/PartAI";
+import PartFile from "@/components/site/PartFile";
 import PartFlow from "@/components/site/PartFlow";
 import PartNumbers from "@/components/site/PartNumbers";
 import "./site.css";
@@ -15,6 +16,7 @@ export default function Home() {
         <PartFlow />
         <PartAI />
         <PartNumbers />
+        <PartFile />
       </main>
     </div>
   );
