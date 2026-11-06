@@ -5,8 +5,9 @@
 // are the real ones from api/engine/equipment.py, rules/2026.yaml and api/tests/test_equipment.py,
 // and the test scores are the real ones from the README.
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Holes, PartHead } from "./Paper";
+import { useDrift } from "./useDrift";
 import { useSeen } from "./useSeen";
 
 type Node = {
@@ -61,30 +62,9 @@ const SCORES = [
   ["Dollar figures the AI made up", "0", "0"],
 ];
 
-// The nodes drift a little so the graph feels alive. Off for reduced motion.
-function useDrift() {
-  const [t, setT] = useState(0);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const started = performance.now();
-    let last = 0;
-    let frame = 0;
-    const step = (now: number) => {
-      if (now - last > 33) {
-        last = now;
-        setT((now - started) / 1000);
-      }
-      frame = requestAnimationFrame(step);
-    };
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-  return t;
-}
-
 function GraphView() {
   const [selected, setSelected] = useState("room");
-  const t = useDrift();
+  const t = useDrift(); // the nodes drift a little so the graph feels alive
 
   const at: Record<string, Node & { px: number; py: number }> = {};
   NODES.forEach((n, i) => {

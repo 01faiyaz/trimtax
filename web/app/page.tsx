@@ -1,6 +1,7 @@
 import { CoverPage, ProductShot, SiteHeader } from "@/components/site/Cover";
 import PartAI from "@/components/site/PartAI";
 import PartBuilt from "@/components/site/PartBuilt";
+import PartEnd from "@/components/site/PartEnd";
 import PartFile from "@/components/site/PartFile";
 import PartFlow from "@/components/site/PartFlow";
 import PartNumbers from "@/components/site/PartNumbers";
@@ -21,6 +22,7 @@ export default function Home() {
         <PartFile />
         <PartOnTime />
         <PartBuilt />
+        <PartEnd />
       </main>
     </div>
   );
