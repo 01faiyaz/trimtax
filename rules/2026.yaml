@@ -353,8 +353,8 @@ rules:
       cite: "FTB, S corporations (1.5% of net income; $800 minimum franchise tax, R&TC 23153)"
       url: "https://www.ftb.ca.gov/file/business/types/corporations/s-corporations.html"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Sean Zhou"
+    approved_on: 2026-11-06
     note: >
       The company pays no federal income tax itself. Owners pay federal and California
       income tax on their share of the profit on their own returns. That depends on their
@@ -371,10 +371,10 @@ rules:
     deadline: 2026-12-15
     source:
       cite: "CA R&TC 19025; FTB Form 100-ES instructions (2026)"
-      url: "https://www.ftb.ca.gov/forms/2026/2026-100-es-instructions.pdf"
+      url: "https://www.ftb.ca.gov/forms/2026/2026-100-es-instructions.html"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Sean Zhou"
+    approved_on: 2026-11-06
 
   - id: owners_q4_estimate
     jurisdiction: federal
