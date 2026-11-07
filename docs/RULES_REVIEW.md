@@ -1,5 +1,13 @@
 # Rules review sheet
 
+> **Result, Nov 6, 2026 (late):** Sean checked the two tax-on-profit rules against the FTB's
+> own pages and approved them. `ca_s_corp_tax`: the S corporations page says "We tax every
+> S corporation that has California source income 1.5%" and lists the $800 minimum franchise
+> tax. `ca_corp_q4_estimate`: the 2026 Form 100-ES instructions say "30% for the fourth required
+> installment", due the 15th day of the 12th month (Dec 15). The rule now links the HTML version
+> of the instructions, which is the page he opened. The 2025 `ca_s_corp_tax` is approved too
+> (same page). The 2025 `ca_corp_q4_estimate` stays open: he checked the 2026 instructions, not 2025.
+
 > **Result, Nov 6, 2026:** Sean checked `ca_bonus_depreciation`, `ca_section_179` and
 > `ca_ftb_1099_threshold` against their sources and approved them (the FTB rule now links
 > the FTB's Guide to Information Returns, which lists $2,000 for 2026). He reviewed the two

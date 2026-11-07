@@ -7,9 +7,8 @@ approved rule.
 
 from engine.meals import meals_summary
 
-# Rules Sean reviewed and left open on Nov 6, 2026 (sources split), and the two
-# tax-on-profit rules added Nov 6, waiting for a check against the FTB pages.
-STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee", "ca_s_corp_tax", "ca_corp_q4_estimate"}
+# Rules Sean reviewed and left open on Nov 6, 2026 (sources split).
+STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee"}
 
 
 def test_approved_rules_have_a_name_a_date_and_were_checked(rules_2025, rules_2026):
@@ -32,8 +31,9 @@ def test_california_team_meals_approved_at_100(rules_2026):
     assert "depends on the facts" in rule["note"]
 
 
-def test_sean_approved_the_california_equipment_and_1099_rules(rules_2026):
-    for rule_id in ("ca_bonus_depreciation", "ca_section_179", "ca_ftb_1099_threshold"):
+def test_sean_approved_the_california_rules_he_checked(rules_2026):
+    for rule_id in ("ca_bonus_depreciation", "ca_section_179", "ca_ftb_1099_threshold",
+                    "ca_s_corp_tax", "ca_corp_q4_estimate"):
         rule = rules_2026.rule(rule_id)
         assert rule["approved_by"] == "Sean Zhou", rule_id
         assert rule["source"]["url"], rule_id
