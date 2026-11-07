@@ -30,6 +30,13 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
     await refresh();
   }
 
+  // Contractors within $500 of the 1099 line, closest first.
+  const nearLine = data.contractors.contractors
+    .filter((c) => c.near_line)
+    .sort((a, b) => a.cents_to_line - b.cents_to_line);
+  const overLine = data.contractors.forms_needed;
+  const equipment = data.california_equipment;
+
   const team = data.meals.rows.find((row) => row.category === "team_meal_office");
   const client = data.meals.rows.find((row) => row.category === "client_meal");
   const us = data.research.rows.find((row) => row.where === "us");
@@ -120,7 +127,36 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
       </div>
 
       <div style={{ marginTop: 40 }}>
-        <p className="section-label"><span className="chip">Part II</span> Where you stand</p>
+        <p className="section-label"><span className="chip">Part II</span> How close you are to each limit</p>
+        <ul className="meters">
+          <Meter
+            label="California equipment write-off"
+            note={`${dollars(equipment.used_cents)} of ${dollars(equipment.cap_cents)} used`}
+            used={equipment.used_cents}
+            limit={equipment.cap_cents}
+            left={equipment.room_cents > 0 ? `${dollars(equipment.room_cents)} left` : "None left. More equipment is spread over later years"}
+          />
+          {nearLine.map((c) => (
+            <Meter
+              key={c.id}
+              label={c.name}
+              note={`paid ${dollars(c.paid_cents)} toward the ${dollars(data.contractors.line_cents)} 1099 line${c.w9_on_file ? "" : ", no W-9 yet"}`}
+              used={c.paid_cents}
+              limit={data.contractors.line_cents}
+              left={`${dollars(c.cents_to_line)} left`}
+              blue
+            />
+          ))}
+        </ul>
+        <p className="footer-note">
+          Anyone within $500 of a line shows up here, so there&apos;s time to act.{" "}
+          {nearLine.length === 0 && "No contractor is that close right now. "}
+          {overLine > 0 && `${overLine} contractor${overLine === 1 ? " is" : "s are"} already over the 1099 line and need a form.`}
+        </p>
+      </div>
+
+      <div style={{ marginTop: 40 }}>
+        <p className="section-label"><span className="chip">Part III</span> Where you stand</p>
         <ul className="rows">
           <Line mark="Σ" label="California equipment room left" note={`of ${dollars(data.california_equipment.limit_cents)}`} value={dollars(room)} />
           <Line
@@ -154,6 +190,24 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
         <p className="footer-note">Estimates from ruleset {data.ruleset_version}. Your accountant confirms the final numbers.</p>
       </div>
     </div>
+  );
+}
+
+// One limit as a bar: how much is used against the line, and what's left.
+function Meter({ label, note, used, limit, left, blue = false }: { label: string; note: string; used: number; limit: number; left: string; blue?: boolean }) {
+  const share = limit > 0 ? Math.min(used / limit, 1) : 1;
+  return (
+    <li>
+      <div className="meter-head">
+        <span>
+          {label} <span className="muted small">({note})</span>
+        </span>
+        <span className="figure">{left}</span>
+      </div>
+      <div className="meter-track" role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={limit} aria-valuenow={Math.min(used, limit)}>
+        <div className={blue ? "meter-fill blue" : "meter-fill"} style={{ transform: `scaleX(${share.toFixed(3)})` }} />
+      </div>
+    </li>
   );
 }
 

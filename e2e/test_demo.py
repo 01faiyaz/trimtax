@@ -14,6 +14,10 @@ def test_overview(app: Page):
     expect(main).to_contain_text("42 days left")
     expect(main).to_contain_text("You can still write off $6,600 of equipment")
     expect(main).to_contain_text("$150 from the $2,000 line")
+    # The limit meters: equipment room, and both contractors within $500 of the 1099 line.
+    expect(main).to_contain_text("$18,400 of $25,000 used")
+    expect(main).to_contain_text("Arjun Patel (paid $1,700 toward the $2,000 1099 line)")
+    expect(main).to_contain_text("$300 left")
 
 
 # M2. Check before you buy: $2,899 laptops count as equipment, $2,399 ones are written off right away.

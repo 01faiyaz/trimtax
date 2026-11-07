@@ -50,6 +50,17 @@ export type PurchaseResult = {
   ruleset_version: string;
 };
 
+// One contractor's standing against the federal 1099 line.
+export type ContractorStatus = {
+  id: string;
+  name: string;
+  paid_cents: number;
+  w9_on_file: boolean;
+  federal_1099: string;
+  cents_to_line: number;
+  near_line: boolean;
+};
+
 export type Overview = {
   company: string;
   as_of: string;
@@ -57,7 +68,7 @@ export type Overview = {
   is_demo: boolean;
   clock: { days_in_year: number; days_gone: number; days_left: number; day_of_year: number; percent_gone: number; tax_year: number };
   deadlines: Deadline[];
-  california_equipment: { limit_cents: number; used_cents: number; room_cents: number };
+  california_equipment: { limit_cents: number; cap_cents: number; used_cents: number; room_cents: number };
   federal_equipment: { bought_cents: number; written_off_this_year_cents: number };
   contractors: {
     line_cents: number;
@@ -66,6 +77,7 @@ export type Overview = {
     forms_under_old_line: number | null;
     missing_w9: string[];
     de542_unclear: string[];
+    contractors: ContractorStatus[];
   };
   meals: { rows: { category: string; spent_cents: number; federal: Deductible; california: Deductible }[] };
   research: {
