@@ -144,6 +144,17 @@ def summary_rows(packet, ruleset):
                         california=money(meal["california"]["deductible_cents"]),
                         status=STATE_LABELS.get(meal["federal"]["state"], meal["federal"]["state"]),
                         **rule_fields(ruleset, meal["federal"]["rule_id"], meal["california"]["rule_id"])))
+    profit = summary.get("tax_on_profit")
+    if profit:
+        # Kept short to fit the PDF table. The owners' own income tax isn't included.
+        status = "Estimate; owners' income tax not included"
+        rows.append(row("Where things stand", what=f"California S corp tax, {dollars(profit['profit_cents'])} profit",
+                        california=money(profit["california_tax_cents"]), status=status,
+                        **rule_fields(ruleset, "ca_s_corp_tax")))
+        if profit["with_purchase"]:
+            rows.append(row("Where things stand", what="California S corp tax with the purchase",
+                            california=money(profit["with_purchase"]["california_tax_cents"]), status=status,
+                            **rule_fields(ruleset, "ca_s_corp_tax")))
     for research in summary["research"]["rows"]:
         where = "US" if research["where"] == "us" else "outside the US"
         rows.append(row("Where things stand", what=f"Research, {where}",

@@ -34,6 +34,16 @@ export type PurchaseInput = {
   year: number;
 };
 
+// The company's own California tax on its expected profit (S corporations only).
+export type TaxOnProfit = {
+  profit_cents: number;
+  california_tax_cents: number;
+  rate_basis_points: number;
+  minimum_cents: number;
+  approved: boolean;
+  with_purchase: { written_off_cents: number; california_tax_cents: number; change_cents: number } | null;
+};
+
 export type PurchaseResult = {
   price_each_cents: number;
   quantity: number;
@@ -48,6 +58,7 @@ export type PurchaseResult = {
   california: { this_year_cents: number; later_cents: number; how: string };
   state: ResultState;
   ruleset_version: string;
+  tax_on_profit: TaxOnProfit | null;
 };
 
 // One contractor's standing against the federal 1099 line.
@@ -90,6 +101,7 @@ export type Overview = {
   };
   open_items: OpenItem[];
   w9_received: string[]; // contractor ids marked received in this copy
+  tax_on_profit: TaxOnProfit | null;
   flagged: Flagged[];
   receipts_filed: number;
   packet_purchases: { input: PurchaseInput; result: PurchaseResult }[];
@@ -131,6 +143,8 @@ export type Rule = {
   per_item_limit_cents?: number;
   treatment?: string;
   years?: number;
+  rate_basis_points?: number;
+  minimum_cents?: number;
   demo_change?: string;  // like "$25,000 → $30,000", only on a rule changed in this demo
   deadline?: string;
 };

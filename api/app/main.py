@@ -35,6 +35,7 @@ from engine.compare import compare_years
 from engine.equipment import all_in_price, check_purchase
 from engine.meals import MEAL_RULES, meal_outcomes
 from engine.overview import overview
+from engine.profit import tax_on_profit
 from engine.records import Company, Workspace, load_workspace
 from engine.review import flagged_documents, open_items
 from engine.rule_updates import show_value, with_demo_changes
@@ -113,6 +114,15 @@ def mark_w9_requests(items, extras):
         if item["kind"] == "missing_w9":
             item["w9_requested"] = item["contractor_id"] in extras["w9_requested"]
     return items
+
+
+def profit_with_packet(workspace, ruleset, extras):
+    """Tax on profit, counting a purchase saved to the packet. Only for the current tax
+    year, since the expected profit is for this year."""
+    if ruleset.tax_year != as_of_for(workspace).year:
+        return None
+    planned = sum(saved["result"]["california"]["this_year_cents"] for saved in extras["packet_purchases"])
+    return tax_on_profit(workspace.company, ruleset, planned)
 
 
 def get_rules(year):
@@ -241,8 +251,10 @@ def reset_demo(workspace_id: str):
 def get_overview(workspace_id: str, year: int = 2026):
     workspace, is_demo = get_workspace(workspace_id)
     extras = get_extras(workspace_id)
-    result = overview(workspace, rules_for(workspace_id, year), as_of_for(workspace))
+    ruleset = rules_for(workspace_id, year)
+    result = overview(workspace, ruleset, as_of_for(workspace))
     result["is_demo"] = is_demo
+    result["tax_on_profit"] = profit_with_packet(workspace, ruleset, extras)
     result["open_items"] = mark_w9_requests(result["open_items"], extras)
     result["w9_received"] = extras["w9_received"]
     result["packet_purchases"] = extras["packet_purchases"]
@@ -268,8 +280,13 @@ def post_check_purchase(workspace_id: str, purchase: PurchaseCheck):
                              purchase.shipping_each_cents)
     except ArithmeticError:
         raise HTTPException(status_code=422, detail="Sales tax must be a number like 8.625.")
-    return check_purchase(price, purchase.quantity, purchase.in_use_by, as_of_for(workspace),
-                          workspace.transactions, ruleset, workspace.company)
+    result = check_purchase(price, purchase.quantity, purchase.in_use_by, as_of_for(workspace),
+                            workspace.transactions, ruleset, workspace.company)
+    result["tax_on_profit"] = None
+    if purchase.year == as_of_for(workspace).year:
+        result["tax_on_profit"] = tax_on_profit(workspace.company, ruleset,
+                                                result["california"]["this_year_cents"])
+    return result
 
 
 @app.post("/workspaces/{workspace_id}/packet/purchases")
@@ -569,6 +586,8 @@ def build_packet(workspace, workspace_id, ruleset):
     """Everything in the accountant packet. The screen and both exports use this."""
     extras = get_extras(workspace_id)
     as_of = as_of_for(workspace)
+    summary = overview(workspace, ruleset, as_of)
+    summary["tax_on_profit"] = profit_with_packet(workspace, ruleset, extras)
     return {
         "note": PACKET_NOTE,
         "company": workspace.company.name,
@@ -577,7 +596,7 @@ def build_packet(workspace, workspace_id, ruleset):
         "open_items": mark_w9_requests(open_items(workspace, ruleset), extras),
         "flagged": add_receipt_images(workspace, flagged_documents(workspace)),
         "purchases": extras["packet_purchases"],
-        "summary": overview(workspace, ruleset, as_of),
+        "summary": summary,
     }
 
 

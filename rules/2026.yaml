@@ -340,8 +340,41 @@ rules:
     note: "Checked Nov 2. FTB guidance and several post-SB 711 summaries agree: US and offshore research are both deductible now in California. Replace the url with the FTB Tax News page when found."
 
   # ---------------------------------------------------------------
+  # Tax on profit
+  # ---------------------------------------------------------------
+
+  - id: ca_s_corp_tax
+    jurisdiction: california
+    topic: profit
+    plain_words: "A California S corporation pays 1.5% of its net income each year, and at least $800."
+    rate_basis_points: 150          # 1.5%
+    minimum_cents: 80000            # $800
+    source:
+      cite: "FTB, S corporations (1.5% of net income; $800 minimum franchise tax, R&TC 23153)"
+      url: "https://www.ftb.ca.gov/file/business/types/corporations/s-corporations.html"
+    check_status: checked
+    approved_by: null
+    approved_on: null
+    note: >
+      The company pays no federal income tax itself. Owners pay federal and California
+      income tax on their share of the profit on their own returns. That depends on their
+      other income, so TrimTax leaves it to the accountant.
+
+  # ---------------------------------------------------------------
   # Deadlines
   # ---------------------------------------------------------------
+
+  - id: ca_corp_q4_estimate
+    jurisdiction: california
+    topic: deadlines
+    plain_words: "The company's last 2026 California estimated tax payment, 30% of the year's estimate, is due Dec 15."
+    deadline: 2026-12-15
+    source:
+      cite: "CA R&TC 19025; FTB Form 100-ES instructions (2026)"
+      url: "https://www.ftb.ca.gov/forms/2026/2026-100-es-instructions.pdf"
+    check_status: checked
+    approved_by: null
+    approved_on: null
 
   - id: owners_q4_estimate
     jurisdiction: federal
