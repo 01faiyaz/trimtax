@@ -7,8 +7,8 @@ approved rule.
 
 from engine.meals import meals_summary
 
-# Rules Fy left open on Nov 5, 2026. None of them feeds a demo number.
-STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee", "ca_ftb_1099_threshold"}
+# Rules Sean reviewed and left open on Nov 6, 2026 (sources split). Neither feeds a demo number.
+STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee"}
 
 
 def test_approved_rules_have_a_name_a_date_and_were_checked(rules_2025, rules_2026):
@@ -29,6 +29,13 @@ def test_california_team_meals_approved_at_100(rules_2026):
     assert rule["percent"] == 100
     assert rule["approved_by"] == "Faiyaz Mashrafi"
     assert "depends on the facts" in rule["note"]
+
+
+def test_sean_approved_the_california_equipment_and_1099_rules(rules_2026):
+    for rule_id in ("ca_bonus_depreciation", "ca_section_179", "ca_ftb_1099_threshold"):
+        rule = rules_2026.rule(rule_id)
+        assert rule["approved_by"] == "Sean Zhou", rule_id
+        assert rule["source"]["url"], rule_id
 
 
 def test_every_meal_number_in_the_demo_uses_an_approved_rule(tidewell, rules_2026):

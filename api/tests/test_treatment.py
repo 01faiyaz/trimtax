@@ -33,9 +33,10 @@ def test_meals_compare_by_their_rules(rules_2026, rules_2025):
     assert not same_treatment("client_meal", "client_entertainment", rules_2026)
 
 
-def test_a_meal_rule_not_yet_decided_makes_it_unknown(rules_2026):
-    # California snacks and coffee has no value yet
-    assert treatment("snacks_coffee", rules_2026) is None
+def test_snacks_are_treated_like_team_meals_in_2026(rules_2026):
+    # 0% federal, 100% California, like team meals at the office; not like supplies
+    assert treatment("snacks_coffee", rules_2026) == ("meal", 0, 100)
+    assert same_treatment("snacks_coffee", "team_meal_office", rules_2026)
     assert not same_treatment("snacks_coffee", "office_supplies", rules_2026)
 
 
