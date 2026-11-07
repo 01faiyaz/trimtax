@@ -65,7 +65,7 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
         <div className="grid-2" key={question.transaction_id}>
           {question.image && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="receipt-img" src={receiptImageUrl(question.image)} alt={`${question.merchant} receipt, ${dollars(question.amount_cents)}`} style={{ maxWidth: 380 }} />
+            <img className="receipt-img" src={receiptImageUrl(question.image)} alt={`${question.merchant} receipt, ${dollars(question.amount_cents)}`} style={{ maxWidth: "min(380px, 100%)" }} />
           )}
           <div>
             <p className="muted small">{question.merchant}, {dollars(question.amount_cents, true)}, {longDate(question.date)}</p>
@@ -114,7 +114,7 @@ export default function Questions({ workspaceId, flagged, refresh, notify }: Pro
               <div className="card" key={item.kind + (item.date ?? "")}>
                 {item.image && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img className="receipt-img" src={receiptImageUrl(item.image)} alt={`${item.merchant || "Receipt photo"}, flagged`} style={{ maxWidth: 300, marginBottom: 16 }} />
+                  <img className="receipt-img" src={receiptImageUrl(item.image)} alt={`${item.merchant || "Receipt photo"}, flagged`} style={{ maxWidth: "min(300px, 100%)", marginBottom: 16 }} />
                 )}
                 {item.kind === "hidden_instruction" ? (
                   <>
