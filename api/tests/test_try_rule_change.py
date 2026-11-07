@@ -141,3 +141,12 @@ def test_each_proposal_call_is_traced(client):
     propose(client, demo)
     traces = client.get(f"/workspaces/{demo}/traces").json()["traces"]
     assert any(t["skill"] == "propose_rule_update" for t in traces)
+
+
+def test_the_packet_downloads_while_a_rule_is_changed(client):
+    # Pasted text has no link, and the packet used to crash joining the missing one.
+    demo = new_demo(client)
+    proposal = propose(client, demo)["proposals"][0]
+    client.post(f"/workspaces/{demo}/rule-proposals/{proposal['id']}/approve", json={"name": "A judge"})
+    assert client.get(f"/workspaces/{demo}/packet.csv").status_code == 200
+    assert client.get(f"/workspaces/{demo}/packet.pdf").status_code == 200
