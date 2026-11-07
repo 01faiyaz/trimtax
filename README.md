@@ -28,6 +28,8 @@ The home page walks through TrimTax in eight short pages. The working demo is at
 
 **Questions.** A $412 Sweetgreen order was delivered to the office for 22 people. Nothing on the receipt says whether it was a team lunch or a client meeting, and the answer matters: a team meal at the office is 0% deductible federally in 2026 and 100% in California, while a client meal is 50% on both. So TrimTax asks. You can also upload your own receipt here and watch it go through the same steps, with a log of every AI call.
 
+Two receipts get refused on purpose. One from a print shop has faint hidden text telling the AI to mark it 100% deductible. It's treated as plain data, flagged and logged, and nothing is counted. The other is a blurry photo with an unreadable total, and TrimTax says "Can't determine" instead of guessing a number.
+
 **Rules.** Every rule TrimTax uses, with its source, its value and who approved it. Switch between 2025 and 2026 to see what changed: the 1099 line moved from $600 to $2,000, which drops Tidewell from 13 forms to 4, and office team meals went from 50% to 0% federally.
 
 Below the rules is the update log. Every change in it was proposed by the AI from official text, shows the sentence it quoted, and names the person who approved it. You can try this yourself: paste a passage (or use the sample, which is made up and says so), and the AI proposes a change. Approve it and your copy of the demo recomputes. With the sample, California's equipment cap goes from $25,000 to $30,000, and Tidewell's room on the Overview goes from $6,600 to $11,600. Undo puts it back. The real rules never change.
@@ -35,8 +37,6 @@ Below the rules is the update log. Every change in it was proposed by the AI fro
 **Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
 
 **Start fresh.** Try it with your own company instead. Fill in a short profile (name, expected income, whether you make the small-item election) and you get an empty tax file that uses today's date. Then import a transactions CSV with `date`, `merchant` and `amount` columns, plus `category` and `payee` if you have them, or upload receipts. Rows without a category show up as questions for you to sort. There's a sample file to download if you want to see it work. You can switch back to the demo any time.
-
-Two receipts get refused on purpose. One from a print shop has faint hidden text telling the AI to mark it 100% deductible. It's treated as plain data, flagged and logged, and nothing is counted. The other is a blurry photo with an unreadable total, and TrimTax says "Can't determine" instead of guessing a number.
 
 ## How it works
 
@@ -101,6 +101,8 @@ Every result is in one of three states: **Confirmed**, **Needs one answer**, or 
 **Every AI call is logged.** Model, prompt version, ruleset version, time and cost. Receipt text and keys are never logged.
 
 **Web app, not desktop.** Judges click a link. Unsigned desktop apps throw security warnings on both Windows and Mac.
+
+**Three hosts, each for one job.** The site runs on Vercel, which builds Next.js with almost no setup and serves pages fast. The API runs on Render, because it's a long-running Python server that reads the rules files, makes PDFs and calls the model, which Vercel isn't built for. The data lives in Neon's hosted Postgres, because Render's servers lose their local files on every restart or deploy. Locally, the same code uses a SQLite file instead.
 
 ## How well it works
 
@@ -171,7 +173,7 @@ pip install -r api/requirements.txt
 python -m pytest
 ```
 
-That runs 188 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
+That runs 189 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
 
 The API, from `api/`:
 
