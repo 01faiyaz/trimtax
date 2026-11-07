@@ -1,5 +1,7 @@
 # TrimTax
 
+**Try it: [trimtax.vercel.app](https://trimtax.vercel.app)** (the app itself is at [/app](https://trimtax.vercel.app/app)). Every visitor gets their own copy of the demo company, so click anything.
+
 Most small businesses find out what their spending meant for taxes in April. By then the year is over and nothing can change. TrimTax keeps the tax file up to date all year, so you can see where you stand while there's still time to do something about it.
 
 It reads your receipts, sorts each purchase, and keeps a running picture of the federal and California rules that matter for a small company: equipment write-offs, the $2,500 small-item rule, meals, contractor forms and research spending. Before a big purchase, you can check what it will do to your taxes. When it can't tell what something was, it asks you one question. Your accountant gets a packet where every number links back to its receipt and the rule behind it.
@@ -205,6 +207,17 @@ python api/scripts/review_rule_update.py approve <id> --by "Your Name"
 python api/scripts/review_rule_update.py reject <id> --by "Your Name" --why "..."
 ```
 
+Browser tests for the six demo moments, Start fresh and the site. They run against the live site unless you point them somewhere else.
+
+```
+pip install -r e2e/requirements.txt
+python -m playwright install chromium
+python -m pytest e2e                                  # the live site
+TRIMTAX_URL=http://localhost:3000 python -m pytest e2e   # your machine
+```
+
+One of them tries a rule change, which makes a real AI call, so it's skipped unless you set `TRIMTAX_E2E_AI=1`.
+
 Environment variables:
 
 | Name | Where | What it's for |
@@ -228,6 +241,7 @@ data/         Tidewell Labs: the generator, the receipt images, and tests that
               fail if any demo number is off by a cent.
 evals/        Both test sets, the runner, the scoring, and every run's results.
 web/          The Next.js app (/app) and the story site (/).
+e2e/          Browser tests, run against the live site.
 ```
 
 Stack: Next.js and TypeScript for the web app, FastAPI and Python for the API, Postgres (Neon) or SQLite for storage, and Anthropic's API with structured outputs for the AI steps.
