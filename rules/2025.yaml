@@ -337,10 +337,10 @@ rules:
     deadline: 2025-12-15
     source:
       cite: "CA R&TC 19025; FTB Form 100-ES instructions (2025)"
-      url: "https://www.ftb.ca.gov/forms/2025/2025-100-es-instructions.pdf"
+      url: "https://www.ftb.ca.gov/forms/2025/2025-100-es-instructions.html"
     check_status: checked
-    approved_by: null
-    approved_on: null
+    approved_by: "Sean Zhou"
+    approved_on: 2026-11-07
 
   - id: owners_q4_estimate
     jurisdiction: federal
