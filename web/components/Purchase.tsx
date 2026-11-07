@@ -194,6 +194,14 @@ function ResultView({ result }: { result: PurchaseResult }) {
           </p>
         </div>
       </div>
+      {result.tax_on_profit?.with_purchase && (
+        <p className="small muted" style={{ marginTop: 16 }}>
+          California S corporation tax this year: {dollars(result.tax_on_profit.california_tax_cents)} →{" "}
+          {dollars(result.tax_on_profit.with_purchase.california_tax_cents)}
+          {result.tax_on_profit.with_purchase.change_cents < 0 && ` (${dollars(-result.tax_on_profit.with_purchase.change_cents)} less)`}.
+          The owners&apos; federal tax changes too; that depends on their other income, so your accountant works it out.
+        </p>
+      )}
     </div>
   );
 }

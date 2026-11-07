@@ -121,6 +121,12 @@ Six moments:
 - M5 Refusals (Pinecrest Print Shop hidden instruction; Nov 9 photo with unreadable total)
 - M6 Accountant packet export (says clearly it is not a filing)
 
+Tax on profit (Overview Part III, Check a purchase, packet): California S corp tax is 1.5%
+of the $120,000 expected profit, at least $800, so **$1,800**; with the 3 laptops ($6,600
+written off in California) it's **$1,701**, $99 less. The company pays no federal income tax;
+the owners' own income tax is left to the accountant on purpose (TrimTax doesn't know their
+other income). Dec 15 is the company's last California estimated payment.
+
 The synthetic data must reproduce every locked number exactly. A test in `/data`
 fails if any one is off. Don't change a locked number without Fy and Sean agreeing.
 

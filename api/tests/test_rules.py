@@ -7,8 +7,9 @@ approved rule.
 
 from engine.meals import meals_summary
 
-# Rules Sean reviewed and left open on Nov 6, 2026 (sources split). Neither feeds a demo number.
-STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee"}
+# Rules Sean reviewed and left open on Nov 6, 2026 (sources split), and the two
+# tax-on-profit rules added Nov 6, waiting for a check against the FTB pages.
+STILL_OPEN_2026 = {"fed_snacks_coffee", "ca_snacks_coffee", "ca_s_corp_tax", "ca_corp_q4_estimate"}
 
 
 def test_approved_rules_have_a_name_a_date_and_were_checked(rules_2025, rules_2026):

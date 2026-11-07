@@ -44,6 +44,7 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
     .sort((a, b) => a.cents_to_line - b.cents_to_line);
   const overLine = data.contractors.forms_needed;
   const equipment = data.california_equipment;
+  const profit = data.tax_on_profit;
 
   const team = data.meals.rows.find((row) => row.category === "team_meal_office");
   const client = data.meals.rows.find((row) => row.category === "client_meal");
@@ -176,8 +177,36 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
         </p>
       </div>
 
+      {profit && (
+        <div style={{ marginTop: 40 }}>
+          <p className="section-label"><span className="chip">Part III</span> Tax on profit</p>
+          <ul className="rows">
+            <Line
+              mark="Σ"
+              label="California S corporation tax"
+              note={`${profit.rate_basis_points / 100}% of the ${dollars(profit.profit_cents)} expected profit, at least ${dollars(profit.minimum_cents)}`}
+              value={dollars(profit.california_tax_cents)}
+            />
+            {profit.with_purchase && (
+              <Line
+                mark="Σ"
+                label="With the purchase in the packet"
+                note={`${dollars(profit.with_purchase.written_off_cents)} written off in California this year, ${dollars(-profit.with_purchase.change_cents)} less`}
+                value={dollars(profit.with_purchase.california_tax_cents)}
+              />
+            )}
+            <Line mark="Σ" label="Federal income tax paid by the company" note="an S corporation's profit passes to its owners" value={dollars(0)} />
+          </ul>
+          <p className="footer-note">
+            The owners pay federal and California income tax on their share of the profit on their own returns.
+            That depends on their other income, so your accountant works it out.
+            {!profit.approved && " The 1.5% rule is waiting for a check against the FTB's page."}
+          </p>
+        </div>
+      )}
+
       <div style={{ marginTop: 40 }}>
-        <p className="section-label"><span className="chip">Part III</span> Where you stand</p>
+        <p className="section-label"><span className="chip">{profit ? "Part IV" : "Part III"}</span> Where you stand</p>
         <ul className="rows">
           <Line mark="Σ" label="California equipment room left" note={`of ${dollars(data.california_equipment.limit_cents)}`} value={dollars(room)} />
           <Line
@@ -247,6 +276,7 @@ function Line({ mark, label, note, value }: { mark: string; label: string; note:
 function deadlineLabel(ruleId: string): string {
   if (ruleId === "placed_in_service_deadline") return "tax year ends; equipment must be in use";
   if (ruleId === "owners_q4_estimate") return "owners' Q4 estimated tax";
+  if (ruleId === "ca_corp_q4_estimate") return "company's last California estimated tax";
   if (ruleId === "fed_1099_nec_due") return "1099-NEC forms due";
   return ruleId;
 }

@@ -23,6 +23,7 @@ const TOPICS: [string, string][] = [
   ["meals", "Meals"],
   ["contractors", "Contractors"],
   ["research", "Research"],
+  ["profit", "Tax on profit"],
   ["deadlines", "Deadlines"],
 ];
 
@@ -202,6 +203,7 @@ export function ruleValue(rule: Rule): string {
   if (rule.limit_cents !== undefined) return dollars(rule.limit_cents);
   if (rule.threshold_cents !== undefined) return dollars(rule.threshold_cents);
   if (rule.per_item_limit_cents !== undefined) return dollars(rule.per_item_limit_cents);
+  if (rule.rate_basis_points !== undefined) return `${rule.rate_basis_points / 100}%, at least ${dollars(rule.minimum_cents ?? 0)}`;
   if (rule.treatment === "deduct_now") return "Now";
   if (rule.treatment === "amortize") return `${rule.years} years`;
   if (rule.deadline) return longDate(String(rule.deadline));

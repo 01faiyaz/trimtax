@@ -28,6 +28,7 @@ def test_deadlines_from_nov_19(rules_2026, demo_date):
     deadlines = upcoming_deadlines(demo_date, rules_2026)
     summary = [(d["rule_id"], d["date"], d["days_until"]) for d in deadlines]
     assert summary == [
+        ("ca_corp_q4_estimate", date(2026, 12, 15), 26),
         ("placed_in_service_deadline", date(2026, 12, 31), 42),
         ("owners_q4_estimate", date(2027, 1, 15), 57),
         ("fed_1099_nec_due", date(2027, 2, 1), 74),

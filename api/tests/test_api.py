@@ -243,6 +243,25 @@ def test_answers_and_w9_requests_dont_erase_each_other(client, demo):
     assert [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["w9_requested"] is True
 
 
+def test_tax_on_profit_moves_with_a_purchase_in_the_packet(client, demo):
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert view["tax_on_profit"]["california_tax_cents"] == 180000
+    assert view["tax_on_profit"]["with_purchase"] is None
+    assert client.get(f"/workspaces/{demo}/overview?year=2025").json()["tax_on_profit"] is None
+
+    body = {"price_each_cents": 289900, "quantity": 3, "in_use_by": "2026-12-10"}
+    checked = client.post(f"/workspaces/{demo}/check-purchase", json=body).json()
+    assert checked["tax_on_profit"]["with_purchase"]["change_cents"] == -9900
+    client.post(f"/workspaces/{demo}/packet/purchases", json=body)
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert view["tax_on_profit"]["with_purchase"]["california_tax_cents"] == 170100
+    text = client.get(f"/workspaces/{demo}/packet.csv").text
+    assert "California S corp tax, $120,000.00 profit" in text
+    assert "California S corp tax with the purchase" in text
+    assert "owners' income tax not included" in text
+    assert client.get(f"/workspaces/{demo}/packet.pdf").status_code == 200
+
+
 def test_add_purchase_to_packet(client, demo):
     body = {"price_each_cents": 289900, "quantity": 3, "in_use_by": "2026-12-10"}
     saved = client.post(f"/workspaces/{demo}/packet/purchases", json=body).json()

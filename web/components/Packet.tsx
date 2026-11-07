@@ -104,6 +104,17 @@ export default function Packet({ workspaceId }: { workspaceId: string }) {
         <ul className="rows">
           <li><span className="mark">Σ</span><span className="grow">California equipment room left</span><span className="figure">{dollars(summary.california_equipment.room_cents)}</span></li>
           <li><span className="mark">Σ</span><span className="grow">1099 forms needed (federal {dollars(summary.contractors.line_cents)} line)</span><span className="figure">{summary.contractors.forms_needed}</span></li>
+          {summary.tax_on_profit && (
+            <li>
+              <span className="mark">Σ</span>
+              <span className="grow">
+                California S corporation tax on {dollars(summary.tax_on_profit.profit_cents)} expected profit
+                {summary.tax_on_profit.with_purchase && `, ${dollars(summary.tax_on_profit.with_purchase.california_tax_cents)} with the planned purchase`}.
+                Owners&apos; income tax is on their own returns
+              </span>
+              <span className="figure">{dollars(summary.tax_on_profit.california_tax_cents)}</span>
+            </li>
+          )}
           {summary.meals.rows.map((row) => (
             <li key={row.category}>
               <span className="mark">T</span>
