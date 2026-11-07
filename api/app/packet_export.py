@@ -53,9 +53,12 @@ def row(section, **fields):
 def rule_fields(ruleset, *rule_ids):
     """The rule's citation and source link, for one or more rules."""
     rules = [ruleset.rule(rule_id) for rule_id in rule_ids]
+    # A rule changed in the demo comes from pasted text, which may have no link (or no citation).
+    cites = [rule["source"].get("cite") for rule in rules]
+    urls = [rule["source"].get("url") for rule in rules]
     return {
-        "rule": "; ".join(rule["source"]["cite"] for rule in rules),
-        "source": " ".join(rule["source"]["url"] for rule in rules),
+        "rule": "; ".join(cite for cite in cites if cite),
+        "source": " ".join(url for url in urls if url),
     }
 
 
