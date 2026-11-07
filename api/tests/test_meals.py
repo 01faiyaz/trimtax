@@ -38,7 +38,8 @@ def test_sweetgreen_outcomes(rules_2026):
 
 
 def test_undecided_rule_gives_cant_determine(rules_2026):
-    result = deductible(5000, rules_2026.rule("ca_snacks_coffee"))
+    undecided = dict(rules_2026.rule("ca_snacks_coffee"), percent=None)
+    result = deductible(5000, undecided)
     assert result["state"] == "cant_determine"
     assert result["deductible_cents"] is None
 

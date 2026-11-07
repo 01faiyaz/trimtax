@@ -1,5 +1,12 @@
 # Rules review sheet
 
+> **Result, Nov 6, 2026:** Sean checked `ca_bonus_depreciation`, `ca_section_179` and
+> `ca_ftb_1099_threshold` against their sources and approved them (the FTB rule now links
+> the FTB's Guide to Information Returns, which lists $2,000 for 2026). He reviewed the two
+> snacks rules and left them open because sources split: federal is now 0% (most 2026
+> guidance; BDO and CBIZ argue 50% without a company eating facility), California 100%
+> (same reasoning as California team meals, but no source names snacks directly).
+
 > **Result, Nov 5, 2026:** Fy checked the sources for section A and approved all of it,
 > in both `rules/2026.yaml` and `rules/2025.yaml`. California office team meals: approved
 > at 100%, with "it depends on the facts" on screen. Still open: `ca_ftb_1099_threshold`,
