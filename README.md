@@ -22,9 +22,11 @@ Each visitor gets their own copy of the workspace, so two people trying it at on
 
 The home page walks through TrimTax in eight short pages. The working demo is at `/app`, and it has five tabs.
 
-**Overview.** How many days are left in the tax year, what has to happen before Dec 31, the next deadlines, and where the company stands on each limit.
+**Overview.** How many days are left in the tax year, what has to happen before Dec 31, the next deadlines, and where the company stands on each limit. One contractor, Dana Reyes, has been paid $1,850 with no W-9 on file. At $2,000 the company needs her tax ID for a 1099, and without it has to hold back 24% of her pay. You can mark the W-9 requested, then received, and watch it leave the open items.
 
-**Check a purchase.** Say you're about to buy 3 laptops. At $2,899 each, federal lets you write off all $8,697 this year, but California caps equipment write-offs at $25,000 a year. Tidewell has already used $18,400 of that, so California takes $6,600 now and spreads the other $2,097 over later years. At $2,399 each, they fall under the $2,500 small-item line and all $7,197 is written off now on both returns. Same purchase, different answers, and you see that before you buy instead of after.
+The Overview also estimates the tax on profit. An S corporation pays no federal income tax itself, but California charges it 1.5% of its profit, with an $800 minimum. Tidewell expects $120,000 of profit, so that's $1,800, and the last 30% of it is due Dec 15. Buy the 3 laptops and California writes off $6,600 of them this year, which brings it to $1,701. The owners' own income tax depends on their other income, so we leave that to the accountant.
+
+**Check a purchase.** Say you're about to buy 3 laptops. At $2,899 each, federal lets you write off all $8,697 this year, but California caps equipment write-offs at $25,000 a year. Tidewell has already used $18,400 of that, so California takes $6,600 now and spreads the other $2,097 over later years. At $2,399 each, they fall under the $2,500 small-item line and all $7,197 is written off now on both returns. Same purchase, different answers, and you see that before you buy instead of after. If your price doesn't include sales tax and shipping yet, tick the box, enter the shipping, and TrimTax adds both before checking the $2,500 line. The tax rate starts at San Francisco's 8.625%, and you can change it.
 
 **Questions.** A $412 Sweetgreen order was delivered to the office for 22 people. Nothing on the receipt says whether it was a team lunch or a client meeting, and the answer matters: a team meal at the office is 0% deductible federally in 2026 and 100% in California, while a client meal is 50% on both. So TrimTax asks. You can also upload your own receipt here and watch it go through the same steps, with a log of every AI call.
 
@@ -34,7 +36,7 @@ Two receipts get refused on purpose. One from a print shop has faint hidden text
 
 Below the rules is the update log. Every change in it was proposed by the AI from official text, shows the sentence it quoted, and names the person who approved it. You can try this yourself: paste a passage (or use the sample, which is made up and says so), and the AI proposes a change. Approve it and your copy of the demo recomputes. With the sample, California's equipment cap goes from $25,000 to $30,000, and Tidewell's room on the Overview goes from $6,600 to $11,600. Undo puts it back. The real rules never change.
 
-**Accountant packet.** The open items (right now: the Sweetgreen question, a contractor with no W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
+**Accountant packet.** The open items (at the start: the Sweetgreen question, Dana's missing W-9, and an unclear California contractor report), the flagged receipts, and which ruleset version produced each number. You can download it as a PDF to print or hand over, or as a CSV with every transaction and its receipt. Both say at the top that they aren't a tax filing, and every number in them carries the rule it came from.
 
 **Start fresh.** Try it with your own company instead. Fill in a short profile (name, expected income, whether you make the small-item election) and you get an empty tax file that uses today's date. Then import a transactions CSV with `date`, `merchant` and `amount` columns, plus `category` and `payee` if you have them, or upload receipts. Rows without a category show up as questions for you to sort. There's a sample file to download if you want to see it work. You can switch back to the demo any time.
 
@@ -123,7 +125,7 @@ An unclear purchase counts as handled right if TrimTax asks when the answer woul
 
 On the main set, it also read the total, date and store name exactly right on all 40 of the demo's receipt images.
 
-Model: `claude-sonnet-5-5`, sorting prompt v4, ruleset 2026.1. Full results, including every miss, are in [`evals/RESULTS.md`](evals/RESULTS.md) and [`evals/HOLDOUT_RESULTS.md`](evals/HOLDOUT_RESULTS.md).
+Model: `claude-sonnet-5-5`, sorting prompt v4, ruleset 2026.1. These runs are from Nov 5. On Nov 6 we changed the office snacks and coffee rules (still open, see below), which can change what the right question is for a snacks receipt, so at least one unclear case may score differently on a new run. Full results, including every miss, are in [`evals/RESULTS.md`](evals/RESULTS.md) and [`evals/HOLDOUT_RESULTS.md`](evals/HOLDOUT_RESULTS.md).
 
 **What it still gets wrong.** Five misses across both sets:
 
@@ -155,12 +157,14 @@ All values are for tax year 2026, each with its primary source in the rules file
 | Client entertainment | 0% | 50% |
 | Contractor forms (1099-NEC) | Required at $2,000 per person from 2026 (was $600) | The EDD's DE 542 report still lists $600, so payments from $600 to $1,999 are unclear for 2026. We flag it for the accountant. |
 | Research | US deducted now; outside the US spread over 15 years | Both deducted now |
+| Office snacks and coffee (open) | 0% under most 2026 guidance; some firms argue 50% | 100%, same reasoning as team meals |
+| Tax on an S corporation's profit | None at the company level. Owners pay on their own returns. | 1.5% of profit, at least $800. Last estimated payment (30%) due Dec 15. |
 
-The rules are cited from primary sources (the tax code, IRS revenue procedures and notices, California's tax code, and FTB and EDD guidance). They were checked against those sources and approved by a named team member. They were not reviewed by a CPA. Three rules are still open and shown as open: office snacks and coffee (federal and California) and the FTB's own 1099 line. None of them feeds a demo number.
+The rules are cited from primary sources (the tax code, IRS revenue procedures and notices, California's tax code, and FTB and EDD guidance). Every approved rule was checked against its source by a named team member, and the app shows who approved it and when. They were not reviewed by a CPA. Two rules are still open and shown as open: office snacks and coffee, federal and California. Federal sources disagree, and no California source names snacks directly. Neither feeds a demo number.
 
 ## What it doesn't cover
 
-Your total tax bill, the QBI deduction, credits, choosing an entity type, states other than California, limits that apply to each S corporation owner personally, and filing anything. Ramp already files 1099s and codes receipts. TrimTax is the during-the-year view: what your spending means for your taxes while there's still time to change it.
+The owners' own income tax, and so your total tax bill, the QBI deduction, credits, California's pass-through entity tax, choosing an entity type, states other than California, limits that apply to each S corporation owner personally, and filing anything. Ramp already files 1099s and codes receipts. TrimTax is the during-the-year view: what your spending means for your taxes while there's still time to change it.
 
 ## Run it yourself
 
@@ -173,7 +177,7 @@ pip install -r api/requirements.txt
 python -m pytest
 ```
 
-That runs 189 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
+That runs 196 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
 
 The API, from `api/`:
 
