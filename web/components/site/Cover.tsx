@@ -10,6 +10,7 @@ import Fit from "./Fit";
 import { Holes } from "./Paper";
 import { useSeen } from "./useSeen";
 import YearRing from "./YearRing";
+import { percentGone, useNow } from "./useToday";
 
 // The ribbon is drawn in the browser only: it's decoration, and its trigonometry can differ
 // in the last decimal between the server and the browser.
@@ -39,16 +40,10 @@ export function SiteHeader() {
   );
 }
 
-// How much of tax year 2026 is gone, ticking forward each second. The demo's "today" is
-// Nov 19: 322 full days gone, plus the hours since 9 AM.
+// How much of tax year 2026 is gone, by the visitor's clock, ticking forward each second.
 function useYearGone() {
-  const [seconds, setSeconds] = useState(0);
-  useEffect(() => {
-    const clock = setInterval(() => setSeconds((s) => s + 1), 1000);
-    return () => clearInterval(clock);
-  }, []);
-  const daysGone = 322 + (9 * 3600 + seconds) / 86400;
-  return ((daysGone / 365) * 100).toFixed(6);
+  const now = useNow(1000);
+  return now ? percentGone(now).toFixed(6) : null;
 }
 
 const button = { display: "inline-flex", alignItems: "center", minHeight: 48, padding: "0 22px", fontSize: 16, fontWeight: 600, textDecoration: "none" };
@@ -86,7 +81,7 @@ export function CoverPage() {
           <div style={{ flex: "1 1 440px", padding: "48px 0 56px", position: "relative", zIndex: 1 }}>
             <p className="intro" style={{ margin: "0 0 24px", fontSize: 14, lineHeight: "20px", animationDelay: ".1s" }}>
               Tax year 2026 already gone:{" "}
-              <span className="live mono" style={{ fontWeight: 700, color: "#2c5ba0", padding: "2px 6px", borderRadius: 4 }}>{gone}%</span>
+              <span className="live mono" style={{ fontWeight: 700, color: "#2c5ba0", padding: "2px 6px", borderRadius: 4, visibility: gone === null ? "hidden" : "visible" }}>{gone ?? "00.000000"}%</span>
             </p>
             <h1 id="hero" className="intro hero-title" style={{ margin: 0, fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "13ch", animationDelay: ".2s" }}>
               See your taxes while you can{" "}

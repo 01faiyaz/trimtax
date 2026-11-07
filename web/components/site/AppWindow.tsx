@@ -5,6 +5,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import YearRing from "./YearRing";
+import { daysLeft, useNow } from "./useToday";
 
 // Where the cursor sits at each step, measured from the middle of the Team button.
 const CURSOR = ["translate(-300px, 230px)", "translate(0, 0)", "translate(0, 0) scale(.82)", "translate(30px, 40px)"];
@@ -63,12 +64,13 @@ const navItem = { padding: "7px 10px", color: "#4f555b" };
 export default function AppWindow() {
   const host = useHost();
   const { phase, meals } = useMealsLoop();
+  const now = useNow();
   const answered = phase >= 3;
   const stands = [
     { value: "$6,600", mark: "T", label: "California equipment room left" },
     { value: "4", mark: "Σ", label: "1099 forms to file" },
     { value: "$" + Math.round(meals).toLocaleString("en-US"), mark: answered ? "Σ" : "Δ", label: "Team meals, not deductible federally" },
-    { value: "42", mark: "T", label: "Days left in the tax year" },
+    { value: now ? String(daysLeft(now)) : "", mark: "T", label: "Days left in the tax year" },
   ];
 
   return (

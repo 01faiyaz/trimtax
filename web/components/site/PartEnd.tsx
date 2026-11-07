@@ -10,6 +10,7 @@ import { Holes, PartHead } from "./Paper";
 import { useDrift } from "./useDrift";
 import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
+import { daysLeftText, useNow } from "./useToday";
 
 const HUB = { x: 575, y: 262, rx: 330, ry: 120 };
 const DOCS = [
@@ -34,9 +35,10 @@ function toHub(p: { x: number; y: number }) {
 
 // The headline and button. On phones this is all the closing page shows.
 function CallToAction({ small = false }: { small?: boolean }) {
+  const now = useNow();
   return (
     <>
-      <h2 style={{ margin: "0 auto", fontSize: small ? 40 : 58, lineHeight: small ? "44px" : "60px", fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "14ch" }}>42 days left. Make them count.</h2>
+      <h2 style={{ margin: "0 auto", fontSize: small ? 40 : 58, lineHeight: small ? "44px" : "60px", fontWeight: 700, letterSpacing: "-0.04em", maxWidth: "14ch" }}>{now && `${daysLeftText(now)}. `}Make them count.</h2>
       <Link href="/app" style={{ display: "inline-flex", alignItems: "center", minHeight: 52, padding: "0 26px", marginTop: 28, background: "linear-gradient(180deg, #33373b, #1f2225)", color: "#fdfdfc", fontSize: 17, fontWeight: 600, textDecoration: "none", boxShadow: "0 10px 24px rgba(38,41,44,.22)" }}>
         Open the demo
       </Link>

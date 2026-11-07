@@ -110,6 +110,8 @@ repo root to get all of them.
 Tidewell Labs: fictional California S corporation, 8 people, software, calendar year,
 2026 net income $120,000 before the laptop decision. Label: **"Synthetic demo data"**.
 Demo "today" is **Nov 19, 2026**, 42 days left in the tax year. Label: **"Demo date: Nov 19"**.
+The story site is different: its countdown, the year gone and the phone's date use the
+visitor's real date (55 days left on Nov 6, 42 on Nov 19, the day of the final).
 
 Six moments:
 - M1 Tax-year clock (Overview)
