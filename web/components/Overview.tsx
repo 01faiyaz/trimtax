@@ -21,12 +21,20 @@ function findItem<K extends OpenItem["kind"]>(items: OpenItem[], kind: K) {
 export default function Overview({ workspaceId, data, refresh, notify, goTo }: Props) {
   const question = findItem(data.open_items, "question");
   const w9 = findItem(data.open_items, "missing_w9");
+  // A W-9 marked received here, so the row can still show it and undo it.
+  const received = data.contractors.contractors.find((c) => data.w9_received.includes(c.id));
   const room = data.california_equipment.room_cents;
 
   async function toggleW9(undo: boolean) {
     if (!w9) return;
     await post(`/workspaces/${workspaceId}/contractors/${w9.contractor_id}/request-w9${undo ? "?undo=true" : ""}`);
     notify(undo ? "W-9 request removed." : `W-9 request noted for ${w9.name}. It's in the packet.`);
+    await refresh();
+  }
+
+  async function markReceived(id: string, name: string, undo: boolean) {
+    await post(`/workspaces/${workspaceId}/contractors/${id}/w9-received${undo ? "?undo=true" : ""}`);
+    notify(undo ? `Back to W-9 requested for ${name}.` : `W-9 on file for ${name}. Removed from open items.`);
     await refresh();
   }
 
@@ -98,10 +106,23 @@ export default function Overview({ workspaceId, data, refresh, notify, goTo }: P
                   )}
                 </span>
                 {w9.w9_requested ? (
-                  <button className="linklike" onClick={() => toggleW9(true)}>Undo</button>
+                  <span style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
+                    <button className="button small light" onClick={() => markReceived(w9.contractor_id, w9.name, false)}>Mark W-9 received</button>
+                    <button className="linklike" onClick={() => toggleW9(true)}>Undo</button>
+                  </span>
                 ) : (
                   <button className="button small light" onClick={() => toggleW9(false)}>Mark W-9 requested</button>
                 )}
+              </li>
+            )}
+            {received && (
+              <li>
+                <span className="mark">Σ</span>
+                <span className="grow">
+                  {received.name}&apos;s W-9 is on file. Payments still count toward the{" "}
+                  {dollars(data.contractors.line_cents)} 1099 line.
+                </span>
+                <button className="linklike" onClick={() => markReceived(received.id, received.name, true)}>Undo</button>
               </li>
             )}
             <li>

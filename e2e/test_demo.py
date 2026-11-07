@@ -22,6 +22,18 @@ def test_overview(app: Page):
     expect(main).to_contain_text("$300 left")
 
 
+# Dana's W-9: requested, then received, which clears it from the open items.
+def test_w9_requested_then_received(app: Page):
+    main = app.locator("main")
+    app.get_by_role("button", name="Mark W-9 requested").click()
+    app.get_by_role("button", name="Mark W-9 received").click()
+    expect(main).to_contain_text("Dana Reyes's W-9 is on file.")
+    expect(main).not_to_contain_text("no W-9 yet")
+    open_tab(app, "Accountant packet")
+    expect(main).not_to_contain_text("W-9 requested")
+    expect(main).not_to_contain_text("W-9 needed")
+
+
 # M2. Check before you buy: $2,899 laptops count as equipment, $2,399 ones are written off right away.
 def test_check_a_purchase(app: Page):
     open_tab(app, "Check a purchase")
