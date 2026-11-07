@@ -4,8 +4,9 @@
 > required installment", due Dec 15, 2025) and approved the 2025 `ca_corp_q4_estimate`. The rule
 > now links the HTML instructions. He also re-opened the sources for `ca_bonus_depreciation`,
 > `ca_section_179` and `ca_ftb_1099_threshold`; all still match, so their Nov 6 approvals stand.
-> Still open: the two snacks rules (both years) and the 2025 `ca_ftb_1099_threshold` ($600; his
-> check was the 2026 page). None of them feeds a demo number.
+> The 2025 `ca_ftb_1099_threshold` is approved too: the FTB guide he opened lists "$600 or more
+> for tax year 2025 ($2,000 or more for tax year 2026)" for 1099-NEC. Still open: the two snacks
+> rules (both years). Neither feeds a demo number.
 
 > **Result, Nov 6, 2026 (late):** Sean checked the two tax-on-profit rules against the FTB's
 > own pages and approved them. `ca_s_corp_tax`: the S corporations page says "We tax every
