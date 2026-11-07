@@ -176,6 +176,7 @@ function ResultView({ result }: { result: PurchaseResult }) {
 
   return (
     <div>
+      <PriceLine price={result.price_each_cents} line={small.line_cents} />
       <p className="lead" style={{ marginTop: 0 }}>{verdict}</p>
       <div className="grid-2" style={{ marginTop: 20 }}>
         <div className="card">
@@ -193,6 +194,21 @@ function ResultView({ result }: { result: PurchaseResult }) {
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+// The price of one item as a dot on a bar, with the small-item line marked, so you can
+// see which side of the line it falls on. The verdict sentence says the same in words.
+function PriceLine({ price, line }: { price: number; line: number }) {
+  const max = Math.max(300000, line * 1.2, price * 1.1); // at least $3,000, like the design
+  const at = (cents: number) => `${((Math.min(cents, max) / max) * 100).toFixed(1)}%`;
+  return (
+    <div className="price-line" aria-hidden="true">
+      <div className="price-line-fill" style={{ width: at(price) }} />
+      <div className="price-line-mark" style={{ left: at(line) }} />
+      <span className="price-line-label" style={{ left: at(line) }}>{dollars(line)} small-item line</span>
+      <div className="price-line-dot" style={{ left: at(price) }} />
     </div>
   );
 }

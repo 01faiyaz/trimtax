@@ -205,3 +205,12 @@ table.worksheet { width: 100%; border-collapse: collapse; font-size: 15px; }
 .meter-fill.blue { background: var(--pencil); }
 @keyframes meter-in { from { transform: scaleX(0); } }
 @media (prefers-reduced-motion: reduce) { .meter-fill { animation: none; } }
+
+/* Check a purchase: the price as a dot against the small-item line. */
+.price-line { position: relative; height: 48px; margin: 4px 0 12px; }
+.price-line::before { content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 2px; background: var(--line-strong); }
+.price-line-fill { position: absolute; left: 0; top: 13px; height: 4px; background: var(--ink); transition: width 0.5s var(--ease-out); }
+.price-line-mark { position: absolute; top: 2px; width: 2px; height: 26px; margin-left: -1px; background: var(--ink); }
+.price-line-label { position: absolute; top: 28px; transform: translateX(calc(-100% + 1px)); padding-right: 6px; font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.price-line-dot { position: absolute; top: 7px; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--page); border: 3px solid var(--pencil); box-sizing: border-box; transition: left 0.5s var(--ease-out); }
+@media (prefers-reduced-motion: reduce) { .price-line-fill, .price-line-dot { transition: none; } }
