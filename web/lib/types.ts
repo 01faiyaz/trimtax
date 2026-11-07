@@ -89,6 +89,7 @@ export type Overview = {
     }[];
   };
   open_items: OpenItem[];
+  w9_received: string[]; // contractor ids marked received in this copy
   flagged: Flagged[];
   receipts_filed: number;
   packet_purchases: { input: PurchaseInput; result: PurchaseResult }[];

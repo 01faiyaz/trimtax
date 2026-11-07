@@ -200,6 +200,38 @@ def test_request_w9_shows_on_the_open_item(client, demo):
     assert [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["w9_requested"] is False
 
 
+def test_w9_received_clears_the_open_item(client, demo):
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    dana_id = [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["contractor_id"]
+    client.post(f"/workspaces/{demo}/contractors/{dana_id}/request-w9")
+    client.post(f"/workspaces/{demo}/contractors/{dana_id}/w9-received")
+
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert [i for i in view["open_items"] if i["kind"] == "missing_w9"] == []
+    assert len(view["open_items"]) == 2
+    assert view["w9_received"] == [dana_id]
+    # Her payments are still tracked toward the 1099 line.
+    dana = [c for c in view["contractors"]["contractors"] if c["id"] == dana_id][0]
+    assert dana["w9_on_file"] is True
+    assert dana["cents_to_line"] == 15000
+    packet = client.get(f"/workspaces/{demo}/packet").json()
+    assert [i for i in packet["open_items"] if i["kind"] == "missing_w9"] == []
+
+    # Undo puts it back to requested.
+    client.post(f"/workspaces/{demo}/contractors/{dana_id}/w9-received?undo=true")
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    assert [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["w9_requested"] is True
+    assert view["w9_received"] == []
+
+
+def test_w9_received_refuses_a_w9_already_on_file(client, demo):
+    view = client.get(f"/workspaces/{demo}/overview").json()
+    arjun = [c for c in view["contractors"]["contractors"] if c["name"] == "Arjun Patel"][0]
+    assert arjun["w9_on_file"] is True
+    assert client.post(f"/workspaces/{demo}/contractors/{arjun['id']}/w9-received").status_code == 400
+    assert client.post(f"/workspaces/{demo}/contractors/{arjun['id']}/w9-received?undo=true").status_code == 400
+
+
 def test_answers_and_w9_requests_dont_erase_each_other(client, demo):
     view = client.get(f"/workspaces/{demo}/overview").json()
     dana_id = [i for i in view["open_items"] if i["kind"] == "missing_w9"][0]["contractor_id"]

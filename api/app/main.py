@@ -91,7 +91,8 @@ def get_workspace(workspace_id):
 
 def empty_extras():
     """Things the person did that aren't tax data: W-9 requests, purchases added to the packet."""
-    return {"w9_requested": [], "packet_purchases": [], "uploads": 0, "rule_proposals": [], "rule_changes": []}
+    return {"w9_requested": [], "w9_received": [], "packet_purchases": [], "uploads": 0,
+            "rule_proposals": [], "rule_changes": []}
 
 
 def get_extras(workspace_id):
@@ -243,6 +244,7 @@ def get_overview(workspace_id: str, year: int = 2026):
     result = overview(workspace, rules_for(workspace_id, year), as_of_for(workspace))
     result["is_demo"] = is_demo
     result["open_items"] = mark_w9_requests(result["open_items"], extras)
+    result["w9_received"] = extras["w9_received"]
     result["packet_purchases"] = extras["packet_purchases"]
     result["flagged"] = add_receipt_images(workspace, result["flagged"])
     return result
@@ -306,6 +308,33 @@ def request_w9(workspace_id: str, contractor_id: str, undo: bool = False):
     extras["w9_requested"] = requested
     save_workspace(workspace_id, workspace, extras)
     return {"w9_requested": requested}
+
+
+@app.post("/workspaces/{workspace_id}/contractors/{contractor_id}/w9-received")
+def w9_received(workspace_id: str, contractor_id: str, undo: bool = False):
+    """The W-9 came back, so it's on file. Payments to the contractor are still tracked.
+    Undo only works for a W-9 marked received here, and puts it back to requested."""
+    workspace, _ = get_workspace(workspace_id)
+    contractor = next((c for c in workspace.contractors if c.id == contractor_id), None)
+    if contractor is None:
+        raise HTTPException(status_code=404, detail="No such contractor.")
+    extras = get_extras(workspace_id)
+    received = [c for c in extras["w9_received"] if c != contractor_id]
+    requested = [c for c in extras["w9_requested"] if c != contractor_id]
+    if undo:
+        if contractor_id not in extras["w9_received"]:
+            raise HTTPException(status_code=400, detail="That W-9 wasn't marked received here.")
+        contractor.w9_on_file = False
+        requested.append(contractor_id)
+    else:
+        if contractor.w9_on_file:
+            raise HTTPException(status_code=400, detail="That W-9 is already on file.")
+        contractor.w9_on_file = True
+        received.append(contractor_id)
+    extras["w9_received"] = received
+    extras["w9_requested"] = requested
+    save_workspace(workspace_id, workspace, extras)
+    return {"w9_received": received, "w9_requested": requested}
 
 
 @app.get("/rules/{year}")
