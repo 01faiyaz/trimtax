@@ -243,11 +243,11 @@ rules:
     plain_words: "California used the same $600 line in 2025."
     threshold_cents: 60000
     source:
-      cite: "FTB 1099 information reporting guidance (2025)"
-      url: null
-    check_status: needs_check
-    approved_by: null
-    approved_on: null
+      cite: "FTB, Guide to Information Returns Filed With California: 1099-NEC, $600 or more for tax year 2025"
+      url: "https://www.ftb.ca.gov/file/guide-to-information-returns-filed-with-california.html"
+    check_status: checked
+    approved_by: "Sean Zhou"
+    approved_on: 2026-11-07
 
   - id: ca_de542_report
     jurisdiction: california
