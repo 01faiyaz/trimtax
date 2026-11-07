@@ -32,6 +32,8 @@ def test_answering_the_question(app: Page):
     open_tab(app, "Questions")
     expect(app.locator("main")).to_contain_text("Was this lunch for your team at the office, or a client?")
     app.get_by_role("button", name="Team meal at the office").click()
+    # Wait until the screen confirms it, like a person would. On the live site the save takes a moment.
+    expect(app.get_by_role("button", name="Undo")).to_be_visible()
     open_tab(app, "Accountant packet")
     main = app.locator("main")
     expect(main).to_contain_text("Team meals at the office: federal $0, California $4,592 deductible")
@@ -128,9 +130,11 @@ def test_try_a_rule_change(app: Page):
     app.get_by_role("button", name="Ask the AI").click()
     app.get_by_label("Your name, for the approval").fill("Browser test", timeout=FIRST_LOAD_MS)
     app.get_by_role("button", name="Approve").first.click()
+    expect(app.get_by_text("Approved by Browser test for this demo copy.")).to_be_visible()
     open_tab(app, "Overview")
     expect(app.locator("main")).to_contain_text("You can still write off $11,600 of equipment")
     open_tab(app, "Rules")
     app.get_by_role("button", name="Undo").click()
+    expect(app.get_by_role("button", name="Undo")).to_be_hidden()  # the banner goes once the real rules are back
     open_tab(app, "Overview")
     expect(app.locator("main")).to_contain_text("You can still write off $6,600 of equipment")
