@@ -1,6 +1,8 @@
 """The six demo moments, Start fresh, and the story site, clicked through in a real browser."""
 
 import os
+import re
+from datetime import date
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -110,6 +112,9 @@ def test_start_fresh_with_a_csv(app: Page, tmp_path):
 def test_story_site(page: Page):
     page.goto(BASE_URL + "/")
     expect(page.get_by_role("heading", name="See your taxes while you can still change them.")).to_be_visible()
+    # The site counts down to the real Dec 31 (the app stays on the demo date).
+    left = max(0, (date(2026, 12, 31) - date.today()).days)
+    expect(page.get_by_role("img", name=re.compile(f" {left} days left before the Dec 31 cutoff")).first).to_be_visible()
     page.get_by_role("link", name="Open the demo").first.click()
     expect(page).to_have_url(BASE_URL + "/app")
 
