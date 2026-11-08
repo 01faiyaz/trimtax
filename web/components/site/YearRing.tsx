@@ -1,7 +1,7 @@
 "use client";
 
 // The year as a clock: one tick per day, light for days gone, dark for days left.
-// "Today" is the visitor's real date. Ported from the design canvas.
+// "Today" is the visitor's real date, unless a scene passes the demo date. Ported from the design canvas.
 
 import { daysGone, daysLeft, useNow } from "./useToday";
 
@@ -17,8 +17,9 @@ function point(day: number, radius: number) {
   return { x: round(CENTER + radius * Math.cos(angle)), y: round(CENTER + radius * Math.sin(angle)) };
 }
 
-export default function YearRing({ showPlanned = false }: { showPlanned?: boolean }) {
-  const now = useNow();
+export default function YearRing({ showPlanned = false, at }: { showPlanned?: boolean; at?: Date }) {
+  const live = useNow();
+  const now = at ?? live;
   // Until the browser knows the date, every day is drawn as still to come.
   const today = now ? daysGone(now) : 0;
   const left = now ? daysLeft(now) : null;

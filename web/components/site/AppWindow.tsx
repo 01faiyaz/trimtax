@@ -5,7 +5,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import YearRing from "./YearRing";
-import { daysLeft, useNow } from "./useToday";
+import { DEMO_DATE, daysLeft } from "./useToday";
 
 // Where the cursor sits at each step, measured from the middle of the Team button.
 const CURSOR = ["translate(-300px, 230px)", "translate(0, 0)", "translate(0, 0) scale(.82)", "translate(30px, 40px)"];
@@ -64,13 +64,13 @@ const navItem = { padding: "7px 10px", color: "#4f555b" };
 export default function AppWindow() {
   const host = useHost();
   const { phase, meals } = useMealsLoop();
-  const now = useNow();
+  const now = DEMO_DATE; // a picture of the app, so it shows the app's demo date
   const answered = phase >= 3;
   const stands = [
     { value: "$6,600", mark: "T", label: "California equipment room left" },
     { value: "4", mark: "Σ", label: "1099 forms to file" },
     { value: "$" + Math.round(meals).toLocaleString("en-US"), mark: answered ? "Σ" : "Δ", label: "Team meals, not deductible federally" },
-    { value: now ? String(daysLeft(now)) : "", mark: "T", label: "Days left in the tax year" },
+    { value: String(daysLeft(now)), mark: "T", label: "Days left in the tax year" },
   ];
 
   return (
@@ -99,7 +99,7 @@ export default function AppWindow() {
             </span>
             <span style={navItem}>Rules</span>
             <span style={navItem}>Accountant packet</span>
-            <p className="muted" style={{ margin: "auto 0 0 8px", fontSize: 11, lineHeight: "15px" }}>Synthetic demo data</p>
+            <p className="muted" style={{ margin: "auto 0 0 8px", fontSize: 11, lineHeight: "15px" }}>Synthetic demo data. Demo date: Nov 19</p>
           </nav>
 
           <div style={{ flex: 1, padding: "22px 28px", display: "flex", flexDirection: "column", gap: 18, minWidth: 0 }}>
@@ -114,7 +114,7 @@ export default function AppWindow() {
             <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
               <div style={{ width: 252, height: 252, flex: "none", position: "relative" }}>
                 <div style={{ position: "absolute", left: 0, top: 0, width: 420, height: 420, transform: "scale(.6)", transformOrigin: "0 0" }}>
-                  <YearRing />
+                  <YearRing at={DEMO_DATE} />
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>

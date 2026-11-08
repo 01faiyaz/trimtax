@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 
 // The story site counts down to the real Dec 31, using the visitor's own clock.
 // The app itself stays on the demo date (Nov 19), where it says so.
+// Scenes that show Tidewell's numbers use the demo date too, so a Nov 13 receipt
+// never shows up before Nov 13.
 
 const YEAR = 2026;
+export const DEMO_DATE = new Date(2026, 10, 19, 9, 41);
 const DAY = 86_400_000;
 
 // The current time, refreshed every `every` milliseconds. Null until the page is in the

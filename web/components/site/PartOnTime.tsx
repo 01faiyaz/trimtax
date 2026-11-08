@@ -8,7 +8,7 @@ import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
-import { daysLeftText, useNow } from "./useToday";
+import { DEMO_DATE, daysLeftText } from "./useToday";
 
 const mono = { fontFamily: "var(--mono)" };
 const ease = "cubic-bezier(.22,1,.36,1)";
@@ -53,7 +53,7 @@ function OnTime({ stacked = false }: { stacked?: boolean }) {
   const [shown, setShown] = useState(0); // how many notifications are on the phone
   const [drawn, setDrawn] = useState(false); // the pen circle around Dec 31
   const [spread, setSpread] = useState(0); // 0 stacked, 1 fanned a little, 2 fanned wide on hover
-  const now = useNow();
+  const now = DEMO_DATE; // Tidewell's phone and calendar, on the demo date
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -99,7 +99,7 @@ function OnTime({ stacked = false }: { stacked?: boolean }) {
               {TICKS.map((t, i) => <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#26292c" strokeWidth={t.width} />)}
             </svg>
             <div style={{ width: 70, height: 20, borderRadius: 10, background: "#1c1f22", margin: "10px auto 0" }} />
-            <p style={{ margin: "18px 0 0", textAlign: "center", fontSize: 13, fontWeight: 600, color: "#3d4247" }}>{now ? now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) : "\u00a0"}</p>
+            <p style={{ margin: "18px 0 0", textAlign: "center", fontSize: 13, fontWeight: 600, color: "#3d4247" }}>{now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}</p>
             <p style={{ margin: 0, textAlign: "center", fontSize: 60, lineHeight: "64px", fontWeight: 700, letterSpacing: "-0.03em" }}>9:41</p>
             <div style={{ position: "absolute", left: 10, right: 10, top: 150 }}>
               {NOTES.map(([when, title, body], i) => {
@@ -130,7 +130,7 @@ function OnTime({ stacked = false }: { stacked?: boolean }) {
         <div style={{ background: "linear-gradient(180deg, #ffffff, #fafbfa)", border: "1px solid #d6d9db", boxShadow: "0 1px 2px rgba(38,41,44,.04), 0 22px 44px rgba(38,41,44,.10)", padding: "18px 20px 20px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
             <p style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>December 2026</p>
-            <span style={{ ...mono, fontSize: 13, fontWeight: 700, color: "#2c5ba0" }}>{now && daysLeftText(now)}</span>
+            <span style={{ ...mono, fontSize: 13, fontWeight: 700, color: "#2c5ba0" }}>{daysLeftText(now)}</span>
           </div>
           <div aria-hidden="true" style={{ display: "grid", gridTemplateColumns: "repeat(7, 40px)", marginTop: 12, fontSize: 11, fontWeight: 700, color: "#61666b", textAlign: "center" }}>
             {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => <span key={i}>{d}</span>)}
