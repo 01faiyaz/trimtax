@@ -127,6 +127,8 @@ def test_story_site(page: Page):
     # The site counts down to the real Dec 31 (the app stays on the demo date).
     left = max(0, (date(2026, 12, 31) - date.today()).days)
     expect(page.get_by_role("img", name=re.compile(f" {left} days left before the Dec 31 cutoff")).first).to_be_visible()
+    # The picture of the app shows the app's demo date, Nov 19.
+    expect(page.get_by_role("img", name=re.compile(" 42 days left before the Dec 31 cutoff")).first).to_be_attached()
     page.get_by_role("link", name="Open the demo").first.click()
     expect(page).to_have_url(BASE_URL + "/app")
 

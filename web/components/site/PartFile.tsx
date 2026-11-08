@@ -9,7 +9,7 @@ import Fit from "./Fit";
 import { Holes, PartHead } from "./Paper";
 import { useNarrow } from "./useNarrow";
 import { useSeen } from "./useSeen";
-import { daysLeftText, useNow } from "./useToday";
+import { DEMO_DATE, daysLeftText } from "./useToday";
 import { money, useTween } from "./useTween";
 
 type Tab = "questions" | "buy" | "limits" | "rules" | "work";
@@ -74,7 +74,7 @@ function useFiling(started: boolean, paused: boolean) {
 export default function PartFile() {
   const [ref, seen] = useSeen();
   const narrow = useNarrow();
-  const now = useNow();
+  const now = DEMO_DATE; // Tidewell's file is as of the demo date
   // On phones the folder is drawn narrower and taller so the sheets stay readable.
   const folder = narrow ? { width: 560, height: 960 } : { width: 940, height: 690 };
   const [open, setOpen] = useState(false);
@@ -366,7 +366,7 @@ export default function PartFile() {
                       <p style={{ margin: "6px 0 0", fontSize: 15 }}>Tax year 2026, federal and California</p>
                       <p className="muted" style={{ margin: "14px 0 0", paddingTop: 12, borderTop: "1px solid #e3e5e7", fontSize: 14 }}>
                         <span className="mono" style={{ fontWeight: 700, color: "#26292c" }}>{Math.round(filedShown)}</span> receipts filed.{" "}
-                        {answer === null ? "1 question open." : "No questions open."}{now && ` ${daysLeftText(now)}.`}
+                        {answer === null ? "1 question open." : "No questions open."}{` ${daysLeftText(now)} as of Nov 19.`}
                       </p>
                     </div>
                     <div aria-hidden="true" className="mono" style={{ position: "absolute", right: 64, top: 104, padding: "5px 10px", border: "2px double #2c5ba0", color: "#2c5ba0", fontSize: 15, fontWeight: 700, transform: "rotate(6deg)", opacity: 0.7 }}>Updated today</div>
