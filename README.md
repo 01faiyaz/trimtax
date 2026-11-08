@@ -177,7 +177,7 @@ pip install -r api/requirements.txt
 python -m pytest
 ```
 
-That runs 196 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
+That runs 197 tests across the data, the engine, the API, the AI pipeline and rule updates (with a stand-in model, no key needed) and the eval scoring. Some of them are property tests that throw thousands of random purchases at the equipment math.
 
 The API, from `api/`:
 

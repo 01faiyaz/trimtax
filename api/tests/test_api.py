@@ -343,3 +343,16 @@ def test_rule_update_log_shows_each_update_in_plain_words(client, tmp_path, monk
     assert entry["decided_on"] == "2026-11-06"
     assert "1099-NEC" in entry["plain_words"]
     assert client.get("/rules/2025/updates").json() == []
+
+
+def test_a_real_company_uses_todays_date_in_california():
+    from datetime import date, datetime
+    from types import SimpleNamespace
+    from zoneinfo import ZoneInfo
+
+    from app.main import as_of_for
+
+    real = SimpleNamespace(company=SimpleNamespace(demo_date=None))
+    demo = SimpleNamespace(company=SimpleNamespace(demo_date=date(2026, 11, 19)))
+    assert as_of_for(real) == datetime.now(ZoneInfo("America/Los_Angeles")).date()
+    assert as_of_for(demo) == date(2026, 11, 19)

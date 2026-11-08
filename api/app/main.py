@@ -12,6 +12,7 @@ import os
 from contextlib import asynccontextmanager
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import base64
 
@@ -137,11 +138,16 @@ def rules_for(workspace_id, year):
     return with_demo_changes(get_rules(year), changes)
 
 
+# TrimTax is built for California companies, so "today" is today in California.
+# The server's own clock is UTC, which is already tomorrow after 4 PM Pacific.
+CALIFORNIA = ZoneInfo("America/Los_Angeles")
+
+
 def as_of_for(workspace):
-    """The demo is pinned to Nov 19, 2026. A real company uses today."""
+    """The demo is pinned to Nov 19, 2026. A real company uses today in California."""
     if workspace.company.demo_date:
         return workspace.company.demo_date
-    return date.today()
+    return datetime.now(CALIFORNIA).date()
 
 
 def image_path(receipt_id):
