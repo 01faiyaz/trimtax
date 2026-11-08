@@ -8,3 +8,4 @@ psycopg[binary]>=3.2
 anthropic>=2.6
 python-multipart>=0.0.9
 fpdf2>=2.8
+tzdata>=2024.1
